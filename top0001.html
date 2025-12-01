@@ -53,7 +53,7 @@ h1{
 <hr />
 <div class="link-list">
   <div class="neon-btn" onclick="jumpLink1()">バブルゲーム</div>
-  <div class="neon-btn" onclick="jumpLink2()">Google</div>
+  <div class="neon-btn" onclick="jumpLink2()">将棋</div>
   <div class="neon-btn" onclick="jumpLink3()">YouTube</div>
 </div>
 <div onclick="logout()">logout</div>
@@ -63,24 +63,24 @@ h1{
         const token1 = urlParams.get("key1");
         if(token1 !== localStorage.getItem("key1")){
             localStorage.setItem("key1", "unauthorized");
-            location.href = "https://wakaruwakaru.github.io/game-sites/";
+            location.href = "https://wakaruwakaru.github.io/game-sites/index.html";
         }
     </script>
     <script>
         function jumpLink1(){
             const key1 = crypto.randomUUID();
             localStorage.setItem("key1", key1);
-            location.href = "https://wakaruwakaru.github.io/game-sites/page0001?key1=" + key1;
+            location.href = "https://wakaruwakaru.github.io/game-sites/page0001.html?key1=" + key1;
         }
         function jumpLink2(){
             const key1 = crypto.randomUUID();
             localStorage.setItem("key1", key1);
-            location.href = "https://wakaruwakaru.github.io/game-sites/page0002?key1=" + key1;
+            location.href = "https://wakaruwakaru.github.io/game-sites/page0002.html?key1=" + key1;
         }
         function jumpLink3(){
             const key1 = crypto.randomUUID();
             localStorage.setItem("key1", key1);
-            location.href = "https://wakaruwakaru.github.io/game-sites/page0003?key1=" + key1;
+            location.href = "https://wakaruwakaru.github.io/game-sites/page0003.html?key1=" + key1;
         }
         function logout(){
             localStorage.setItem("key1", "logout");
