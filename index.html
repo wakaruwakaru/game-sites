@@ -103,8 +103,10 @@ updateWidget('ww_e81726654fd56',0);
   let loadingLock = false;
 
   if(localStorage.getItem("key1") == "logout"){
+    localStorage.setItem("key1", 0);
     document.getElementById("com1").innerHTML = "再ログイン";
   }else if(localStorage.getItem("key1") == "unauthorized"){
+    localStorage.setItem("key1", 0);
     document.getElementById("no1").innerHTML = "不正アクセスを検出";
   }
 
@@ -258,6 +260,7 @@ updateWidget('ww_e81726654fd56',0);
     }
   </script></body>
 </html>
+
 
 
 
