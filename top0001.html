@@ -50,18 +50,19 @@ h1{
 <body>
 
 <h1>Welcome!!</h1>
-
+<hr />
 <div class="link-list">
   <div class="neon-btn" onclick="jumpLink1()">バブルゲーム</div>
   <div class="neon-btn" onclick="jumpLink2()">Google</div>
   <div class="neon-btn" onclick="jumpLink3()">YouTube</div>
-
 </div>
+<div onclick="logout()">logout</div>
 </body>
     <script>
         const urlParams = new URLSearchParams(location.search);
         const token1 = urlParams.get("key1");
         if(token1 !== localStorage.getItem("key1")){
+            localStorage.setItem("key1", "unauthorized");
             location.href = "https://wakaruwakaru.github.io/game-sites/";
         }
     </script>
@@ -80,6 +81,10 @@ h1{
             const key1 = crypto.randomUUID();
             localStorage.setItem("key1", key1);
             location.href = "https://wakaruwakaru.github.io/game-sites/page0003?key1=" + key1;
+        }
+        function logout(){
+            localStorage.setItem("key1", "logout");
+            location.href = "https://wakaruwakaru.github.io/game-sites/index.html";
         }
     </script>
 </html>
