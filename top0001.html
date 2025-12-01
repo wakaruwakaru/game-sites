@@ -55,6 +55,7 @@ h1{
   <div class="neon-btn" onclick="jumpLink1()">バブルゲーム</div>
   <div class="neon-btn" onclick="jumpLink2()">将棋</div>
   <div class="neon-btn" onclick="jumpLink3()">オセロ</div>
+  <div class="neon-btn" onclick="jumpLink4()">パズル</div>
 </div>
 <div onclick="logout()">logout</div>
 </body>
@@ -81,6 +82,11 @@ h1{
             const key1 = crypto.randomUUID();
             localStorage.setItem("key1", key1);
             location.href = "https://wakaruwakaru.github.io/game-sites/page0003?key1=" + key1;
+        }
+        function jumpLink4(){
+            const key1 = crypto.randomUUID();
+            localStorage.setItem("key1", key1);
+            location.href = "https://wakaruwakaru.github.io/game-sites/page0004?key1=" + key1;
         }
         function logout(){
             localStorage.setItem("key1", "logout");
