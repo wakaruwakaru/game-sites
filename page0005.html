@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>sound box</title>
+<style>
+:root { --lane-width: 90px; --height: 420px; --hitline-y: 340px; }
+body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; background:#0e0f14; color:#fff; display:flex; flex-direction:column; align-items:center; gap:16px; padding:24px; }
+h1 { margin:0; font-size:24px; font-weight:700; }
+.wrap { display:flex; gap:24px; align-items:flex-start; flex-wrap:wrap; justify-content:center; }
+.stage { position:relative; width:calc(var(--lane-width) * 4 + 18px); height:var(--height); border-radius:12px; background:linear-gradient(#12131a,#0b0c11); box-shadow:0 6px 18px rgba(0,0,0,.35) inset, 0 8px 24px rgba(0,0,0,.35); overflow:hidden; padding:8px; }
+.lanes { position:absolute; inset:8px; display:grid; grid-template-columns: repeat(4, var(--lane-width)); gap:6px; }
+.lane { position:relative; border-radius:10px; background:rgba(255,255,255,.06); box-shadow: inset 0 0 0 1px rgba(255,255,255,.08); }
+.keycap { position:absolute; left:50%; transform:translateX(-50%); bottom:8px; padding:4px 10px; border-radius:999px; background:rgba(255,255,255,.08); font-weight:700; letter-spacing:1px; box-shadow:0 4px 10px rgba(0,0,0,.3); }
+.hitline { position:absolute; left:8px; right:8px; top:var(--hitline-y); height:2px; background:rgba(255,255,255,.35); box-shadow:0 0 12px rgba(255,255,255,.15); }
+.note { position:absolute; left:0; width:var(--lane-width); height:20px; border-radius:6px; background:rgba(255,255,255,.85); box-shadow:0 6px 10px rgba(0,0,0,.35); }
+.note.hit { opacity:.25; }
+.hud { display:flex; flex-direction:column; gap:10px; min-width:300px; padding:12px; border-radius:12px; background:rgba(255,255,255,.06); box-shadow:0 6px 16px rgba(0,0,0,.35) inset, 0 6px 22px rgba(0,0,0,.35); }
+.row { display:flex; align-items:center; justify-content:space-between; gap:12px; }
+.score { font-size:22px; font-weight:800; }
+.combo { font-size:14px; opacity:.9; }
+.judgement { min-height:28px; font-size:20px; font-weight:900; text-align:center; letter-spacing:1px; }
+.judgement.perfect { color:#7cf0ff; text-shadow:0 0 18px rgba(124,240,255,.6); }
+.judgement.great  { color:#7dff9e; text-shadow:0 0 18px rgba(125,255,158,.5); }
+.judgement.good { color:#ffe27a; text-shadow:0 0 18px rgba(255,226,122,.5); }
+.judgement.bad { color:#ff9b7a; text-shadow:0 0 18px rgba(255,155,122,.4); }
+.judgement.miss { color:#ff6b7d; text-shadow:0 0 18px rgba(255,107,125,.4); }
+button { border:none; padding:10px 14px; border-radius:10px; font-weight:700; cursor:pointer; background:#2f67ff; color:white; box-shadow:0 8px 20px rgba(47,103,255,.35); }
+</style>
+</head>
+<body>
+<h1>🎵 sound box</h1>
+<div class="wrap">
+  <div class="stage">
+    <div class="hitline"></div>
+    <div class="lanes" id="lanes">
+      <div class="lane"><div class="keycap">D</div></div>
+      <div class="lane"><div class="keycap">F</div></div>
+      <div class="lane"><div class="keycap">J</div></div>
+      <div class="lane"><div class="keycap">K</div></div>
+    </div>
+  </div>
+  <div class="hud">
+    <div class="row"><div>Score</div><div class="score" id="score">0</div></div>
+    <div class="row"><div>Combo</div><div class="combo" id="combo">0</div></div>
+    <div class="judgement" id="judgement"></div>
+    <div class="row">
+      <button id="startBtn">Start</button>
+    </div>
+  </div>
+</div>
+<a href="https://sites.google.com/view/bo-ttoikitennzyane-yo/top">top page >></a>
+
+
+
+<script>
+(() => {
+// ===== 設定 =====
+const LANE_KEYS = ['d','f','j','k'];
+const LANE_FREQ = [261.63, 329.63, 392.00, 523.25]; // C4, E4, G4, C5
+const HITLINE_Y = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--hitline-y'));
+const NOTE_H = 20;
+const APPROACH = 0.955;
+
+
+
+
+// 判定時間 (秒)
+const JUDGE = { perfect:0.75, great:0.100, good:0.200, bad:0.250 };
+
+
+
+
+// デモ譜面(元の音の出方に戻す)
+const demoChart = (() => {
+  const notes = [];
+  // 1秒後にD, F, J, Kを順番に
+  notes.push({ time: 1.0, lane: 0 }); // D
+  notes.push({ time: 1.5, lane: 1 }); // F
+  notes.push({ time: 2.0, lane: 2 }); // J
+  notes.push({ time: 2.5, lane: 0 }); // K
+  notes.push({ time: 3.0, lane: 0 }); // D
+  notes.push({ time: 3.5, lane: 1 }); // F
+  notes.push({ time: 4.0, lane: 2 }); // J
+  notes.push({ time: 4.5, lane: 3 }); // K
+  notes.push({ time: 5.0, lane: 2 }); // J
+  notes.push({ time: 5.0, lane: 3 }); // K
+  notes.push({ time: 5.5, lane: 0 }); // D
+  notes.push({ time: 5.75, lane: 1 }); // F
+  notes.push({ time: 6.0, lane: 2 }); // J
+  notes.push({ time: 6.25, lane: 3 }); // K
+  notes.push({ time: 6.5, lane: 3 }); // J
+  notes.push({ time: 6.75, lane: 2 }); // F
+  notes.push({ time: 7.0, lane: 1 }); // D
+  notes.push({ time: 7.25, lane: 0 }); // K
+   // 最後に反対から叩く
+  notes.push({ time: 8.0, lane: 3 }); // K
+  notes.push({ time: 8.5, lane: 2 }); // J
+  notes.push({ time: 9.0, lane: 1 }); // F
+  notes.push({ time: 9.5, lane: 3 }); // K
+
+
+
+
+  // 同時に叩く
+  notes.push({ time: 8.0, lane: 1 }); // F
+  notes.push({ time: 10.0, lane: 2 }); // K
+  notes.push({ time: 10.0, lane: 3 }); // J
+   return notes;
+})();
+
+
+
+
+// ===== 状態 =====
+let audioCtx = null;
+let startTime = null;
+let rafId = null;
+let notes = [];
+let score = 0;
+let combo = 0;
+let lastJudgeTimer = null;
+
+
+
+
+// ===== 要素 =====
+const lanesEl = document.getElementById('lanes');
+const scoreEl = document.getElementById('score');
+const comboEl = document.getElementById('combo');
+const judgeEl = document.getElementById('judgement');
+const startBtn = document.getElementById('startBtn');
+
+
+
+
+// ===== 音 =====
+function ensureAudio() {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+}
+function beep(freq=440, dur=0.08, gain=0.08) {
+  if (!audioCtx) return;
+  const t0 = audioCtx.currentTime;
+  const o = audioCtx.createOscillator();
+  const g = audioCtx.createGain();
+  o.frequency.value = freq; o.type = 'sine';
+  g.gain.value = gain;
+  o.connect(g).connect(audioCtx.destination);
+  o.start(t0); o.stop(t0 + dur);
+}
+
+
+
+
+// ===== 初期化 =====
+function updateHUD() { scoreEl.textContent = score; comboEl.textContent = combo; }
+
+
+
+
+function resetGame() {
+  cancelAnimationFrame(rafId);
+  score = 0; combo = 0; updateHUD();
+  judgeEl.textContent = ''; judgeEl.className = 'judgement';
+  notes.forEach(n => n.el?.remove());
+  notes = demoChart.map(n => ({ ...n, hit:false, judged:false, el:null }));
+  for (const n of notes) {
+    const el = document.createElement('div'); el.className = 'note';
+    lanesEl.children[n.lane].appendChild(el); n.el = el;
+  }
+  startTime = null;
+}
+
+
+
+
+function startGame() {
+  resetGame();
+  ensureAudio();
+  startTime = performance.now()/1000;
+  loop();
+}
+
+
+
+
+// ===== ループ =====
+function loop() {
+  rafId = requestAnimationFrame(loop);
+  if (!startTime) return;
+  const elapsed = performance.now()/1000 - startTime;
+
+
+
+
+  for (const n of notes) {
+    if (!n.el) continue;
+    const appearAt = n.time - APPROACH;
+    if (elapsed < appearAt) { n.el.style.display = 'none'; continue; }
+    n.el.style.display = 'block';
+
+
+
+
+    const progress = Math.min(1, Math.max(0, (elapsed - appearAt) / APPROACH));
+    const y = (HITLINE_Y - NOTE_H) * progress;
+    n.el.style.top = `${y}px`;
+
+
+
+
+    if (n.hit || n.judged) n.el.classList.add('hit');
+
+
+
+
+    // 自動ミス判定
+    if (!n.hit && !n.judged && (elapsed - n.time) > JUDGE.bad) {
+      setJudge('miss');
+      n.judged = true;
+    }
+  }
+}
+
+
+
+
+// ===== 判定 =====
+function setJudge(kind) {
+  const cls = { perfect:'perfect', great:'great', good:'good', bad:'bad', miss:'miss' }[kind] || '';
+  judgeEl.className = 'judgement ' + cls;
+  judgeEl.textContent = kind.toUpperCase();
+
+
+
+
+  clearTimeout(lastJudgeTimer);
+  lastJudgeTimer = setTimeout(() => { judgeEl.textContent = ''; judgeEl.className = 'judgement'; }, 700);
+
+
+
+
+  const SCORE_TABLE = { perfect:100, great:70, good:50, bad:0, miss:0 };
+  score += (SCORE_TABLE[kind] || 0);
+  if (kind==='perfect' || kind==='great' || kind==='good') combo++; else combo = 0;
+  updateHUD();
+}
+
+
+
+
+// ===== 入力 =====
+window.addEventListener('keydown', (e) => {
+  const key = e.key.toLowerCase();
+  const lane = LANE_KEYS.indexOf(key);
+  if (lane === -1) return;
+
+
+
+
+  ensureAudio();
+  beep(LANE_FREQ[lane], 0.07, 0.09);
+
+
+
+
+  if (!startTime) return;
+
+
+
+
+  const t = performance.now()/1000 - startTime;
+  let cand = null, bestAbs = Infinity;
+  for (const n of notes) {
+    if (n.lane !== lane || n.hit || n.judged) continue;
+    const d = Math.abs(n.time - t);
+    if (d < bestAbs) { bestAbs = d; cand = n; }
+  }
+  if (!cand) return;
+
+
+
+
+  const ad = Math.abs(t - cand.time);
+  let result = 'miss';
+  if (ad <= JUDGE.perfect) result='perfect';
+  else if (ad <= JUDGE.great) result='great';
+  else if (ad <= JUDGE.good) result='good';
+  else if (ad <= JUDGE.bad)  result='bad';
+
+
+
+
+  if (result !== 'miss') cand.hit = true;
+  cand.judged = true;
+  setJudge(result);
+});
+
+
+
+
+// ===== ボタン操作 =====
+startBtn.addEventListener('click', startGame);
+
+
+
+
+// 初期
+resetGame();
+})();
+</script>
+</body>
+</html>
