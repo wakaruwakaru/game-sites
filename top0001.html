@@ -57,23 +57,27 @@ h1{
 </div>
 </body>
     <script>
-        
+        const urlParams = new URLSearchParams(location.search);
+        const token1 = urlParams.get("key1");
+        if(token1 !== localStorage.getItem("key1")){
+            location.href = "https://wakaruwakaru.github.io/game-sites/";
+        }
     </script>
     <script>
         function jumpLink1(){
             const key1 = crypto.randomUUID();
             localStorage.setItem("key1", key1);
-            location.href = "https://sites.google.com/view/bo-ttoikitennzyane-yo/top?key1=" + key1;
+            location.href = "https://wakaruwakaru.github.io/game-sites/page0001?key1=" + key1;
         }
         function jumpLink2(){
             const key1 = crypto.randomUUID();
             localStorage.setItem("key1", key1);
-            location.href = "https://www.google.com/?key1=" + key1;
+            location.href = "https://wakaruwakaru.github.io/game-sites/page0002?key1=" + key1;
         }
         function jumpLink3(){
             const key1 = crypto.randomUUID();
             localStorage.setItem("key1", key1);
-            location.href = "https://youtube.com/?key1=" + key1;
+            location.href = "https://wakaruwakaru.github.io/game-sites/page0003?key1=" + key1;
         }
     </script>
 </html>
