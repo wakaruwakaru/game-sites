@@ -59,8 +59,6 @@
 <div class="not1" id="no1"></div>
 <a class="wel1" href="https://sites.google.com/view/bo-ttoikitennzyane-yo/top" id="link1"></a>
 <a class="wel1" href="https://sites.google.com/view/bo-ttoikitennzyane-yo/top2" id="link2"></a>
-<a id="jumpLink1" href="https://sites.google.com/view/bo-ttoikitennzyane-yo/top" target="_top" style="opacity:0; position:absolute; pointer-events:none;"></a>
-<a id="jumpLink2" href="https://sites.google.com/view/bo-ttoikitennzyane-yo/top2" target="_top" style="opacity:0; position:absolute; pointer-events:none;"></a>
 <br />
 
 
@@ -133,12 +131,8 @@ updateWidget('ww_e81726654fd56',0);
     for(let count1 = 0; count1 < 5; count1++){
       document.getElementById("road1").innerHTML = "□□■";
       await delay(200);
-
-
       document.getElementById("road1").innerHTML = "□■■";
       await delay(200);
-
-
       document.getElementById("road1").innerHTML = "■■■";
       await delay(200);
       if(displayPattern1 != -2){
@@ -154,15 +148,13 @@ document.getElementById("road1").innerHTML = "";
     }
     if(displayPattern1 == 1){
       document.getElementById("link1").innerHTML = "Welcome " + accountKey1[userNumber1][0] + "!";
-      //document.getElementById("jumpLink1").click();
-      //location.href = "https://sites.google.com/view/bo-ttoikitennzyane-yo/top";
+      location.href = "https://sites.google.com/view/bo-ttoikitennzyane-yo/top";
     }else{
       document.getElementById("link1").innerHTML = "";
     }
     if(displayPattern1 == 2){
       document.getElementById("link2").innerHTML = "Welcome " + accountKey1[userNumber1][0] + "!";
-      //document.getElementById("jumpLink2").click();
-      //location.href = "https://sites.google.com/view/bo-ttoikitennzyane-yo/top2";
+      location.href = "https://sites.google.com/view/bo-ttoikitennzyane-yo/top2";
     }else{
       document.getElementById("link2").innerHTML = "";
     }
@@ -271,3 +263,4 @@ document.getElementById("road1").innerHTML = "";
     }
   </script></body>
 </html>
+
