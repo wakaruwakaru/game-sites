@@ -378,5 +378,20 @@ window.onload = () => {
         <p class="score"></p>
       </div>
     </div>
+    <div onclick="jumpLink1()">back page</div>
   </body>
+  <script>
+    const urlParams = new URLSearchParams(location.search);
+    const token1 = urlParams.get("key1");
+    if(token1 !== localStorage.getItem("key1")){
+        localStorage.setItem("key1", "unauthorized");
+        location.href = "https://wakaruwakaru.github.io/game-sites/";
+    }
+    
+    function jumpLink1(){
+        const key1 = crypto.randomUUID();
+        localStorage.setItem("key1", key1);
+        location.href = "https://wakaruwakaru.github.io/game-sites/page0001?key1=" + key1;
+    }
+  </script>
 </html>
