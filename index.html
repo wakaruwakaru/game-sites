@@ -143,6 +143,8 @@ updateWidget('ww_e81726654fd56',0);
   let loadingLock = false;
   let token1 = localStorage.getItem("key1");
   localStorage.setItem("key1", "");
+  let token2 = localStorage.getItem("requestPage1");
+  localStorage.setItem("requestPage1", "");
   if(token1 == "logout"){
     document.getElementById("com1").innerHTML = "再ログイン";
   }else if(token1 == "unauthorized"){
@@ -186,7 +188,7 @@ updateWidget('ww_e81726654fd56',0);
     if(displayPattern1 == -2){
       document.getElementById("no1").innerHTML = "not found";
       token1 = "";
-      localStorage.setItem("requestPage1", "");
+      token2 = "";
     }else{
       document.getElementById("no1").innerHTML = "";
     }
@@ -194,7 +196,6 @@ updateWidget('ww_e81726654fd56',0);
       document.getElementById("com1").innerHTML = "Welcome " + accountKey1[userNumber1][0] + "!";
       const key1 = crypto.randomUUID();
       localStorage.setItem("key1", key1);
-      const token2 = localStorage.getItem("requestPage1");
       if((token1 == "unauthorized") && (token2 != null) && (token2 != "")){
         location.href = "https://wakaruwakaru.github.io/game-sites/" + token2 + "?key1=" + key1;
       }else{
@@ -310,6 +311,7 @@ updateWidget('ww_e81726654fd56',0);
     }
 </script>
 </html>
+
 
 
 
