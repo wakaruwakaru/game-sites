@@ -423,9 +423,11 @@ window.onload = () => {
     const token1 = urlParams.get("key1");
     if(token1 !== localStorage.getItem("key1")){
         localStorage.setItem("key1", "unauthorized");
+        localStorage.setItem("requestPage1", "page0001");
         location.href = "https://wakaruwakaru.github.io/game-sites/";
     }else{
         localStorage.setItem("key1", "unauthorized");
+        localStorage.setItem("requestPage1", "");
     }
     function reload(){
         const key1 = crypto.randomUUID();
