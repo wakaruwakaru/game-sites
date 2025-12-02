@@ -38,6 +38,46 @@
         font-size:30px;
         color:#ff3333;
       }
+
+/* フローティングボタンの共通デザイン */
+.floating-btn{
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: #111;
+    border: 2px solid #4da6ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 26px;
+    color: #bcdfff;
+    cursor: pointer;
+    transition: 0.25s;
+    box-shadow: 0 0 10px #3d8cff88;
+}
+
+/* ホバー時に光る */
+.floating-btn:hover{
+    background: #4da6ff33;
+    box-shadow: 0 0 16px #4da6ffcc;
+}
+
+/* クリック時に縮む */
+.floating-btn:active{
+    transform: scale(0.9);
+}
+
+/* ボタン位置調整 */
+#reloadBtn{
+    bottom: 90px; /* logout の上に配置 */
+}
+
+#logoutBtn{
+    bottom: 20px;
+}
         </style>
 </head>
 <body>
@@ -214,16 +254,12 @@ updateWidget('ww_e81726654fd56',0);
     }timer1 = setInterval(event1,1);
 
 
-
-
     var timer2 = null;
     function event2(){
       backgroundUpdate();
     }timer2 = setInterval(event2,100);
 
-
-
-
+            
     function timeUpdate(){  //時刻描画
       //時刻の最後を見やすくするための処理と描画
       if(millisecond1 < 10){
@@ -258,8 +294,17 @@ updateWidget('ww_e81726654fd56',0);
         console.log("Error:can not update background");
       }
     }
-  </script></body>
+  </script>
+<div id="logoutBtn" class="floating-btn" onclick="reload()">↻</div>
+</body>
+<script>
+    function reload(){
+        localStorage.setItem("key1", "");
+        location.href = "https://wakaruwakaru.github.io/game-sites/";
+    }
+</script>
 </html>
+
 
 
 
