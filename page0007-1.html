@@ -1940,9 +1940,11 @@ this.domElement=document.createElementNS("http://www.w3.org/1999/xhtml","canvas"
     const token1 = urlParams.get("key1");
     if(token1 !== localStorage.getItem("key1")){
         localStorage.setItem("key1", "unauthorized");
+        localStorage.setItem("requestPage1", "page0007-1");
         location.href = "https://wakaruwakaru.github.io/game-sites/";
     }else{
         localStorage.setItem("key1", "unauthorized");
+        localStorage.setItem("requestPage1", "");
     }
     function reload(){
         const key1 = crypto.randomUUID();
@@ -1956,5 +1958,6 @@ this.domElement=document.createElementNS("http://www.w3.org/1999/xhtml","canvas"
     }
 </script>
 </html>
+
 
 
