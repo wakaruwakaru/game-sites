@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head><meta charset="UTF-8">
-	<title>Music Box</title>
+	<title>Music box</title>
 	<meta name = "viewport" content = "width=device-width, initial-scale = 1.0">
 	<style type="text/css">body {
     color: white;
@@ -49,7 +49,47 @@ tittle{
         color:#f0f0f0;
         font-size:150%;
       }
-	</style>
+
+/* フローティングボタンの共通デザイン */
+.floating-btn{
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: #111;
+    border: 2px solid #4da6ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 26px;
+    color: #bcdfff;
+    cursor: pointer;
+    transition: 0.25s;
+    box-shadow: 0 0 10px #3d8cff88;
+}
+
+/* ホバー時に光る */
+.floating-btn:hover{
+    background: #4da6ff33;
+    box-shadow: 0 0 16px #4da6ffcc;
+}
+
+/* クリック時に縮む */
+.floating-btn:active{
+    transform: scale(0.9);
+}
+
+/* ボタン位置調整 */
+#reloadBtn{
+    bottom: 90px; /* logout の上に配置 */
+}
+
+#logoutBtn{
+    bottom: 20px;
+}
+</style>
 </head>
 <body>
 <tittle>-NORMAL-</tittle>
@@ -353,5 +393,28 @@ let throughCount = 0; // 見逃し数
 
     $start.style.display = 'block';
 }
-  </script></body>
+  </script>
+<div id="reloadBtn" class="floating-btn" onclick="reload()">↻</div>
+<div id="logoutBtn" class="floating-btn" onclick="backPage()">⇦</div>
+</body>
+<script>
+    const urlParams = new URLSearchParams(location.search);
+    const token1 = urlParams.get("key1");
+    if(token1 !== localStorage.getItem("key1")){
+        localStorage.setItem("key1", "unauthorized");
+        location.href = "https://wakaruwakaru.github.io/game-sites/";
+    }else{
+        localStorage.setItem("key1", "unauthorized");
+    }
+    function reload(){
+        const key1 = crypto.randomUUID();
+        localStorage.setItem("key1", key1);
+        location.href = "https://wakaruwakaru.github.io/game-sites/page0005-2?key1=" + key1;
+    }
+    function backPage(){
+        const key1 = crypto.randomUUID();
+        localStorage.setItem("key1", key1);
+        location.href = "https://wakaruwakaru.github.io/game-sites/top0001?key1=" + key1;
+    }
+</script>
 </html>
