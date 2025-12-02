@@ -214,13 +214,11 @@ updateWidget('ww_e81726654fd56',0);
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-
   function enterLogin(e) {
     if (e.key === "Enter") {
       gate();
     }
   }
-
 
   async function sha256(text) {
     const encoder = new TextEncoder();
@@ -230,7 +228,11 @@ updateWidget('ww_e81726654fd56',0);
     return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
   }
 
-
+  function reload(){
+    localStorage.setItem("key1", token1);
+    localStorage.setItem("requestPage1", token2);
+    location.href = "https://wakaruwakaru.github.io/game-sites/";
+  }
     </script>
     <script>
     var timer1 = null;
@@ -303,14 +305,8 @@ updateWidget('ww_e81726654fd56',0);
   </script>
 <div id="logoutBtn" class="floating-btn" onclick="reload()">↻</div>
 </body>
-<script>
-    function reload(){
-        localStorage.setItem("key1", "");
-        localStorage.setItem("requestPage1", "");
-        location.href = "https://wakaruwakaru.github.io/game-sites/";
-    }
-</script>
 </html>
+
 
 
 
