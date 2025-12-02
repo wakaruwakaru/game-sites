@@ -27,10 +27,50 @@ h1 { margin:0; font-size:24px; font-weight:700; }
 .judgement.bad { color:#ff9b7a; text-shadow:0 0 18px rgba(255,155,122,.4); }
 .judgement.miss { color:#ff6b7d; text-shadow:0 0 18px rgba(255,107,125,.4); }
 button { border:none; padding:10px 14px; border-radius:10px; font-weight:700; cursor:pointer; background:#2f67ff; color:white; box-shadow:0 8px 20px rgba(47,103,255,.35); }
+
+/* フローティングボタンの共通デザイン */
+.floating-btn{
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: #111;
+    border: 2px solid #4da6ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 26px;
+    color: #bcdfff;
+    cursor: pointer;
+    transition: 0.25s;
+    box-shadow: 0 0 10px #3d8cff88;
+}
+
+/* ホバー時に光る */
+.floating-btn:hover{
+    background: #4da6ff33;
+    box-shadow: 0 0 16px #4da6ffcc;
+}
+
+/* クリック時に縮む */
+.floating-btn:active{
+    transform: scale(0.9);
+}
+
+/* ボタン位置調整 */
+#reloadBtn{
+    bottom: 90px; /* logout の上に配置 */
+}
+
+#logoutBtn{
+    bottom: 20px;
+}
 </style>
 </head>
 <body>
-<h1>🎵 sound box</h1>
+<h1>Music box</h1>
 <div class="wrap">
   <div class="stage">
     <div class="hitline"></div>
@@ -50,9 +90,6 @@ button { border:none; padding:10px 14px; border-radius:10px; font-weight:700; cu
     </div>
   </div>
 </div>
-<a href="https://sites.google.com/view/bo-ttoikitennzyane-yo/top">top page >></a>
-
-
 
 <script>
 (() => {
@@ -311,5 +348,27 @@ startBtn.addEventListener('click', startGame);
 resetGame();
 })();
 </script>
+<div id="reloadBtn" class="floating-btn" onclick="reload()">↻</div>
+<div id="logoutBtn" class="floating-btn" onclick="backPage()">⇦</div>
 </body>
+<script>
+    const urlParams = new URLSearchParams(location.search);
+    const token1 = urlParams.get("key1");
+    if(token1 !== localStorage.getItem("key1")){
+        localStorage.setItem("key1", "unauthorized");
+        location.href = "https://wakaruwakaru.github.io/game-sites/";
+    }else{
+        localStorage.setItem("key1", "unauthorized");
+    }
+    function reload(){
+        const key1 = crypto.randomUUID();
+        localStorage.setItem("key1", key1);
+        location.href = "https://wakaruwakaru.github.io/game-sites/page0005-1?key1=" + key1;
+    }
+    function backPage(){
+        const key1 = crypto.randomUUID();
+        localStorage.setItem("key1", key1);
+        location.href = "https://wakaruwakaru.github.io/game-sites/top0001?key1=" + key1;
+    }
+</script>
 </html>
