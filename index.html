@@ -1,6 +1,6 @@
 <html>
 <head>
-        <title>Log in</title>
+        <title>ログイン</title>
         <style type="text/css">html{
         font-family:Helvetica;
         color:#ffffff;
@@ -135,18 +135,17 @@ updateWidget('ww_e81726654fd56',0);
 <script>
   //user,pass,displayPattern(1~2)
   const accountKey1 = [
-    ["dabada","f376e70d0848fb8b01f7516c1044536748e2e37ef1b36adef5e6f2b62b1f1e20",2],
+    ["dabada","f376e70d0848fb8b01f7516c1044536748e2e37ef1b36adef5e6f2b62b1f1e20",1],
     ["173","f376e70d0848fb8b01f7516c1044536748e2e37ef1b36adef5e6f2b62b1f1e20",1],
     ["RTX5090rairai","40fb40e48fd263a3a37aa8e38ebf7111e8e5daeab94a5633374ff8e3433b9aa4",1],
     ["wakaruwakaru","07012f719db7dd9b03e42e9d536756ac3104299c62c0224182ad9b43e0011d0c",1]
   ];
   let loadingLock = false;
-
-  if(localStorage.getItem("key1") == "logout"){
-    localStorage.setItem("key1", 0);
+  let token1 = localStorage.getItem("key1");
+  localStorage.setItem("key1", "");
+  if(token1 == "logout"){
     document.getElementById("com1").innerHTML = "再ログイン";
-  }else if(localStorage.getItem("key1") == "unauthorized"){
-    localStorage.setItem("key1", 0);
+  }else if(token1 == "unauthorized"){
     document.getElementById("no1").innerHTML = "不正アクセスを検出";
   }
 
@@ -154,7 +153,6 @@ updateWidget('ww_e81726654fd56',0);
   //連打対策：実行中なら無視
   if(!loadingLock){
     loadingLock = true;
-
 
     var user1 = document.getElementById("user1").value;
     var pass1 = document.getElementById("pass1").value;
@@ -187,14 +185,21 @@ updateWidget('ww_e81726654fd56',0);
     //照合結果の描画
     if(displayPattern1 == -2){
       document.getElementById("no1").innerHTML = "not found";
+      token1 = "";
+      localStorage.setItem("requestPage1", "");
     }else{
       document.getElementById("no1").innerHTML = "";
     }
-    if(displayPattern1 == 1 || displayPattern1 == 2){
+    if(displayPattern1 != -2){
       document.getElementById("com1").innerHTML = "Welcome " + accountKey1[userNumber1][0] + "!";
       const key1 = crypto.randomUUID();
       localStorage.setItem("key1", key1);
-      location.href = "https://wakaruwakaru.github.io/game-sites/top0001.html?key1=" + key1;
+      const token2 = localStorage.getItem("requestPage1");
+      if((token1 == "unauthorized") && (token2 != null) && (token2 != "")){
+        location.href = "https://wakaruwakaru.github.io/game-sites/" + token2 + "?key1=" + key1;
+      }else{
+        location.href = "https://wakaruwakaru.github.io/game-sites/top0001?key1=" + key1;
+      }
     }else{
       document.getElementById("com1").innerHTML = "";
     }
@@ -304,6 +309,7 @@ updateWidget('ww_e81726654fd56',0);
     }
 </script>
 </html>
+
 
 
 
