@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>sound box</title>
+<title>Music box</title>
 <style>
 :root { --lane-width: 90px; --height: 420px; --hitline-y: 340px; }
 body { font-family: system-ui, -apple-system, "Segoe UI", sans-serif; background:#0e0f14; color:#fff; display:flex; flex-direction:column; align-items:center; gap:16px; padding:24px; }
@@ -356,9 +356,11 @@ resetGame();
     const token1 = urlParams.get("key1");
     if(token1 !== localStorage.getItem("key1")){
         localStorage.setItem("key1", "unauthorized");
+        localStorage.setItem("requestPage1", "page0005-1");
         location.href = "https://wakaruwakaru.github.io/game-sites/";
     }else{
         localStorage.setItem("key1", "unauthorized");
+        localStorage.setItem("requestPage1", "");
     }
     function reload(){
         const key1 = crypto.randomUUID();
