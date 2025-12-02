@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ぴったし - エフェクトスロット</title>
+
+<style>
+/* ====== 背景 ====== */
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle at center, #0f1a2a, #000);
+    font-family: 'Segoe UI', sans-serif;
+    color: #fff;
+}
+
+/* ====== 中央のボックス（さらに中央寄せ） ====== */
+.container {
+    text-align: center;
+    padding: 35px;
+    background: rgba(0, 20, 40, 0.75);
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 25px rgba(0, 153, 255, 0.5);
+    transform: translateY(-10px);
+}
+
+/* ====== タイトル ====== */
+h1 {
+    margin-bottom: 25px;
+    font-size: 45px;
+    color: #53c4ff;
+    text-shadow: 0 0 10px #53c4ff, 0 0 20px #53c4ff;
+}
+
+/* ====== スロット配置 ====== */
+.slot-container {
+    display: flex;
+    justify-content: center;
+    margin: 30px 0;
+    gap: 20px;
+}
+
+/* ====== スロット本体 ====== */
+.slot {
+    font-size: 70px;
+    width: 125px;
+    height: 125px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: rgba(10, 30, 60, 0.9);
+    border-radius: 20px;
+    border: 2px solid rgba(0, 153, 255, 0.7);
+    box-shadow: 0 0 20px rgba(0,153,255,0.6);
+    transition: 0.25s ease;
+    position: relative;
+}
+
+/* ====== ストップエフェクト(光線) ====== */
+.slot.flash {
+    box-shadow: 0 0 35px rgba(0,200,255,1), 0 0 80px rgba(0,200,255,0.8);
+    transform: scale(1.1);
+}
+
+/* ====== 大当たりエフェクト ====== */
+.slot.win {
+    animation: winFlash 1.2s ease forwards;
+}
+
+@keyframes winFlash {
+    0% { box-shadow: 0 0 20px rgba(0,255,200,0.5); }
+    50% {
+        box-shadow: 0 0 60px rgba(0,255,200,1),
+                    0 0 120px rgba(0,255,200,0.9);
+        transform: scale(1.2);
+    }
+    100% { box-shadow: 0 0 40px rgba(0,255,200,0.8); }
+}
+
+/* ====== ボタン ====== */
+button {
+    padding: 12px 28px;
+    margin: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    border-radius: 10px;
+    cursor: pointer;
+    border: none;
+    color: white;
+    background: linear-gradient(45deg, #0077ff, #00b7ff);
+    box-shadow: 0 0 15px rgba(0,153,255,0.6);
+    transition: 0.2s;
+}
+
+button:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 0 25px rgba(0,153,255,1);
+}
+
+/* ====== 結果表示 ====== */
+#result {
+    margin-top: 15px;
+    font-size: 26px;
+    text-shadow: 0 0 15px #fff;
+}
+
+/* フローティングボタンの共通デザイン */
+.floating-btn{
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: #111;
+    border: 2px solid #4da6ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 26px;
+    color: #bcdfff;
+    cursor: pointer;
+    transition: 0.25s;
+    box-shadow: 0 0 10px #3d8cff88;
+}
+
+/* ホバー時に光る */
+.floating-btn:hover{
+    background: #4da6ff33;
+    box-shadow: 0 0 16px #4da6ffcc;
+}
+
+/* クリック時に縮む */
+.floating-btn:active{
+    transform: scale(0.9);
+}
+
+/* ボタン位置調整 */
+#reloadBtn{
+    bottom: 90px; /* logout の上に配置 */
+}
+
+#logoutBtn{
+    bottom: 20px;
+}
+</style>
+
+</head>
+<body>
+
+<div class="container">
+    <h1>🎰 ぴったし</h1>
+
+    <div class="slot-container">
+        <div>
+            <div id="slot1" class="slot">7</div>
+            <button id="stopButton1">STOP</button>
+        </div>
+        <div>
+            <div id="slot2" class="slot">7</div>
+            <button id="stopButton2">STOP</button>
+        </div>
+        <div>
+            <div id="slot3" class="slot">7</div>
+            <button id="stopButton3">STOP</button>
+        </div>
+    </div>
+
+    <button id="startButton">START</button>
+    <p id="result"></p>
+</div>
+
+<script>
+const slots = [
+    document.getElementById("slot1"),
+    document.getElementById("slot2"),
+    document.getElementById("slot3")
+];
+
+const symbols = ["🍎", "🍌", "🍇", "🍒", "🍊", "7"];
+let slotTimers = [];
+let isSpinning = [false, false, false];
+
+/* ====== スタート ====== */
+function startSlot() {
+    document.getElementById("result").textContent = "";
+
+    slots.forEach(slot => {
+        slot.classList.remove("win");
+    });
+
+    for (let i = 0; i < slots.length; i++) {
+        if (!isSpinning[i]) {
+            isSpinning[i] = true;
+            slotTimers[i] = setInterval(() => {
+                slots[i].textContent = symbols[Math.floor(Math.random() * symbols.length)];
+            }, 100);
+        }
+    }
+}
+
+/* ====== ストップ ====== */
+function stopSlot(reelIndex) {
+    if (isSpinning[reelIndex]) {
+        clearInterval(slotTimers[reelIndex]);
+        isSpinning[reelIndex] = false;
+
+        /* 停止エフェクト */
+        slots[reelIndex].classList.add("flash");
+        setTimeout(() => slots[reelIndex].classList.remove("flash"), 350);
+    }
+
+    if (!isSpinning.includes(true)) {
+        checkResult();
+    }
+}
+
+/* ====== 結果判定 ====== */
+function checkResult() {
+    const result = slots.map(s => s.textContent);
+
+    if (result[0] === result[1] && result[1] === result[2]) {
+        document.getElementById("result").textContent = "✨ 大当たり！ ✨";
+
+        /* 大当たりエフェクト */
+        slots.forEach(s => s.classList.add("win"));
+
+    } else {
+        document.getElementById("result").textContent = "残念…";
+    }
+}
+
+document.getElementById("startButton").addEventListener("click", startSlot);
+document.getElementById("stopButton1").addEventListener("click", () => stopSlot(0));
+document.getElementById("stopButton2").addEventListener("click", () => stopSlot(1));
+document.getElementById("stopButton3").addEventListener("click", () => stopSlot(2));
+</script>
+<div id="reloadBtn" class="floating-btn" onclick="reload()">↻</div>
+<div id="logoutBtn" class="floating-btn" onclick="backPage()">⇦</div>
+</body>
+<script>
+    const urlParams = new URLSearchParams(location.search);
+    const token1 = urlParams.get("key1");
+    if(token1 !== localStorage.getItem("key1")){
+        localStorage.setItem("key1", "unauthorized");
+        location.href = "https://wakaruwakaru.github.io/game-sites/";
+    }else{
+        localStorage.setItem("key1", "unauthorized");
+    }
+    function reload(){
+        const key1 = crypto.randomUUID();
+        localStorage.setItem("key1", key1);
+        location.href = "https://wakaruwakaru.github.io/game-sites/page0008?key1=" + key1;
+    }
+    function backPage(){
+        const key1 = crypto.randomUUID();
+        localStorage.setItem("key1", key1);
+        location.href = "https://wakaruwakaru.github.io/game-sites/top0001?key1=" + key1;
+    }
+  </script>
+</html>
