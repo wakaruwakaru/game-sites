@@ -21,11 +21,29 @@
         /* ネオン装飾 */
         box-shadow: 0 0 25px #3d8cffaa;
       }
+
       .patt1{
-        background-color:#000000;
-        font-size:25px;
-        color:#4da6ff;
+        background: #000;
+        color: #bcdfff;
+        font-size: 22px;
+        padding: 14px 26px;
+        border: 2px solid #4da6ff;
+        border-radius: 12px;
+        cursor: pointer;
+        /* ネオン光 */
+        box-shadow: 0 0 10px #3d8cff88, 0 0 18px #4da6ff55;
+        transition: 0.25s;
       }
+      /* ホバー時の光量アップ */
+      .patt1:hover{
+        background: #4da6ff22;
+        box-shadow: 0 0 14px #4da6ffaa, 0 0 30px #4da6ff88;
+      }
+      /* クリック時の縮小 */
+      .patt1:active{
+        transform: scale(0.94);
+      }
+
       .time1{
         font-size:40px;
       }
@@ -337,6 +355,7 @@ updateWidget('ww_e81726654fd56',0);
 <div id="logoutBtn" class="floating-btn" onclick="reload()">↻</div>
 </body>
 </html>
+
 
 
 
