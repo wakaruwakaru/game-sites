@@ -1,7 +1,7 @@
 <html lang="ja">
 <head>
 <meta charset="utf-8">
-<title>Home</title>
+<title>chat</title>
 <style>
 body{
   margin:0;
@@ -106,6 +106,36 @@ h1{
     background: #0a0a0a;
     transition: 0.3s;
 }
+
+.doc-wrapper {
+    position: relative;
+    width: 90%;
+    height: 600px;
+    margin: 40px auto;
+    border-radius: 15px;
+    overflow: hidden;
+
+    /* ネオン装飾 */
+    box-shadow: 0 0 25px #0ff, 0 0 55px #0ff;
+}
+
+.doc-wrapper iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+.doc-link-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 10;
+
+    background: rgba(0, 0, 0, 0);
+    cursor: pointer;
+}
 </style>
 </head>
 <body>
@@ -114,9 +144,13 @@ h1{
 <hr />
 <div class="link-list">
 </div>
-<div class="neon-frame">
-    <iframe src="https://docs.google.com/document/d/e/2PACX-1vSwit7HUyTvKiA5BtI8d6zHI8KvWgxl1vxorlH-_UQ-gKmU5ughJrn4HX6QbEPUKhOrb7wREUbHCuap/pub?embedded=true" class="doc-frame" onclick="jumpLink1()">チャットを開く</iframe>
-</div>
+<div class="doc-wrapper">
+    <!-- 透明のクリック領域 -->
+    <div class="doc-link-overlay" onclick="jumpLink1()"></div>
+    <!-- Google Docs iframe -->
+    <iframe src="https://docs.google.com/document/d/e/2PACX-1vSwit7HUyTvKiA5BtI8d6zHI8KvWgxl1vxorlH-_UQ-gKmU5ughJrn4HX6QbEPUKhOrb7wREUbHCuap/pub?embedded=true">
+    </iframe>
+</div>  
 <hr />
 <div id="reloadBtn" class="floating-btn" onclick="reload()">↻</div>
 <div id="logoutBtn" class="floating-btn" onclick="backPage()">⇦</div>
@@ -135,8 +169,7 @@ h1{
     </script>
     <script>
         function jumpLink1(){
-            localStorage.setItem("key1", "");
-            location.href = "https://docs.google.com/document/d/11Y75XYCqVm6CizSicAMXL5_Iw9sK8uGm4n3Mx3RZpXs/edit?usp=drivesdk";
+            window.open("https://docs.google.com/document/d/11Y75XYCqVm6CizSicAMXL5_Iw9sK8uGm4n3Mx3RZpXs/edit", "_blank");
         }
         function reload(){
             const key1 = crypto.randomUUID();
