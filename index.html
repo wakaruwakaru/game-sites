@@ -47,16 +47,30 @@
       .time1{
         font-size:40px;
       }
+
       .pass{
-        width: 200px; /*--幅--*/
-        padding: 10px; /*--余白--*/
-        font-size: 15px; /*--文字サイズ--*/
-        border: solid 2px #cccccc; /*--ボーダー線--*/
-        border-radius: 5px; /*--角丸--*/
+        width: 200px;
+        padding: 10px;
+        font-size: 15px;
+        color: #4da6ff; /* 文字をネオン色に */
+        background-color: #000; /* 黒背景 */
+        border: 2px solid #4da6ff;
+        border-radius: 8px;
+        /* 光る外側のネオン */
+        box-shadow:0 0 8px #4da6ff,0 0 15px #3d8cffaa;
+        outline: none; /* 青いデフォルト枠が出ないように */
+        transition: 0.25s;
       }
+
+      /* フォーカス時：さらに強く光る */
       .pass:focus {
-        background-color: #febe3e; /*--背景色--*/
+        box-shadow:
+          0 0 10px #4da6ff,
+          0 0 20px #3d8cff,
+          0 0 30px #3d8fffa;
+        border-color: #82c0ff; /* ちょっと明るい色に */
       }
+    
       .wel1{
         text-decoration:none;
         font-size:40px;
@@ -355,6 +369,7 @@ updateWidget('ww_e81726654fd56',0);
 <div id="logoutBtn" class="floating-btn" onclick="reload()">↻</div>
 </body>
 </html>
+
 
 
 
