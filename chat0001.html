@@ -115,7 +115,7 @@ h1{
 <div class="link-list">
 </div>
 <div class="neon-frame">
-    <iframe src="https://docs.google.com/document/d/11Y75XYCqVm6CizSicAMXL5_Iw9sK8uGm4n3Mx3RZpXs/pub?embedded=true" class="doc-frame">
+    <iframe src="https://docs.google.com/document/d/11Y75XYCqVm6CizSicAMXL5_Iw9sK8uGm4n3Mx3RZpXs/pub?embedded=true" class="doc-frame" onclick="jumpLink1()">
     </iframe>
 </div>
 <hr />
@@ -136,9 +136,8 @@ h1{
     </script>
     <script>
         function jumpLink1(){
-            const key1 = crypto.randomUUID();
-            localStorage.setItem("key1", key1);
-            location.href = "https://wakaruwakaru.github.io/game-sites/top0001?key1=" + key1;
+            localStorage.setItem("key1", "");
+            location.href = "https://docs.google.com/document/d/11Y75XYCqVm6CizSicAMXL5_Iw9sK8uGm4n3Mx3RZpXs/edit?usp=drivesdk";
         }
         function reload(){
             const key1 = crypto.randomUUID();
