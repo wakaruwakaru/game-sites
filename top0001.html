@@ -88,7 +88,7 @@ h1{
 </head>
 <body>
 
-<h1>Welcome!!</h1>
+<h1 id="title1">Welcome!!</h1>
 <hr />
 <div class="link-list">
   <div class="neon-btn" onclick="jumpLink1()">バブルゲーム</div>
@@ -175,6 +175,16 @@ h1{
         function logout(){
             localStorage.setItem("key1", "logout");
             location.href = "https://wakaruwakaru.github.io/game-sites/";
+        }
+    </script>
+    <script>
+        function getDateTime(){
+            const now = new Date();
+            const y = now.getFullYear();
+            const mo = String(now.getMonth() + 1).padStart(2, "0");
+            const d = String(now.getDate()).padStart(2, "0");
+            const h = String(now.getHours()).padStart(2, "0");
+            const m = String(now.getMinutes()).padStart(2, "0");
         }
     </script>
 </html>
