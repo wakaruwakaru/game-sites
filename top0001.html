@@ -101,7 +101,7 @@ h1{
   <div class="neon-btn" onclick="jumpLink8()">スロット</div>
   <div class="neon-btn" onclick="jumpChat1()">チャット</div>
   <div class="neon-btn" onclick="jumpTopic1()">トピック</div>
-  <div class="neon-btn" onclick="jumpLink20()">インフォメーション</div>
+  <div class="neon-btn" onclick="jumpInfo1()">インフォメーション</div>
 </div>
 <hr />
 <div id="reloadBtn" class="floating-btn" onclick="reload()">↻</div>
@@ -169,7 +169,12 @@ h1{
             localStorage.setItem("key1", key1);
             location.href = "https://wakaruwakaru.github.io/game-sites/top-topic0001?key1=" + key1;
         }
-        function jumpLink20(){
+        function jumpInfo1(){
+            const key1 = crypto.randomUUID();
+            localStorage.setItem("key1", key1);
+            location.href = "https://wakaruwakaru.github.io/game-sites/top-information0001?key1=" + key1;
+        }
+        function jumpLink100(){
             alert("ごめんなさい(_ _;)  現在実装中");
         }
         function reload(){
