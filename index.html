@@ -19,7 +19,7 @@
         border: 2px solid #4da6ff;
         background-color:rgb(0,0,0,0.8);
         /* ネオン装飾 */
-        box-shadow: 0 0 25px #3d8cffaa;
+        box-shadow: 0 0 25px #3d8cffaa, inset 0 0 15px #3d8cff55; /* 内光 */
       }
 
       .patt1{
@@ -31,6 +31,7 @@
         border: 2px solid #4da6ff;
         border-radius: 12px;
         cursor: pointer;
+        font-weight: 600;
         /* ネオン光 */
         box-shadow: 0 0 10px #3d8cff88, 0 0 18px #4da6ff55;
         transition: 0.25s;
@@ -60,12 +61,12 @@
         border: 2px solid #4da6ff;
         margin:10px;
         border-radius: 8px;
+        width: min(260px, 80vw);
         /* 光る外側のネオン */
         box-shadow:0 0 8px #4da6ff,0 0 15px #3d8cffaa;
         outline: none; /* 青いデフォルト枠が出ないように */
         transition: 0.25s;
       }
-
       /* フォーカス時：さらに強く光る */
       .pass:focus {
         box-shadow:
@@ -74,7 +75,12 @@
           0 0 30px #3d8fffa;
         border-color: #82c0ff; /* ちょっと明るい色に */
       }
-    
+      .pass::placeholder {
+        color: #8bbcff;
+        opacity: 0.7;
+      }
+
+                
       .wel1{
         text-decoration:none;
         font-size:40px;
@@ -373,6 +379,7 @@ updateWidget('ww_e81726654fd56',0);
 <div id="logoutBtn" class="floating-btn" onclick="reload()">↻</div>
 </body>
 </html>
+
 
 
 
