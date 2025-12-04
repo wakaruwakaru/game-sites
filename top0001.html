@@ -26,9 +26,9 @@ h1{
 }
 
 .neon-btn{
-  font-size:20px;
+  font-size: clamp(18px, 5vw, 22px);  /* ← 画面幅に応じて自動調整 */
   margin:20px 0;
-  padding:18px;
+  padding: clamp(14px, 4vw, 20px);
   text-align:center;
   border:2px solid #4da6ff;
   border-radius:12px;
