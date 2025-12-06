@@ -193,7 +193,7 @@ h1{
 <a class="news-btn" href="">トピック一覧</a>
 <div class="news-list">
 
-    <div class="news-item">
+    <div class="news-item" onclick="jumpLink5()">
         <div class="news-thumb">
             <img src="https://via.placeholder.com/300x200" alt="">
         </div>
@@ -209,7 +209,7 @@ h1{
         </div>
     </div>
   
-    <div class="news-item">
+    <div class="news-item" onclick="jumpLink4()">
         <div class="news-thumb">
             <img src="https://via.placeholder.com/300x200" alt="">
         </div>
@@ -225,7 +225,7 @@ h1{
         </div>
     </div>
   
-    <div class="news-item">
+    <div class="news-item" onclick="jumpLink3()">
         <div class="news-thumb">
             <img src="https://via.placeholder.com/300x200" alt="">
         </div>
@@ -241,7 +241,7 @@ h1{
         </div>
     </div>
 
-    <div class="news-item">
+    <div class="news-item" onclick="jumpLink2()">
         <div class="news-thumb">
             <img src="https://via.placeholder.com/300x200" alt="">
         </div>
@@ -299,11 +299,14 @@ h1{
         //  location.href = "https://wakaruwakaru.github.io/game-sites/top0001?key1=" + key1;
             location.href = "https://sites.google.com/view/bo-ttoikitennzyane-yo/infomation";
         }
-        function jumpLink2(){
-            const key1 = crypto.randomUUID();
+        function jumpLink2(){}
+        function jumpLink3(){}
+        function jumpLink4(){
+          const key1 = crypto.randomUUID();
             localStorage.setItem("key1", key1);
-            location.href = "https://wakaruwakaru.github.io/game-sites/top0001?key1=" + key1;
+            location.href = "https://wakaruwakaru.github.io/game-sites/page0009?key1=" + key1;
         }
+        function jumpLink5(){}
         function reload(){
             const key1 = crypto.randomUUID();
             localStorage.setItem("key1", key1);
