@@ -51,7 +51,7 @@
         <div class="controls">
           <label>ボール速度 <input id="speed" type="range" min="2" max="8" value="4"></label>
           <label>パドル幅 <input id="paddleW" type="range" min="60" max="220" value="140"></label>
-          <label><input id="soundToggle" type="checkbox" checked> サウンド有効</label>
+          <label><input id="soundToggle" type="checkbox"> サウンド有効</label>
           <button id="resetBtn">リセット</button>
         </div>
 
@@ -97,7 +97,7 @@
 
   // sounds (very small synth tones using WebAudio)
   const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  function beep(freq, duration=0.06, gain=0.08){ if(soundToggle.checked) return; const o=audioCtx.createOscillator(); const g=audioCtx.createGain(); o.type='sine'; o.frequency.value=freq; g.gain.value=gain; o.connect(g); g.connect(audioCtx.destination); o.start(); g.gain.exponentialRampToValueAtTime(0.0001,audioCtx.currentTime+duration); setTimeout(()=>o.stop(),duration*1000); }
+  function beep(freq, duration=0.06, gain=0.08){ if(!soundToggle.checked) return; const o=audioCtx.createOscillator(); const g=audioCtx.createGain(); o.type='sine'; o.frequency.value=freq; g.gain.value=gain; o.connect(g); g.connect(audioCtx.destination); o.start(); g.gain.exponentialRampToValueAtTime(0.0001,audioCtx.currentTime+duration); setTimeout(()=>o.stop(),duration*1000); }
 
   function buildBricks(){
     bricks = [];
