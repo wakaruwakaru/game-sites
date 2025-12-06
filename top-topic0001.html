@@ -26,11 +26,6 @@ h1{
   max-width:500px;
   margin:40px auto;
 }
-.comment1{
-  text-align:center;
-  color:#bcdfff;
-  font-size:30px;
-}
 .neon-btn{
   font-size:20px;
   margin:20px 0;
@@ -50,6 +45,100 @@ h1{
 .neon-btn:active {
     transform: scale(0.94);
 }
+
+
+
+/* ニュース一覧コンテナ */
+.news-list{
+    width:90%;
+    max-width:1000px;
+    margin:0 auto 60px auto;
+}
+
+/* 1つのニュース */
+.news-item{
+    display:flex;
+    gap:20px;
+    padding:25px 0;
+    border-bottom:1px solid #244f80;
+    transition:0.3s;
+}
+
+/* hoverでネオン増加 */
+.news-item:hover{
+    background:#0a0f1a;
+    box-shadow:0 0 25px #4da6ff55 inset;
+}
+
+/* サムネイル */
+.news-thumb img{
+    width:150px;
+    height:150px;
+    border-radius:10px;
+    object-fit:cover;
+    box-shadow:0 0 14px #3d8cffaa;
+}
+
+/* 本文部分 */
+.news-content{
+    flex:1;
+}
+
+/* 日付・カテゴリー・タイトル */
+.news-meta{
+    display:flex;
+    gap:15px;
+    margin-bottom:10px;
+    font-size:14px;
+    color:#9bc9ff;
+}
+
+.news-category{
+    padding:2px 6px;
+    border:1px solid #4da6ff;
+    border-radius:5px;
+    box-shadow:0 0 10px #4da6ffaa inset;
+}
+
+/* タイトル */
+.news-title{
+    font-size:20px;
+    color:#cfe8ff;
+    font-weight:600;
+    margin-bottom:8px;
+    text-shadow:0 0 5px #4da6ff;
+    transition:0.2s;
+}
+.news-title:hover{
+    color:#ffffff;
+    text-shadow:0 0 12px #82c0ff;
+}
+
+/* 内容抜粋 */
+.news-text{
+    font-size:15px;
+    color:#9bc9ff;
+    opacity:0.9;
+}
+
+/* 一覧ボタン */
+.news-btn{
+    float:right;
+    margin:20px 5% 40px 0;
+    padding:10px 20px;
+    border:2px solid #4da6ff;
+    border-radius:10px;
+    color:#cfe8ff;
+    text-decoration:none;
+    box-shadow:0 0 10px #4da6ffaa;
+    transition:0.25s;
+}
+.news-btn:hover{
+    box-shadow:0 0 20px #4da6ff;
+    background:#143458;
+}
+
+  
 /* フローティングボタンの共通デザイン */
 .floating-btn{
     position: fixed;
@@ -94,11 +183,84 @@ h1{
 </head>
 <body>
 
-<h1 id="title1">トピック</h1>
 <hr />
-  <p class="comment1">まだトピックはありません...</p>
-<div class="link-list">
+
+
+
+
+
+<h1>トピック</h1>
+<a class="news-btn" href="">トピック一覧</a>
+<div class="news-list">
+
+    <div class="news-item">
+        <div class="news-thumb">
+            <img src="https://via.placeholder.com/300x200" alt="">
+        </div>
+        <div class="news-content">
+            <div class="news-meta">
+                <div class="news-date">2025.12.06</div>
+                <div class="news-category">お知らせ</div>
+            </div>
+            <div class="news-title">新ゲーム「ブロック崩し」が登場!</div>
+            <div class="news-text">
+                新ゲーム「ブロック崩し」がリリース! 古のゲームが「game-sites」でもプレイ可能に…
+            </div>
+        </div>
+    </div>
+  
+    <div class="news-item">
+        <div class="news-thumb">
+            <img src="https://via.placeholder.com/300x200" alt="">
+        </div>
+        <div class="news-content">
+            <div class="news-meta">
+                <div class="news-date">2025.12.05</div>
+                <div class="news-category">バグ修正</div>
+            </div>
+            <div class="news-title">スマホ版「game-sites」のバグ修正</div>
+            <div class="news-text">
+                スマホ版「game-sites」で画面サイズが異常に小さくなるバグが修正され…
+            </div>
+        </div>
+    </div>
+
+    <div class="news-item">
+        <div class="news-thumb">
+            <img src="https://via.placeholder.com/300x200" alt="">
+        </div>
+        <div class="news-content">
+            <div class="news-meta">
+                <div class="news-date">2025.12.05</div>
+                <div class="news-category">お知らせ</div>
+            </div>
+            <div class="news-title">トピックの新UIがリリース!</div>
+            <div class="news-text">
+                トピックの新UIがリリース! 従来と比べてニュース風の見た目に変更され…
+            </div>
+        </div>
+    </div>
+
+    <div class="news-item">
+        <div class="news-thumb">
+            <img src="https://via.placeholder.com/300x200" alt="">
+        </div>
+        <div class="news-content">
+            <div class="news-meta">
+                <div class="news-date">2025.12.02</div>
+                <div class="news-category">お知らせ</div>
+            </div>
+            <div class="news-title">新ぴったしの「game-sites」がリリース!</div>
+            <div class="news-text">
+                新プラットフォーム「game-sites」がリリース! それに伴う変更点などをまとめて…
+            </div>
+        </div>
+    </div>
+
+  
 </div>
+
+
 <hr />
 <div id="reloadBtn" class="floating-btn" onclick="reload()">↻</div>
 <div id="logoutBtn" class="floating-btn" onclick="backPage()">⇦</div>
