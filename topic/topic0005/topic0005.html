@@ -118,33 +118,50 @@ h1{
     transition: 0.25s;
     box-shadow: 0 0 10px #3d8cff88;
 }
-
 /* ホバー時に光る */
 .floating-btn:hover{
     background: #4da6ff33;
     box-shadow: 0 0 16px #4da6ffcc;
 }
-
 /* クリック時に縮む */
 .floating-btn:active{
     transform: scale(0.9);
 }
-
 /* ボタン位置調整 */
 #reloadBtn{
     bottom: 90px; /* logout の上に配置 */
 }
-
 #logoutBtn{
     bottom: 20px;
 }
 
+/* ダウンロードボタン */
+.neonButton {
+  padding: 6px 11px;
+  border: 2px solid #4da6ff;
+  background: #000;
+  color: #bcdfff;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 18px;
+  box-shadow: 0 0 10px #4da6ff99,
+              0 0 20px #4da6ff66 inset;
+  transition: 0.25s;
+}
+.neonButton:hover {
+  box-shadow: 0 0 18px #4da6ff,
+              0 0 28px #4da6ffaa inset;
+}
+.side-set{
+  text-align:right
+}
 </style>
 </head>
 <body>
 <h1>トピック</h1>
 <hr />
-
+<div id="articleArea">
+<!-- 記事の画像や本文  -->
 
 <div class="article-container">
     <div class="article-title">「game-sites」のショートカットアイコンが登場!</div>
@@ -154,11 +171,13 @@ h1{
         <h2>■ 新アイコンの追加</h2>
         <p>　12月7日より、「game-sites」にアイコンが追加されました。これはページタブのアイコンなどに適用されるほか、Webページのショートカットアイコン、アプリケーションアイコンなどにも使用されるようです。</p>
         <p>　新アイコンへの変更は自動的に行われるため、ユーザー側からの設定はほとんどないそうです。</p>
+        <div class="side-set"><button id="copyBtn" class="neonButton">📥</button></div>
         <p style="margin-top: 30px; opacity: 0.7;">Ⓒgame-sites　　2025.12.07</p>
     </div>
 </div>
 
-
+<!-- 記録される記事の最後 -->
+</div>
 <hr />
 <div id="reloadBtn" class="floating-btn" onclick="reload()">↻</div>
 <div id="logoutBtn" class="floating-btn" onclick="backPage()">⇦</div>
@@ -191,4 +210,36 @@ h1{
             location.href = "https://wakaruwakaru.github.io/game-sites/topic/top-topic0001?key1=" + key1;
         }
     </script>
+    <script src="https://wakaruwakaru.github.io/game-sites/index/dist/html2canvas.js"></script>
+    <script>
+      document.getElementById("copyBtn").addEventListener("click", async () => {
+        try {
+          const target = document.getElementById("articleArea");
+          // 🎚️ 高画質スケール倍率（2～5で調整可能）
+          const scale = 3;
+          // 📸 高解像度スクショ生成
+          const canvas = await html2canvas(target, {
+          scale: scale,
+          useCORS: true,          // 外部画像対策
+          imageSmoothingEnabled: true,
+          imageSmoothingQuality: "high",
+          backgroundColor: null   // 背景透過（必要なければ削ってOK）
+        });
+        // 🔄 PNG Blob に変換
+        const blob = await new Promise(resolve =>
+          canvas.toBlob(resolve, "image/png")
+        );
+        // 📋 高画質画像をクリップボードにコピー
+        await navigator.clipboard.write([
+        new ClipboardItem({
+          "image/png": blob
+        })
+      ]);
+      /*alert("スクショ画像をコピーしました！\nクリップボードからペーストできます");*/
+    } catch (err) {
+      console.error(err);
+      alert("コピーに失敗しました\n対応していないブラウザの可能性があります");
+    }
+  });
+</script>
 </html>
