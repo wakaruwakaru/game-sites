@@ -287,8 +287,16 @@ h1{
         function jumpLink1(){
             location.href = "https://sites.google.com/view/bo-ttoikitennzyane-yo/infomation";
         }
-        function jumpLink2(){}
-        function jumpLink3(){}
+        function jumpLink2(){
+            const key1 = crypto.randomUUID();
+            localStorage.setItem("key1", key1);
+            location.href = "https://wakaruwakaru.github.io/game-sites/topic/topic0002/topic0002?key1=" + key1;
+        }
+        function jumpLink3(){
+            const key1 = crypto.randomUUID();
+            localStorage.setItem("key1", key1);
+            location.href = "https://wakaruwakaru.github.io/game-sites/topic/topic0003/topic0003?key1=" + key1;
+        }
         function jumpLink4(){
             const key1 = crypto.randomUUID();
             localStorage.setItem("key1", key1);
