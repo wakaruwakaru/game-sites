@@ -342,5 +342,28 @@
   buildBricks(); resetGame(); fitCanvas(); startLoop();
 })();
 </script>
+<div id="reloadBtn" class="floating-btn" onclick="reload()">↻</div>
+<div id="logoutBtn" class="floating-btn" onclick="backPage()">⇦</div>
 </body>
+  <script>
+    const urlParams = new URLSearchParams(location.search);
+    const token1 = urlParams.get("key1");
+    localStorage.setItem("requestPage1", "page0009");
+    if(token1 !== localStorage.getItem("key1")){
+      localStorage.setItem("key1", "unauthorized");
+      location.href = "https://wakaruwakaru.github.io/game-sites/";
+    }else{
+      localStorage.setItem("key1", "unauthorized");
+    }
+    function reload(){
+      const key1 = crypto.randomUUID();
+      localStorage.setItem("key1", key1);
+      location.href = "https://wakaruwakaru.github.io/game-sites/page0009?key1=" + key1;
+    }
+    function backPage(){
+      const key1 = crypto.randomUUID();
+      localStorage.setItem("key1", key1);
+      location.href = "https://wakaruwakaru.github.io/game-sites/top0001?key1=" + key1;
+    }
+  </script>
 </html>
