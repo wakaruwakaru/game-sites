@@ -148,13 +148,15 @@ h1{
 
 <div class="article-container">
     <div class="article-title">スマホ版「game-sites」のバグ修正</div>
-    <img class="article-image" src="https://wakaruwakaru.github.io/game-sites/topic/topic0005/picture0001.jpg" alt="記事画像">
+    <img class="article-image" src="https://wakaruwakaru.github.io/game-sites/topic/topic0003/picture0001.jpg" alt="記事画像">
     <div class="article-body">
         <p>　スマホ版「game-sites」で画面サイズが異常に小さくなるバグが修正されました。</p>
-        <h2>■ 新アイコンの追加</h2>Ⓒ
-        <p>　12月7日より、「game-sites」にアイコンが追加されました。これはページタブのアイコンなどに適用されるほか、Webページのショートカットアイコン、アプリケーションアイコンなどにも使用されるようです。</p>
-        <p>　新アイコンへの変更は自動的に行われるため、ユーザー側からの設定はほとんどないそうです。</p>
-        <p style="margin-top: 30px; opacity: 0.7;">Ⓒgame-sites　　2025.12.07</p>
+        <h2>■ 修正内容</h2>
+        <p>　新プラットフォームの実装当初から現在まで、PC上での表示とスマートフォン等のモバイル端末上での表示サイズが異なるものになるバグが本日修正されました。</p>
+        <p>　バグ発生時、スマートフォン等のデバイス上では入力欄などのサイズが異常に小さくなったとのこと。</p>
+        <p>　修正後はモバイル端末を用いて開いた際に、全ての提供されているページにおいて十分なサイズのコンテンツが表示されるようになるらしいです。</p>
+        <p>　「game-sites」公式は「すっかりミスってたわ　通りで見づらかったわけだwww」とコメントしている。</p>
+        <p style="margin-top: 30px; opacity: 0.7;">Ⓒgame-sites　　2025.12.06</p>
     </div>
 </div>
 
@@ -166,7 +168,7 @@ h1{
     <script>
         const urlParams = new URLSearchParams(location.search);
         const token1 = urlParams.get("key1");
-        localStorage.setItem("requestPage1", "topic/topic0005/topic0005");
+        localStorage.setItem("requestPage1", "topic/topic0003/topic0003");
         if(token1 !== localStorage.getItem("key1")){
             localStorage.setItem("key1", "unauthorized");
             location.href = "https://wakaruwakaru.github.io/game-sites/";
@@ -183,7 +185,7 @@ h1{
         function reload(){
             const key1 = crypto.randomUUID();
             localStorage.setItem("key1", key1);
-            location.href = "https://wakaruwakaru.github.io/game-sites/topic/topic0005/topic0005?key1=" + key1;
+            location.href = "https://wakaruwakaru.github.io/game-sites/topic/topic0003/topic0003?key1=" + key1;
         }
         function backPage(){
             const key1 = crypto.randomUUID();
