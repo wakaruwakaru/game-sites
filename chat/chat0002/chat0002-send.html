@@ -38,6 +38,27 @@
     }
   });
 </script>
-  
+  <script>
+    const urlParams = new URLSearchParams(location.search);
+    const token1 = urlParams.get("key1");
+    if(token1 !== localStorage.getItem("key1")){
+        localStorage.setItem("key1", "unauthorized");
+        localStorage.setItem("requestPage1", "chat/chat0002/chat0002-send");
+        location.href = "https://wakaruwakaru.github.io/game-sites/";
+    }else{
+        localStorage.setItem("key1", "unauthorized");
+        localStorage.setItem("requestPage1", "");
+    }
+    function reload(){
+        const key1 = crypto.randomUUID();
+        localStorage.setItem("key1", key1);
+        location.href = "https://wakaruwakaru.github.io/game-sites/chat/chat0002/chat0002-send?key1=" + key1;
+    }
+    function backPage(){
+        const key1 = crypto.randomUUID();
+        localStorage.setItem("key1", key1);
+        location.href = "https://wakaruwakaru.github.io/game-sites/top0001?key1=" + key1;
+    }
+  </script>
 </body>
 </html>
