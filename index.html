@@ -149,7 +149,7 @@
 <br />
 <br />
 <br />
-<input class="pass" id="user1" placeholder="user" type="text" onkeyup="enterLogin(event)" /><br />
+<input class="pass" id="user1" placeholder="user" type="text" onkeyup="enterMove(event)" /><br />
 <input class="pass" id="pass1" placeholder="passworld" type="password" onkeyup="enterLogin(event)" /><br />
 <input class="patt1" onclick="gate()" type="button" value=" enter " />
 <div class="wel1" id="road1"></div>
@@ -275,6 +275,12 @@ updateWidget('ww_e81726654fd56',0);
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
+  function enterMove(e) {
+    if (e.key === "Enter") {
+      document.getElementById("pass1").focus(); // パス欄へフォーカス
+    }
+  }
+  
   function enterLogin(e) {
     if (e.key === "Enter") {
       gate();
@@ -412,4 +418,5 @@ updateWidget('ww_e81726654fd56',0);
 <div id="logoutBtn" class="floating-btn" onclick="reload()">↻</div>
 </body>
 </html>
+
 
