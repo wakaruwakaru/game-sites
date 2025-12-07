@@ -232,7 +232,7 @@
 <div class="back-border">
 <div class="news-list">
 
-    <div class="news-item" onclick="jumpLink5()">
+    <div class="news-item" onclick="jumpTopic5()">
         <div class="news-thumb">
             <img src="https://wakaruwakaru.github.io/game-sites/topic/topic0005/picture0001.jpg" alt="">
         </div>
@@ -248,7 +248,7 @@
         </div>
     </div>
   
-    <div class="news-item" onclick="jumpLink4()">
+    <div class="news-item" onclick="jumpTopic4()">
         <div class="news-thumb">
             <img src="https://wakaruwakaru.github.io/game-sites/topic/topic0004/picture0001.png" alt="">
         </div>
@@ -266,7 +266,7 @@
 
 </div>
 </div>
-
+<div id="logoutBtn" class="floating-btn" onclick="reload()">↻</div>
 
 <script>
 function requestGet(url,callback,id,gen)
@@ -359,7 +359,7 @@ updateWidget('ww_e81726654fd56',0);
       document.getElementById("com1").innerHTML = "Welcome " + accountKey1[userNumber1][0] + "!";
       const key1 = crypto.randomUUID();
       localStorage.setItem("key1", key1);
-      if((token1 == "unauthorized") && (token2 != null) && (token2 != "")){
+      if(((token1 == "unauthorized") || (token1 == "jumpTopic")) && (token2 != null) && (token2 != "")){
         location.href = "https://wakaruwakaru.github.io/game-sites/" + token2 + "?key1=" + key1;
       }else{
         location.href = "https://wakaruwakaru.github.io/game-sites/top0001?key1=" + key1;
@@ -402,8 +402,8 @@ updateWidget('ww_e81726654fd56',0);
     localStorage.setItem("requestPage1", token2);
     location.href = "https://wakaruwakaru.github.io/game-sites/";
   }
-    </script>
-    <script>
+
+
     var timer1 = null;
     var date1, year1, month1, week1, day1, week_1, hour1, minute1, second1, millisecond1;
     let escape1 = false;
@@ -479,7 +479,7 @@ updateWidget('ww_e81726654fd56',0);
       }
     }
 
-            
+
     const backgroundLinks = new Array(
       "https://wakaruwakaru.github.io/game-sites/index/background-pictures/0.jpg",
       "https://wakaruwakaru.github.io/game-sites/index/background-pictures/1.jpg",
@@ -508,7 +508,6 @@ updateWidget('ww_e81726654fd56',0);
       "https://wakaruwakaru.github.io/game-sites/index/background-pictures/24.jpg",
     );
 
-
     function backgroundUpdate(){  //背景変更の処理
       if(backgroundLinks.length > 24){
         document.body.style.backgroundImage = `url('${backgroundLinks[hour1]}')`;
@@ -516,7 +515,19 @@ updateWidget('ww_e81726654fd56',0);
         console.log("Error:can not update background");
       }
     }
+
+
+    function jumpTopic5(){
+      token1 = "jumpTopic";
+      token2 = "topic/topic0005/topic0005";
+      document.getElementById("user1").focus(); //ユーザー欄へフォーカス
+    }
+    function jumpTopic4(){
+      token1 = "jumpTopic";
+      token2 = "topic/topic0004/topic0004";
+      document.getElementById("user1").focus(); // パス欄へフォーカス
+    }
   </script>
-<div id="logoutBtn" class="floating-btn" onclick="reload()">↻</div>
 </body>
 </html>
+
