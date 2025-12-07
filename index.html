@@ -27,7 +27,9 @@
         /* ネオン装飾 */
         box-shadow: 0 0 25px #3d8cffaa, inset 0 0 15px #3d8cff55; /* 内光 */
       }
-
+      .bottom-space{
+        margin:20 auto 20px auto;
+      }
       .patt1{
         background: #000;
         color: #bcdfff;
@@ -131,12 +133,11 @@
     bottom: 20px;
 }
 
-
 /* ニュース一覧コンテナ */
 .news-list{
     width:90%;
     max-width:1000px;
-    margin:20 auto 20px auto;
+    margin:20px auto 20px auto;
 }
 /* 1つのニュース */
 .news-item{
@@ -228,6 +229,22 @@
 <div class="back-border">
 <div class="news-list">
 
+    <div class="news-item" onclick="jumpTopic6()">
+        <div class="news-thumb">
+            <img src="https://wakaruwakaru.github.io/game-sites/topic/topic0006/picure0001.png" alt="">
+        </div>
+        <div class="news-content">
+            <div class="news-meta">
+                <div class="news-date">2025.12.07</div>
+                <div class="news-category">お知らせ</div>
+            </div>
+            <div class="news-title">最新トピックがログイン画面に登場!</div>
+            <div class="news-text">
+                最新トピックがログイン画面に登場! 記事コピー機能も新たに登場…
+            </div>
+        </div>
+    </div>
+  
     <div class="news-item" onclick="jumpTopic5()">
         <div class="news-thumb">
             <img src="https://wakaruwakaru.github.io/game-sites/topic/topic0005/picture0001.jpg" alt="">
@@ -243,27 +260,13 @@
             </div>
         </div>
     </div>
-  
-    <div class="news-item" onclick="jumpTopic4()">
-        <div class="news-thumb">
-            <img src="https://wakaruwakaru.github.io/game-sites/topic/topic0004/picture0001.png" alt="">
-        </div>
-        <div class="news-content">
-            <div class="news-meta">
-                <div class="news-date">2025.12.06</div>
-                <div class="news-category">お知らせ</div>
-            </div>
-            <div class="news-title">新ゲーム「ブロック崩し」が登場!</div>
-            <div class="news-text">
-                新ゲーム「ブロック崩し」がリリース! 古のゲームが「game-sites」でもプレイ可能に…
-            </div>
-        </div>
-    </div>
 
 </div>
-<div id="ww_e81726654fd56" v='1.3' loc='id' a='{"t":"horizontal","lang":"ja","sl_lpl":1,"ids":["wl7195"],"font":"Arial","sl_ics":"one_a","sl_sot":"celsius","cl_bkg":"image","cl_font":"#FFFFFF","cl_cloud":"#FFFFFF","cl_persp":"#81D4FA","cl_sun":"#FFC107","cl_moon":"#FFC107","cl_thund":"#FF5722"}'>
-  More forecasts: <a href="https://oneweather.org/ja/tokyo/10_days/" id="ww_e81726654fd56_u" target="_blank">東京 天気 10日間</a>
-</div>
+  <div class="bottom-space">
+    <div id="ww_e81726654fd56" v='1.3' loc='id' a='{"t":"horizontal","lang":"ja","sl_lpl":1,"ids":["wl7195"],"font":"Arial","sl_ics":"one_a","sl_sot":"celsius","cl_bkg":"image","cl_font":"#FFFFFF","cl_cloud":"#FFFFFF","cl_persp":"#81D4FA","cl_sun":"#FFC107","cl_moon":"#FFC107","cl_thund":"#FF5722"}'>
+      More forecasts: <a href="https://oneweather.org/ja/tokyo/10_days/" id="ww_e81726654fd56_u" target="_blank">東京 天気 10日間</a>
+    </div>
+  </div>
 </div>
 <div id="logoutBtn" class="floating-btn" onclick="reload()">↻</div>
 
@@ -521,14 +524,15 @@ updateWidget('ww_e81726654fd56',0);
       token2 = "topic/topic0005/topic0005";
       document.getElementById("user1").focus(); //ユーザー欄へフォーカス
     }
-    function jumpTopic4(){
+    function jumpTopic6(){
       token1 = "jumpTopic";
-      token2 = "page0009";
-      document.getElementById("user1").focus(); // パス欄へフォーカス
+      token2 = "topic/topic0006/topic0006";
+      document.getElementById("user1").focus(); //ユーザー欄へフォーカス
     }
   </script>
 </body>
 </html>
+
 
 
 
