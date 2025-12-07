@@ -1,0 +1,200 @@
+html{
+  font-family:Helvetica;
+  color:#4da6ff;
+  text-align:center;
+}
+body{
+  background-color:#afafaf;
+  background-size: cover;        /* 画面いっぱいに拡大 */
+  background-position: center;   /* 画像の中心をページ中央に */
+  background-repeat: no-repeat;  /* 繰り返し防止 */
+  background-attachment: fixed;  /* （任意）スクロールしても固定 */
+}
+.back-border{
+  position: relative;
+  width: 90%;
+  max-width: 550px; /* PCで広がりすぎない */
+  margin: 40px auto;
+  border-radius: 15px;
+  overflow: hidden;
+  border: 2px solid #4da6ff;
+  background-color:rgb(0,0,0,0.6);
+  /* ネオン装飾 */
+  box-shadow: 0 0 25px #3d8cffaa, inset 0 0 15px #3d8cff55; /* 内光 */
+}
+.bottom-space{
+  margin:20 auto 20px auto;
+}
+.patt1{
+  background: #000;
+  color: #bcdfff;
+  font-size: 22px;
+  padding: 7px 13px;
+  margin:10px;
+  border: 2px solid #4da6ff;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  /* ネオン光 */
+  box-shadow: 0 0 10px #3d8cff88, 0 0 18px #4da6ff55;
+  transition: 0.25s;
+}
+/* ホバー時の光量アップ */
+.patt1:hover{
+  background: #4da6ff22;
+  box-shadow: 0 0 14px #4da6ffaa, 0 0 30px #4da6ff88;
+}
+/* クリック時の縮小 */
+.patt1:active{
+  transform: scale(0.94);
+}
+
+.time1{
+  font-size:25px;
+}
+.time2{
+  font-size:40px;
+}
+.pass{
+  width: 200px;
+  padding: 10px;
+  font-size: 15px;
+  color: #4da6ff; /* 文字をネオン色に */
+  background-color: #000; /* 黒背景 */
+  border: 2px solid #4da6ff;
+  margin:10px;
+  border-radius: 8px;
+  width: min(260px, 80vw);
+  /* 光る外側のネオン */
+  box-shadow:0 0 8px #4da6ff,0 0 15px #3d8cffaa;
+  outline: none; /* 青いデフォルト枠が出ないように */
+  transition: 0.25s;
+}
+/* フォーカス時：さらに強く光る */
+.pass:focus {
+  box-shadow:
+  0 0 10px #4da6ff,
+  0 0 20px #3d8cff,
+  0 0 30px #3d8fff;
+  border-color: #82c0ff; /* ちょっと明るい色に */
+}
+.pass::placeholder {
+  color: #8bbcff;
+  opacity: 0.7;
+}
+.wel1{
+  text-decoration:none;
+  font-size:40px;
+  color:#4da6ff;
+}
+.not1{
+  font-size:30px;
+  color:#ff3333;
+}
+
+/* フローティングボタンの共通デザイン */
+.floating-btn{
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: #111;
+  border: 2px solid #4da6ff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 26px;
+  color: #bcdfff;
+  cursor: pointer;
+  transition: 0.25s;
+  box-shadow: 0 0 10px #3d8cff88;
+}
+/* ホバー時に光る */
+.floating-btn:hover{
+  background: #4da6ff33;
+  box-shadow: 0 0 16px #4da6ffcc;
+}
+/* クリック時に縮む */
+.floating-btn:active{
+  transform: scale(0.9);
+}
+/* ボタン位置調整 */
+#reloadBtn{
+  bottom: 90px; /* logout の上に配置 */
+}
+#logoutBtn{
+  bottom: 20px;
+}
+
+/* ニュース一覧コンテナ */
+.news-list{
+  width:90%;
+  max-width:1000px;
+  margin:20px auto 20px auto;
+}
+/* 1つのニュース */
+.news-item{
+  display:flex;
+  gap:20px;
+  padding:25px 0;
+  border-bottom:1px solid #244f80;
+  transition:0.3s;
+}
+/* hoverでネオン増加 */
+.news-item:hover{
+  background:#0a0f1a;
+  box-shadow:0 0 25px #4da6ff55 inset;
+}
+/* サムネイル */
+.news-thumb img{
+  width:150px;
+  height:150px;
+  border-radius:10px;
+  object-fit:cover;
+  box-shadow:0 0 14px #3d8cffaa;
+}
+/* 本文部分 */
+.news-content{
+  flex:1;
+}
+/* 日付・カテゴリー・タイトル */
+.news-meta{
+  display:flex;
+  gap:15px;
+  margin-bottom:10px;
+  font-size:14px;
+  color:#9bc9ff;
+}
+.news-category{
+  padding:2px 6px;
+  border:1px solid #4da6ff;
+  border-radius:5px;
+  box-shadow:0 0 10px #4da6ffaa inset;
+  text-align:left;
+}
+.news-date{
+  text-align:left;
+}
+/* タイトル */
+.news-title{
+  font-size:20px;
+  color:#cfe8ff;
+  font-weight:600;
+  margin-bottom:8px;
+  text-shadow:0 0 5px #4da6ff;
+  transition:0.2s;
+  text-align:left;
+}
+.news-title:hover{
+  color:#ffffff;
+  text-shadow:0 0 12px #82c0ff;
+}
+/* 内容抜粋 */
+.news-text{
+  font-size:15px;
+  color:#9bc9ff;
+  opacity:0.9;
+  text-align:left;
+}
