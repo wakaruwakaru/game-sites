@@ -19,7 +19,7 @@
         position: relative;
         width: 90%;
         max-width: 550px; /* PCで広がりすぎない */
-        margin: 80px auto;
+        margin: 40px auto;
         border-radius: 15px;
         overflow: hidden;
         border: 2px solid #4da6ff;
@@ -78,15 +78,13 @@
         box-shadow:
           0 0 10px #4da6ff,
           0 0 20px #3d8cff,
-          0 0 30px #3d8fffa;
+          0 0 30px #3d8fff;
         border-color: #82c0ff; /* ちょっと明るい色に */
       }
       .pass::placeholder {
         color: #8bbcff;
         opacity: 0.7;
       }
-
-                
       .wel1{
         text-decoration:none;
         font-size:40px;
@@ -116,25 +114,93 @@
     transition: 0.25s;
     box-shadow: 0 0 10px #3d8cff88;
 }
-
 /* ホバー時に光る */
 .floating-btn:hover{
     background: #4da6ff33;
     box-shadow: 0 0 16px #4da6ffcc;
 }
-
 /* クリック時に縮む */
 .floating-btn:active{
     transform: scale(0.9);
 }
-
 /* ボタン位置調整 */
 #reloadBtn{
     bottom: 90px; /* logout の上に配置 */
 }
-
 #logoutBtn{
     bottom: 20px;
+}
+
+
+/* ニュース一覧コンテナ */
+.news-list{
+    width:90%;
+    max-width:1000px;
+    margin:0 auto 60px auto;
+}
+/* 1つのニュース */
+.news-item{
+    display:flex;
+    gap:20px;
+    padding:25px 0;
+    border-bottom:1px solid #244f80;
+    transition:0.3s;
+}
+/* hoverでネオン増加 */
+.news-item:hover{
+    background:#0a0f1a;
+    box-shadow:0 0 25px #4da6ff55 inset;
+}
+/* サムネイル */
+.news-thumb img{
+    width:150px;
+    height:150px;
+    border-radius:10px;
+    object-fit:cover;
+    box-shadow:0 0 14px #3d8cffaa;
+}
+/* 本文部分 */
+.news-content{
+    flex:1;
+}
+/* 日付・カテゴリー・タイトル */
+.news-meta{
+    display:flex;
+    gap:15px;
+    margin-bottom:10px;
+    font-size:14px;
+    color:#9bc9ff;
+}
+.news-category{
+    padding:2px 6px;
+    border:1px solid #4da6ff;
+    border-radius:5px;
+    box-shadow:0 0 10px #4da6ffaa inset;
+    text-align:left;
+}
+.news-date{
+    text-align:left;
+}
+/* タイトル */
+.news-title{
+    font-size:20px;
+    color:#cfe8ff;
+    font-weight:600;
+    margin-bottom:8px;
+    text-shadow:0 0 5px #4da6ff;
+    transition:0.2s;
+    text-align:left;
+}
+.news-title:hover{
+    color:#ffffff;
+    text-shadow:0 0 12px #82c0ff;
+}
+/* 内容抜粋 */
+.news-text{
+    font-size:15px;
+    color:#9bc9ff;
+    opacity:0.9;
+    text-align:left;
 }
   </style>
   <link rel="shortcut icon" href="https://wakaruwakaru.github.io/game-sites/index/icon/icon1.png" >
@@ -157,13 +223,51 @@
 <div class="wel1" id="com1"></div>
 <br />
 
-
-
-
 <div id="ww_e81726654fd56" v='1.3' loc='id' a='{"t":"horizontal","lang":"ja","sl_lpl":1,"ids":["wl7195"],"font":"Arial","sl_ics":"one_a","sl_sot":"celsius","cl_bkg":"image","cl_font":"#FFFFFF","cl_cloud":"#FFFFFF","cl_persp":"#81D4FA","cl_sun":"#FFC107","cl_moon":"#FFC107","cl_thund":"#FF5722"}'>More forecasts: 
   <a href="https://oneweather.org/ja/tokyo/10_days/" id="ww_e81726654fd56_u" target="_blank">東京 天気 10日間</a>
 </div>
 </div>
+
+
+<div class="back-border">
+<div class="news-list">
+
+    <div class="news-item" onclick="jumpLink5()">
+        <div class="news-thumb">
+            <img src="https://wakaruwakaru.github.io/game-sites/topic/topic0005/picture0001.jpg" alt="">
+        </div>
+        <div class="news-content">
+            <div class="news-meta">
+                <div class="news-date">2025.12.07</div>
+                <div class="news-category">お知らせ</div>
+            </div>
+            <div class="news-title">「game-sites」のショートカットアイコンが登場!</div>
+            <div class="news-text">
+                「game-sites」のショートカットアイコンが登場! ブラウザタブのアイコンなどが…
+            </div>
+        </div>
+    </div>
+  
+    <div class="news-item" onclick="jumpLink4()">
+        <div class="news-thumb">
+            <img src="https://wakaruwakaru.github.io/game-sites/topic/topic0004/picture0001.png" alt="">
+        </div>
+        <div class="news-content">
+            <div class="news-meta">
+                <div class="news-date">2025.12.06</div>
+                <div class="news-category">お知らせ</div>
+            </div>
+            <div class="news-title">新ゲーム「ブロック崩し」が登場!</div>
+            <div class="news-text">
+                新ゲーム「ブロック崩し」がリリース! 古のゲームが「game-sites」でもプレイ可能に…
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
+
+
 <script>
 function requestGet(url,callback,id,gen)
 {var request=window.XMLHttpRequest?new XMLHttpRequest():new ActiveXObject("Microsoft.XMLHTTP");request.onreadystatechange=function()
@@ -189,8 +293,6 @@ function updateWidget(id,gen){if(gen===1){loadingToggle(id,1)}
 collectData(id,gen)}
 updateWidget('ww_e81726654fd56',0);
 </script>
-
-
 
 
 <script>
@@ -335,7 +437,7 @@ updateWidget('ww_e81726654fd56',0);
       eventDisplay();
     }timer2 = setInterval(event2,100);
 
-            
+
     function timeUpdate(){  //時刻描画
       //時刻の最後を見やすくするための処理と描画
       if(millisecond1 < 10){
@@ -418,5 +520,3 @@ updateWidget('ww_e81726654fd56',0);
 <div id="logoutBtn" class="floating-btn" onclick="reload()">↻</div>
 </body>
 </html>
-
-
