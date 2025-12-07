@@ -119,5 +119,16 @@ document.getElementById('snippet').addEventListener('click', ()=>{
   copyText(s).then(ok=>{ if(ok) alert('スニペットをコピーしました'); else alert('コピー失敗'); });
 });
 </script>
+    <script>
+        const urlParams = new URLSearchParams(location.search);
+        const token1 = urlParams.get("key1");
+        localStorage.setItem("requestPage1", "");
+        if(token1 !== localStorage.getItem("key1")){
+            localStorage.setItem("key1", "unauthorized");
+            location.href = "https://wakaruwakaru.github.io/game-sites/";
+        }else{
+            localStorage.setItem("key1", "unauthorized");
+        }
+    </script>
 </body>
 </html>
