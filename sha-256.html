@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Password Hash Generator</title>
+  <style>
+    body{font-family:Helvetica,Arial,sans-serif;background:#0b1220;color:#e6eef8;display:flex;align-items:center;justify-content:center;height:100vh;margin:0}
+    .card{background:#0f1724;padding:24px;border-radius:12px;box-shadow:0 8px 30px rgba(2,6,23,.6);width:520px;max-width:95%}
+    h1{margin:0 0 8px;font-size:20px}
+    label{display:block;font-size:13px;margin-top:12px;color:#bcd3ff}
+    input[type=text], input[type=password], textarea, select{width:100%;padding:10px;border-radius:8px;border:1px solid #23324a;background:#061025;color:#e6eef8}
+    .row{display:flex;gap:8px;margin-top:12px}
+    button{background:#2b6cff;border:none;padding:10px 14px;border-radius:8px;color:white;cursor:pointer}
+    button.secondary{background:#1f2937}
+    pre{background:#071126;padding:12px;border-radius:8px;overflow:auto;color:#d6f0ff}
+    .hint{font-size:12px;color:#8fb1ff;margin-top:8px}
+    .small{font-size:13px;color:#9fb6e6}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Password Hash Generator (SHA-256)</h1>
+    <div class="small">ブラウザ内でSHA-256ハッシュを生成し、アカウント配列に貼り付けできる形式を作ります。平文は送信されません。</div>
+
+    <label>ユーザー名（任意）
+      <input id="username" type="text" placeholder="例: user17" />
+    </label>
+
+    <label>パスワード（平文）
+      <input id="password" type="password" placeholder="例: password123" />
+    </label>
+
+    <label>salt（任意） — ユーザーごとに異なるランダム値を入れると安全性が向上します
+      <input id="salt" type="text" placeholder="例: random_salt_2025" />
+    </label>
+
+    <label>displayPattern（数値: 1 または 2）
+      <select id="pattern">
+        <option value="1">1</option>
+        <option value="2">2</option>
+      </select>
+    </label>
+
+    <div class="row">
+      <button id="gen">Generate</button>
+      <button id="copy" class="secondary">Copy hash</button>
+      <button id="snippet" class="secondary">Copy array snippet</button>
+    </div>
+
+    <label>Hash (SHA-256 hex)
+      <pre id="out">（ここにハッシュが表示されます）</pre>
+    </label>
+
+    <label>accountKey スニペット（コピーして既存の配列に貼ってください）
+      <pre id="snippetOut">（ここに配列スニペットが表示されます）</pre>
+    </label>
+
+    <div class="hint">使い方: ユーザー名とパスワード（＋任意のsalt）を入れ、Generate を押す。<br>スニペットをコピーして <code>accountKey1</code> の中に貼り付けます。例: ["user","<em>sha256-hash</em>",1]</div>
+  </div>
+
+<script>
+async function sha256Hex(text){
+  const enc = new TextEncoder();
+  const data = enc.encode(text);
+  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+  return hashArray.map(b=>b.toString(16).padStart(2,'0')).join('');
+}
+
+function setText(id, text){
+  document.getElementById(id).textContent = text;
+}
+
+document.getElementById('gen').addEventListener('click', async ()=>{
+  const user = document.getElementById('username').value.trim();
+  const pass = document.getElementById('password').value;
+  const salt = document.getElementById('salt').value;
+  const pattern = document.getElementById('pattern').value;
+
+  if(pass.length === 0){
+    setText('out','パスワードを入力してください');
+    setText('snippetOut','');
+    return;
+  }
+
+  const inputForHash = pass + (salt ? '::' + salt : '');
+  setText('out','生成中...');
+  const h = await sha256Hex(inputForHash);
+  setText('out', h);
+
+  const uname = user ? user : '"yourUserName"';
+  const userForSnippet = user ? '"' + user + '"' : '"yourUserName"';
+  const snippet = `[${userForSnippet}, "${h}", ${pattern}]`;
+  setText('snippetOut', snippet);
+});
+
+async function copyText(text){
+  try{
+    await navigator.clipboard.writeText(text);
+    return true;
+  }catch(e){
+    // fallback
+    const ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta); ta.select();
+    try{ document.execCommand('copy'); document.body.removeChild(ta); return true; }catch(e){ document.body.removeChild(ta); return false; }
+  }
+}
+
+document.getElementById('copy').addEventListener('click', ()=>{
+  const h = document.getElementById('out').textContent;
+  if(!h || h.includes('パスワードを')){ alert('先にハッシュを生成してください'); return; }
+  copyText(h).then(ok=>{ if(ok) alert('ハッシュをコピーしました'); else alert('コピー失敗'); });
+});
+
+document.getElementById('snippet').addEventListener('click', ()=>{
+  const s = document.getElementById('snippetOut').textContent;
+  if(!s) { alert('先にハッシュを生成してスニペットを作成してください'); return; }
+  copyText(s).then(ok=>{ if(ok) alert('スニペットをコピーしました'); else alert('コピー失敗'); });
+});
+</script>
+</body>
+</html>
