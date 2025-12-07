@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Save to Google Doc demo</title>
+</head>
+<body>
+  <h2>Google Doc に保存するデモ</h2>
+  <input id="user" placeholder="ユーザー名" /><br/><br/>
+  <textarea id="message" placeholder="ここにメッセージ" rows="4" cols="50"></textarea><br/><br/>
+  <button id="send">保存する</button>
+  <div id="status"></div>
+
+<script>
+  const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwAGfbPwZPP6BMHPHLkOtifHYDwGhRXVQihU5b2yKr93eVaprdqLITqafa0cWZTdGlTSA/exec"; // ←置き換えてください
+
+  document.getElementById("send").addEventListener("click", async () => {
+    const user = document.getElementById("user").value || "anonymous";
+    const message = document.getElementById("message").value || "";
+
+    try {
+      const res = await fetch(WEB_APP_URL, {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user, message })
+      });
+
+      const data = await res.json();
+      if (data.status === "ok") {
+        document.getElementById("status").textContent = "保存しました: " + data.time;
+      } else {
+        document.getElementById("status").textContent = "エラー: " + (data.message || "不明");
+      }
+    } catch (err) {
+      document.getElementById("status").textContent = "ネットワークエラー: " + err.message;
+    }
+  });
+</script>
+  
+</body>
+</html>
