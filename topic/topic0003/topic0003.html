@@ -212,12 +212,13 @@ h1{
     <script>
         const urlParams = new URLSearchParams(location.search);
         const token1 = urlParams.get("key1");
-        localStorage.setItem("requestPage1", "topic/topic0003/topic0003");
         if(token1 !== localStorage.getItem("key1")){
             localStorage.setItem("key1", "unauthorized");
+            localStorage.setItem("requestPage1", "topic/topic0003/topic0003");
             location.href = "https://wakaruwakaru.github.io/game-sites/";
         }else{
             localStorage.setItem("key1", "unauthorized");
+            localStorage.setItem("requestPage1", "");
         }
     </script>
     <script>
