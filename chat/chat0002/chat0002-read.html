@@ -18,6 +18,12 @@
   }
 
   loadDoc();
+
+    var timer1 = null;
+    function event1(){
+      loadDoc();
+    }timer1 = setInterval(event1,1000);
+  
 </script>
   <script>
     const urlParams = new URLSearchParams(location.search);
