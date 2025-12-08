@@ -1,0 +1,296 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>チャット</title>
+    <style type="text/css">
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #000000; /* 背景色 */
+    margin: 0;
+    padding: 0;
+}
+
+.chat-container {
+    max-width: 600px; /* チャット画面の最大幅 */
+    margin: 20px auto; /* 中央寄せ */
+    padding: 10px;
+    background-color: #000000; /* チャット背景 */
+    border-radius: 8px;
+    box-shadow: 0 0 8px #4da6ff, 0 0 20px #4da6ff;
+}
+.message {
+    display: flex; /* アイコンと内容を横並びにする */
+    margin-bottom: 15px;
+    align-items: flex-end; /* タイムスタンプを下揃えにする */
+}
+/* 相手からのメッセージ (左側) */
+.received {
+    justify-content: flex-start;
+}
+/* 自分からのメッセージ (右側) */
+.sent {
+    justify-content: flex-end;
+}
+.user-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #a0a0a0; /* アイコンの背景色 */
+    color: white;
+    text-align: center;
+    line-height: 40px;
+    font-weight: bold;
+    margin-right: 10px;
+    flex-shrink: 0; /* アイコンが縮まないようにする */
+    box-shadow: 0 0 0px #4da6ff, 0 0 20px #4da6ff;
+}
+.message-content {
+    max-width: 70%; /* 吹き出しの最大幅 */
+    padding: 8px 12px;
+    border-radius: 18px; /* 角丸 */
+    position: relative;
+}
+.message-content p {
+    margin: 0;
+    word-wrap: break-word; /* 長い単語を折り返す */
+}
+.timestamp {
+    font-size: 11px;
+    color: #999;
+    white-space: nowrap; /* タイムスタンプが折り返さないようにする */
+}
+/* 相手メッセージのスタイル */
+.received .message-content {
+    background-color: #000000; /* 吹き出しの色 */
+    box-shadow: 0 0 8px #4da6ff, 0 0 20px #4da6ff;
+    color: #ffffff;
+    border-bottom-left-radius: 4px; /* アイコン側の下の角を少し尖らせない（LINE風）*/
+    order: 2; /* メッセージ内容を右に配置 */
+}
+.received .timestamp {
+    margin-left: 8px; /* タイムスタンプを右に寄せる */
+    order: 3;
+}
+/* 自分メッセージのスタイル */
+.sent .message-content {
+    background-color: #000000; /* 吹き出しの色（青系） */
+    box-shadow: 0 0 8px #00ffff, 0 0 20px #00ffff;
+    color: #ffffff;
+    border-bottom-right-radius: 4px; /* 右側の下の角を少し尖らせない（LINE風）*/
+    order: 2;
+}
+.sent .timestamp {
+    margin-right: 8px; /* タイムスタンプを左に寄せる */
+    order: 1; /* タイムスタンプをメッセージの左に配置 */
+}
+
+/* 自分メッセージの場合、アイコンのスペースを空ける */
+.sent {
+    /* アイコンがない分、右に寄せるためにmarginで調整 */
+    padding-right: 50px; /* アイコンの幅+マージン分 */
+}
+
+
+/* フローティングボタンの共通デザイン */
+.floating-btn{
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: #111;
+    border: 2px solid #4da6ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 26px;
+    color: #bcdfff;
+    cursor: pointer;
+    transition: 0.25s;
+    box-shadow: 0 0 10px #3d8cff88;
+}
+/* ホバー時に光る */
+.floating-btn:hover{
+    background: #4da6ff33;
+    box-shadow: 0 0 16px #4da6ffcc;
+}
+/* クリック時に縮む */
+.floating-btn:active{
+    transform: scale(0.9);
+}
+/* ボタン位置調整 */
+#reloadBtn{
+    bottom: 90px; /* logout の上に配置 */
+}
+#logoutBtn{
+    bottom: 20px;
+}
+
+
+
+
+.input-wrapper {
+    display: flex;
+    align-items: center;
+    background: #fff;
+    border-radius: 40px;
+    padding: 10px 16px;
+    width: 600px;
+    max-width: 90%;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    gap: 12px;
+
+    /* ▼ 画面下に固定する部分 ▼ */
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+}
+.icon-left {
+    font-size: 20px;
+    font-weight: bold;
+    color: #444;
+    padding: 6px;
+}
+.input-wrapper input {
+    flex: 1; /* ここで伸縮して幅を埋める！ */
+    border: none;
+    outline: none;
+    font-size: 16px;
+}
+.icon-right {
+    width: 36px;
+    height: 36px;
+    background: #000;
+    border-radius: 50%;
+}
+  </style>
+</head>
+<body>
+    <div class="chat-container" id="message1">
+
+        <div class="message sent">
+            <div class="message-content">
+                <p>トリニトロトルエン</p>
+                <span class="timestamp">10:00</span>
+            </div>
+        </div>
+
+        <div class="message received">
+            <span class="user-icon">A</span>
+            <div class="message-content">
+                <p>どしたー？　頭でも打ったか？</p>
+                <span class="timestamp">10:01</span>
+            </div>
+        </div>
+
+        <div class="message received">
+            <span class="user-icon">A</span>
+            <div class="message-content">
+                <p>それとも拾い食いでもしたか？</p>
+                <span class="timestamp">10:01</span>
+            </div>
+        </div>
+
+        <div class="message sent">
+            <div class="message-content">
+                <p>拾い食いなんてしてねーわ!!</p>
+                <span class="timestamp">10:03</span>
+            </div>
+        </div>
+
+        <div class="message sent">
+            <div class="message-content">
+                <p>そんなみじめなことしねーわ!!!</p>
+                <span class="timestamp">10:04</span>
+            </div>
+        </div>
+
+        <div class="message received">
+            <span class="user-icon">A</span>
+            <div class="message-content">
+                <p>おうおう　みじめだよなぁ</p>
+                <span class="timestamp">10:05</span>
+            </div>
+        </div>
+
+        <div class="message received">
+            <span class="user-icon">A</span>
+            <div class="message-content">
+                <p>落ちてるものを拾い食いしてる自分がいるなんてなぁ</p>
+                <span class="timestamp">10:05</span>
+            </div>
+        </div>
+
+        <div class="message sent">
+            <div class="message-content">
+                <p>人の話を聞け!!!!</p>
+                <span class="timestamp">10:07</span>
+            </div>
+        </div>
+
+    </div><!-- チャットの最後の欄 -->
+
+<script>
+function send(){
+  const box = document.getElementById("textBox1");
+  const text = box.value;
+  if(text.trim() === "") return;  // 空送信は無視
+  addMessage_sent1(text, "00:00");
+  scrollToBottom();
+  box.value = "";   // 入力欄を空に
+  box.focus();      // 再フォーカス
+}
+
+function addMessage_sent1(text, time = "00:00"){
+    const msg = document.createElement("div");
+    msg.className = "message sent";
+    msg.innerHTML = `
+        <div class="message-content">
+            <p>${text}</p>
+            <span class="timestamp">${time}</span>
+        </div>
+    `;
+    document.getElementById("message1").appendChild(msg);
+}
+
+function addMessage_received1(text, time = "00:00", icon){
+    const msg = document.createElement("div");
+    msg.className = "message received";
+    msg.innerHTML = `
+        <span class="user-icon">${icon}</span>
+        <div class="message-content">
+            <p>${text}</p>
+            <span class="timestamp">${time}</span>
+        </div>
+    `;
+    document.getElementById("message1").appendChild(msg);
+}
+
+function scrollToBottom(){
+    window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: "smooth"
+    });
+}
+
+function enterSend(e){
+  if(e.key === "Enter"){
+    send();
+  }
+}
+</script>
+
+<div class="input-wrapper">
+    <div class="icon-left">+</div>
+    <input type="text" placeholder="メッセージを送信" onkeyup="enterSend(event)" id="textBox1" />
+    <div class="icon-right">-</div>
+</div>
+<div id="reloadBtn" class="floating-btn" onclick="reload()">↻</div>
+<div id="logoutBtn" class="floating-btn" onclick="backPage()">⇦</div>
+</body>
+
+</html>
