@@ -129,12 +129,8 @@
       const box = document.getElementById("textBox1");
       const text = box.value.trim();
       if (!text) return;
-
-      const time = getTime();
-      //addMessage_sent1(text, time);
-
+      
       scrollToBottom();
-
       // 入力欄リセット
       box.value = "";
       box.focus();
@@ -206,13 +202,7 @@
     function enterSend(e){
       if (e.key === "Enter") send();
     }
-
-    /* ======== 時刻を HH:MM に整形 ======== */
-    function getTime(){
-      const d = new Date();
-      return d.toTimeString().slice(0, 5);
-    }
-
+    
     function text_trim(text){
       const com1 = "<type[mess]acco[takuan]time[" + new Date() + "]val1[" + text + "]>";
       return com1;
@@ -246,6 +236,13 @@ function parseLog(log){
   return result;
 }
 
+function toHHMM(timeString) {
+  const d = new Date(timeString); // 文字列 → Date に変換
+  const hh = String(d.getHours()).padStart(2, "0");
+  const mm = String(d.getMinutes()).padStart(2, "0");
+  return `${hh}:${mm}`;
+}
+    
 var old_content = 0;
 var new_content = 0;
 async function page_update(){
@@ -275,8 +272,7 @@ async function page_update(){
   new_content = message2.length;
   if(old_content != new_content){
     for(let i = old_content; i < message2.length; i++){
-      const time = message2[i][2];
-      addMessage_sent1(message2[i][3], time);
+      addMessage_sent1(message2[i][3], toHHMM(message2[i][2]));
     }
   }
 
