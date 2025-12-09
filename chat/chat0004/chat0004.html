@@ -131,7 +131,7 @@
       if (!text) return;
 
       const time = getTime();
-      addMessage_sent1(text, time);
+      //addMessage_sent1(text, time);
 
       scrollToBottom();
 
@@ -172,6 +172,20 @@
       const msg = document.createElement("div");
       msg.className = "message sent";
       msg.innerHTML = `
+        <div class="message-content">
+          <p>${text}</p>
+          <span class="timestamp">${time}</span>
+        </div>
+      `;
+      document.getElementById("message1").appendChild(msg);
+    }
+
+    /* ======== 吹き出し追加（受信側） ======== */
+    function addMessage_received1(text, time){
+      const msg = document.createElement("div");
+      msg.className = "message received";
+      msg.innerHTML = `
+        <span class="user-icon">A</span>
         <div class="message-content">
           <p>${text}</p>
           <span class="timestamp">${time}</span>
@@ -232,6 +246,8 @@ function parseLog(log){
   return result;
 }
 
+var old_content = 0;
+var new_content = 0;
 async function page_update(){
   const res = await fetch(WEB_APP_URL);
   const data = await res.json();
@@ -248,14 +264,22 @@ async function page_update(){
     return [ p.type, p.acco, p.time, p.val1 ];
   });
 
-  //console.log("message2:", message2);
-
   // ③ 出力
-  for(let i = 0; i < message2.length; i++){
-    for(let j = 0; j < message2[i].length; j++){
-      console.log(message2[i][j]);
+  //for(let i = 0; i < message2.length; i++){
+  //  for(let j = 0; j < message2[i].length; j++){
+  //    console.log(message2[i][j]);
+  // }
+  //}
+
+  old_content = new_content;
+  new_content = message2.length;
+  if(old_content != new_content){
+    for(let i = old_content; i < message2.length; i++){
+      const time = message2[i][2];
+      addMessage_sent1(message2[i][3], time);
     }
   }
+
 }
 
     var timer1 = null;
