@@ -203,6 +203,66 @@
       const com1 = "<type[mess]acco[takuan]time[" + new Date() + "]val1[" + text + "]>";
       return com1;
     }
+
+
+
+
+
+
+
+function splitLogs(text){
+  return text.match(/<[^>]*>/g) || [];
+}
+
+function parseLog(log){
+  const result = {};
+  const inside = log.slice(1, -1);
+  const parts = inside.split("]");
+
+  for (let i = 0; i < parts.length; i++) {
+    const part = parts[i].trim();
+    if (part === "") continue;
+
+    const keyValue = part.split("[");
+    const key = keyValue[0];
+    const value = keyValue[1];
+
+    result[key] = value;
+  }
+  return result;
+}
+
+async function page_update(){
+  const res = await fetch(WEB_APP_URL);
+  const data = await res.json();
+
+  const text1 = data.content;
+
+  // ① 文字列をログごとに配列へ
+  const logs = splitLogs(text1);
+  //console.log("logs:", logs);
+
+  // ② それぞれのログをパース → 多次元配列へ
+  const message2 = logs.map(log => {
+    const p = parseLog(log);
+    return [ p.type, p.acco, p.time, p.val1 ];
+  });
+
+  //console.log("message2:", message2);
+
+  // ③ 出力
+  for(let i = 0; i < message2.length; i++){
+    for(let j = 0; j < message2[i].length; j++){
+      console.log(message2[i][j]);
+    }
+  }
+}
+
+    var timer1 = null;
+    function event1(){
+      page_update()
+    }timer1 = setInterval(event1,1000);
+
   </script>
 
 </body>
