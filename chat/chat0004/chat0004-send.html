@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>チャット</title>
+
+  <style>
+    /* ======== ここから CSS（あなたのコードそのまま） ======== */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #000000;
+      margin: 0;
+      padding: 0;
+    }
+    .chat-container {
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 10px;
+      background-color: #000000;
+      border-radius: 8px;
+      box-shadow: 0 0 8px #4da6ff, 0 0 20px #4da6ff;
+    }
+    .message {
+      display: flex;
+      margin-bottom: 15px;
+      align-items: flex-end;
+    }
+    .received { justify-content: flex-start; }
+    .sent { justify-content: flex-end; }
+
+    .user-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background-color: #a0a0a0;
+      color: white;
+      text-align: center;
+      line-height: 40px;
+      font-weight: bold;
+      margin-right: 10px;
+      flex-shrink: 0;
+      box-shadow: 0 0 0px #4da6ff, 0 0 20px #4da6ff;
+    }
+    .message-content {
+      max-width: 70%;
+      padding: 8px 12px;
+      border-radius: 18px;
+      position: relative;
+    }
+    .message-content p {
+      margin: 0;
+      word-wrap: break-word;
+    }
+    .timestamp {
+      font-size: 11px;
+      color: #999;
+      white-space: nowrap;
+    }
+    .received .message-content {
+      background-color: #000000;
+      box-shadow: 0 0 8px #4da6ff, 0 0 20px #4da6ff;
+      color: #ffffff;
+      border-bottom-left-radius: 4px;
+      order: 2;
+    }
+    .received .timestamp { margin-left: 8px; order: 3; }
+    .sent .message-content {
+      background-color: #000000;
+      box-shadow: 0 0 8px #00ffff, 0 0 20px #00ffff;
+      color: #ffffff;
+      border-bottom-right-radius: 4px;
+      order: 2;
+    }
+    .sent .timestamp { margin-right: 8px; order: 1; }
+    .sent { padding-right: 50px; }
+
+    .input-wrapper {
+      display: flex;
+      align-items: center;
+      background: #fff;
+      border-radius: 40px;
+      padding: 10px 16px;
+      width: 600px;
+      max-width: 90%;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      gap: 12px;
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 9999;
+    }
+    .icon-left { font-size: 20px; font-weight: bold; padding: 6px; }
+    .input-wrapper input {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-size: 16px;
+    }
+    .icon-right {
+      width: 36px;
+      height: 36px;
+      background: #000;
+      border-radius: 50%;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- チャット本体 -->
+  <div class="chat-container" id="message1"></div>
+
+  <!-- 入力欄 -->
+  <div class="input-wrapper">
+    <div class="icon-left">+</div>
+    <input type="text" placeholder="メッセージを送信" id="textBox1" onkeyup="enterSend(event)">
+    <div class="icon-right">-</div>
+  </div>
+
+  <script>
+    /* ======== Google Apps Script Web App URL ======== */
+    const WEB_APP_URL =
+      "https://script.google.com/macros/s/AKfycbwO-h9O7dQhfKSnpVvE2opZXEJJlPV9LAGBSiFUR3-2m6jh8pCvo5JbJUW0cWxRn7MS/exec";
+
+    /* ======== メッセージ送信 ======== */
+    async function send() {
+      const box = document.getElementById("textBox1");
+      const text = box.value.trim();
+      if (!text) return;
+
+      const time = getTime();
+      addMessage_sent1(text, time);
+
+      scrollToBottom();
+
+      // 入力欄リセット
+      box.value = "";
+      box.focus();
+
+      const text2 = text_trim(text);
+
+      // GAS へ送信
+      sendToGAS("takuan", text2, time);
+    }
+
+    /* ======== GASに送信する処理 ======== */
+    async function sendToGAS(user, text, time){
+      const payload = {
+        user,
+        message: text,
+        time
+      };
+
+      try {
+        await fetch(WEB_APP_URL, {
+          method: "POST",
+          mode: "no-cors",   // ← GAS が CORS 許可してないため必要
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        // no-cors のためレスポンスは読めない（仕様）
+      } catch (e) {
+        console.error("送信エラー:", e);
+      }
+    }
+
+    /* ======== 吹き出し追加（送信側） ======== */
+    function addMessage_sent1(text, time){
+      const msg = document.createElement("div");
+      msg.className = "message sent";
+      msg.innerHTML = `
+        <div class="message-content">
+          <p>${text}</p>
+          <span class="timestamp">${time}</span>
+        </div>
+      `;
+      document.getElementById("message1").appendChild(msg);
+    }
+
+    /* ======== 自動スクロール ======== */
+    function scrollToBottom(){
+      window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: "smooth"
+      });
+    }
+
+    /* ======== エンター送信 ======== */
+    function enterSend(e){
+      if (e.key === "Enter") send();
+    }
+
+    /* ======== 時刻を HH:MM に整形 ======== */
+    function getTime(){
+      const d = new Date();
+      return d.toTimeString().slice(0, 5);
+    }
+
+    function text_trim(text){
+      const com1 = "<type[mess]acco[takuan]time[" + new Date() + "]val1[" + text + "]>";
+      return com1;
+    }
+  </script>
+
+</body>
+</html>
