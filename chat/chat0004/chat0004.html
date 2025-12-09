@@ -323,8 +323,21 @@ async function page_update(){
     }timer1 = setInterval(event1,1000);
 
   </script>
-
-</body>
 <div id="reloadBtn" class="floating-btn" onclick="reload()">↻</div>
 <div id="logoutBtn" class="floating-btn" onclick="backPage()">⇦</div>
+<script>
+  function reload(){
+    const key1 = crypto.randomUUID();
+  //localStorage.setItem("key1", key1);
+  //location.href = "https://wakaruwakaru.github.io/game-sites/top0002?key1=" + key1;
+    location.href = "https://wakaruwakaru.github.io/game-sites/chat/chat0004/chat0004";
+  }
+  function backPage(){
+    const key1 = crypto.randomUUID();
+    localStorage.setItem("key1", key1);
+    location.href = "https://wakaruwakaru.github.io/game-sites/top0001?key1=" + key1;
+  }
+</script>
+</body>
+
 </html>
