@@ -129,6 +129,40 @@
       cursor: pointer;
     }
 
+
+/* --- 日付ピル（ネオン風） --- */
+.chat-date-pill{
+  display: inline-block;
+  padding: 8px 20px;
+  border-radius: 999px;              /* 丸いピル */
+  background: rgba(10,12,18,0.55);   /* 半透明の暗い背景（ガラスっぽく） */
+  color: #e6f7ff;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1;
+  text-align: center;
+  border: 1px solid rgba(77,166,255,0.25);
+  backdrop-filter: blur(6px);        /* 背景のぼかし */
+  position: relative;
+  margin: 18px auto;                 /* 上下にスペース、横は中央（親幅に依存） */
+  box-shadow:
+    0 0 6px rgba(77,166,255,0.12),
+    0 0 18px rgba(77,166,255,0.06);
+  z-index: 10;
+  user-select: none;
+  -webkit-user-select: none;
+}
+/* 小画面で幅を少し縮める */
+@media (max-width: 420px) {
+  .chat-date-pill {
+    padding: 6px 14px;
+    font-size: 13px;
+  }
+}
+.center-set{
+    text-align:center;
+}
+
     
 /* フローティングボタンの共通デザイン */
 .floating-btn{
@@ -323,6 +357,8 @@ function toHHMM(timeString) {
     
 var old_content = 0;
 var new_content = 0;
+var old_mess_date = "";
+var new_mess_date = "";
 async function page_update(){
   const res = await fetch(WEB_APP_URL);
   const data = await res.json();
@@ -343,6 +379,10 @@ async function page_update(){
   if(old_content != new_content){
     for(let i = old_content; i < message2.length; i++){
       if(message2[i][0] == "mess"){
+        old_mess_date = new_mess_date:
+        if(old_mess_date != new_mess_date){
+          
+        }
         if(message2[i][1] == token3){
           addMessage_sent1(message2[i][3], toHHMM(message2[i][2]));
         }else{
