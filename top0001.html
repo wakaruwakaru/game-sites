@@ -116,6 +116,8 @@ h1{
         const urlParams = new URLSearchParams(location.search);
         const token1 = urlParams.get("key1");
         localStorage.setItem("requestPage1", "");
+        const token3 = localStorage.getItem("account1");
+        localStorage.setItem("account1", "");
         if(token1 !== localStorage.getItem("key1")){
             localStorage.setItem("key1", "unauthorized");
             location.href = "https://wakaruwakaru.github.io/game-sites/";
@@ -126,61 +128,73 @@ h1{
         function jumpLink1(){
             const key1 = crypto.randomUUID();
             localStorage.setItem("key1", key1);
+            localStorage.setItem("account1", token3);
             location.href = "https://wakaruwakaru.github.io/game-sites/page0001?key1=" + key1;
         }
         function jumpLink2(){
             const key1 = crypto.randomUUID();
             localStorage.setItem("key1", key1);
+            localStorage.setItem("account1", token3);
             location.href = "https://wakaruwakaru.github.io/game-sites/page0002?key1=" + key1;
         }
         function jumpLink3(){
             const key1 = crypto.randomUUID();
             localStorage.setItem("key1", key1);
+            localStorage.setItem("account1", token3);
             location.href = "https://wakaruwakaru.github.io/game-sites/page0003?key1=" + key1;
         }
         function jumpLink4(){
             const key1 = crypto.randomUUID();
             localStorage.setItem("key1", key1);
+            localStorage.setItem("account1", token3);
             location.href = "https://wakaruwakaru.github.io/game-sites/page0004?key1=" + key1;
         }
         function jumpLink5(){
             const key1 = crypto.randomUUID();
             localStorage.setItem("key1", key1);
+            localStorage.setItem("account1", token3);
             location.href = "https://wakaruwakaru.github.io/game-sites/top0002?key1=" + key1;
         }
         function jumpLink6(){
             const key1 = crypto.randomUUID();
             localStorage.setItem("key1", key1);
+            localStorage.setItem("account1", token3);
             location.href = "https://wakaruwakaru.github.io/game-sites/page0006?key1=" + key1;
         }
         function jumpLink7(){
             const key1 = crypto.randomUUID();
             localStorage.setItem("key1", key1);
+            localStorage.setItem("account1", token3);
             location.href = "https://wakaruwakaru.github.io/game-sites/top0003?key1=" + key1;
         }
         function jumpLink8(){
             const key1 = crypto.randomUUID();
             localStorage.setItem("key1", key1);
+            localStorage.setItem("account1", token3);
             location.href = "https://wakaruwakaru.github.io/game-sites/page0008?key1=" + key1;
         }
       function jumpLink9(){
             const key1 = crypto.randomUUID();
             localStorage.setItem("key1", key1);
+          localStorage.setItem("account1", token3);
             location.href = "https://wakaruwakaru.github.io/game-sites/page0009?key1=" + key1;
         }
         function jumpChat1(){
             const key1 = crypto.randomUUID();
             localStorage.setItem("key1", key1);
+            localStorage.setItem("account1", token3);
             location.href = "https://wakaruwakaru.github.io/game-sites/chat/chat0001/chat0001?key1=" + key1;
         }
         function jumpTopic1(){
             const key1 = crypto.randomUUID();
             localStorage.setItem("key1", key1);
+            localStorage.setItem("account1", token3);
             location.href = "https://wakaruwakaru.github.io/game-sites/topic/top-topic0001?key1=" + key1;
         }
         function jumpInfo1(){
             const key1 = crypto.randomUUID();
             localStorage.setItem("key1", key1);
+            localStorage.setItem("account1", token3);
             location.href = "https://wakaruwakaru.github.io/game-sites/top-information0001?key1=" + key1;
         }
         function jumpLink100(){
@@ -189,6 +203,7 @@ h1{
         function reload(){
             const key1 = crypto.randomUUID();
             localStorage.setItem("key1", key1);
+            localStorage.setItem("account1", token3);
             location.href = "https://wakaruwakaru.github.io/game-sites/top0001?key1=" + key1;
         }
         function logout(){
