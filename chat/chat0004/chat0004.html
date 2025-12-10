@@ -252,7 +252,7 @@ const userIcons = {
 
     /* ======== 吹き出し追加（受信側） ======== */
 function addMessage_received1(user, text, time){
-  const iconUrl = userIcons[user] || "default.png"; // なければデフォルト
+  const iconUrl = userIcons[user] || "default"; // なければデフォルト
 
   const msg = document.createElement("div");
   msg.className = "message received";
