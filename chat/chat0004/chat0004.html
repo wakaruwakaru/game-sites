@@ -354,7 +354,14 @@ function toHHMM(timeString) {
   const mm = String(d.getMinutes()).padStart(2, "0");
   return `${hh}:${mm}`;
 }
-    
+function toYYYYMMDD(dateString) {
+  const d = new Date(dateString);
+  const year  = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day   = String(d.getDate()).padStart(2, "0");
+  return `${year}年${month}月${day}日`;
+}
+
 var old_content = 0;
 var new_content = 0;
 var old_mess_date = "";
@@ -379,7 +386,8 @@ async function page_update(){
   if(old_content != new_content){
     for(let i = old_content; i < message2.length; i++){
       if(message2[i][0] == "mess"){
-        old_mess_date = new_mess_date:
+        old_mess_date = new_mess_date;
+        new_mess_date = toYYYYMMDD[i][2];
         if(old_mess_date != new_mess_date){
           
         }
