@@ -29,19 +29,17 @@
     .received { justify-content: flex-start; }
     .sent { justify-content: flex-end; }
 
-    .user-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background-color: #a0a0a0;
-      color: white;
-      text-align: center;
-      line-height: 40px;
-      font-weight: bold;
-      margin-right: 10px;
-      flex-shrink: 0;
-      box-shadow: 0 0 0px #4da6ff, 0 0 20px #4da6ff;
-    }
+.user-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  background-color: #333;
+  margin-right: 10px;
+  box-shadow: 0 0 8px #4da6ff, 0 0 18px #4da6ff;
+}
+
     .message-content {
       max-width: 70%;
       padding: 8px 12px;
@@ -190,6 +188,16 @@
     const WEB_APP_URL =
       "https://script.google.com/macros/s/AKfycbwO-h9O7dQhfKSnpVvE2opZXEJJlPV9LAGBSiFUR3-2m6jh8pCvo5JbJUW0cWxRn7MS/exec";
 
+    
+// アカウントID → アイコンURL
+const userIcons = {
+  default:     "https://wakaruwakaru.github.io/game-sites/chat/chatIcons/default-0001.png",
+  wakaruwakaru:"https://wakaruwakaru.github.io/game-sites/chat/chatIcons/wakaruwakaru-0001.png",
+  dabada:      "https://wakaruwakaru.github.io/game-sites/chat/chatIcons/dabada-0001.png",
+  173:         "https://wakaruwakaru.github.io/game-sites/chat/chatIcons/173-0001.png"
+};
+
+    
     /* ======== メッセージ送信 ======== */
     async function send() {
       const box = document.getElementById("textBox1");
@@ -243,18 +251,21 @@
     }
 
     /* ======== 吹き出し追加（受信側） ======== */
-    function addMessage_received1(text, time){
-      const msg = document.createElement("div");
-      msg.className = "message received";
-      msg.innerHTML = `
-        <span class="user-icon">A</span>
-        <div class="message-content">
-          <p>${text}</p>
-          <span class="timestamp">${time}</span>
-        </div>
-      `;
-      document.getElementById("message1").appendChild(msg);
-    }
+function addMessage_received1(user, text, time){
+  const iconUrl = userIcons[user] || "default.png"; // なければデフォルト
+
+  const msg = document.createElement("div");
+  msg.className = "message received";
+  msg.innerHTML = `
+    <div class="user-icon" style="background-image:url('${iconUrl}');"></div>
+    <div class="message-content">
+      <p>${text}</p>
+      <span class="timestamp">${time}</span>
+    </div>
+  `;
+  document.getElementById("message1").appendChild(msg);
+}
+
 
     /* ======== 自動スクロール ======== */
     function scrollToBottom(){
@@ -334,7 +345,7 @@ async function page_update(){
         if(message2[i][1] == token3){
           addMessage_sent1(message2[i][3], toHHMM(message2[i][2]));
         }else{
-          addMessage_received1(message2[i][3], toHHMM(message2[i][2]));
+          addMessage_received1(message2[i][1], message2[i][3], toHHMM(message2[i][2]));
         }
       }
     }
@@ -380,5 +391,4 @@ async function page_update(){
 </body>
 
 </html>
-
 
