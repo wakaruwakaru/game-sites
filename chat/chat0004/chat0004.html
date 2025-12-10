@@ -302,10 +302,17 @@ function addMessage_received1(user, text, time){
 }
 /*=============時間ピル追加==============*/
 function addDatePill(text){
+  // ラッパー（中央寄せ）
+  const wrapper = document.createElement("div");
+  wrapper.className = "center-set";
+  // ピル本体（見た目）
   const pill = document.createElement("div");
-  pill.className = "chat-date-pill center-set";
+  pill.className = "chat-date-pill";
   pill.textContent = text;
-  document.getElementById("message1").appendChild(pill);
+  // wrapper の中に pill を入れる
+  wrapper.appendChild(pill);
+  // message1 に挿入
+  document.getElementById("message1").appendChild(wrapper);
 }
 
     /* ======== 自動スクロール ======== */
