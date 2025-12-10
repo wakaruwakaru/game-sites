@@ -300,7 +300,13 @@ function addMessage_received1(user, text, time){
   `;
   document.getElementById("message1").appendChild(msg);
 }
-
+/*=============時間ピル追加==============*/
+function addDatePill(text){
+  const pill = document.createElement("div");
+  pill.className = "chat-date-pill center-set";
+  pill.textContent = text;
+  document.getElementById("message1").appendChild(pill);
+}
 
     /* ======== 自動スクロール ======== */
     function scrollToBottom(){
@@ -387,9 +393,9 @@ async function page_update(){
     for(let i = old_content; i < message2.length; i++){
       if(message2[i][0] == "mess"){
         old_mess_date = new_mess_date;
-        new_mess_date = toYYYYMMDD[i][2];
+        new_mess_date = toYYYYMMDD(message2[i][2]);
         if(old_mess_date != new_mess_date){
-          
+          addDatePill(new_mess_date);
         }
         if(message2[i][1] == token3){
           addMessage_sent1(message2[i][3], toHHMM(message2[i][2]));
