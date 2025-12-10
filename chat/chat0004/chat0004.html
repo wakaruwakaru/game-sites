@@ -1,3 +1,4 @@
+
 <html>
 <head>
   <meta charset="UTF-8">
@@ -77,12 +78,13 @@
     .input-wrapper {
       display: flex;
       align-items: center;
-      background: #fff;
+      background: #000000;
       border-radius: 40px;
+      border: 2px solid #4da6ff;
       padding: 10px 16px;
       width: 600px;
       max-width: 90%;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      box-shadow: 0 0 0px #4da6ff, 0 0 40px #4da6ff;
       gap: 12px;
       position: fixed;
       bottom: 20px;
@@ -90,20 +92,42 @@
       transform: translateX(-50%);
       z-index: 9999;
     }
-    .icon-left { font-size: 20px; font-weight: bold; padding: 6px; }
+    .icon-left {
+      font-size: 20px;
+      font-weight: bold;
+      padding: 6px;
+      color:#4da6ff;
+      }
     .input-wrapper input {
       flex: 1;
       border: none;
       outline: none;
       font-size: 16px;
+      background-color:#000000;
+      color:#4da6ff;
+      border: 2px solid #4da6ff;
+      padding:5px 10px;
     }
+    /* フォーカス時：さらに強く光る */
+    .input-wrapper input:focus {
+      box-shadow:
+        0 0 5px #4da6ff,
+        0 0 10px #3d8cff,
+        0 0 15px #3d8fff;
+      border-color: #82c0ff; /* ちょっと明るい色に */
+    }
+    .input-wrapper input::placeholder {
+      color: #8bbcff;
+      opacity: 0.7;
+    }  
     .icon-right {
       width: 36px;
       height: 36px;
-      background: #000;
+      background: #000000;
+      border: 2px solid #4da6ff;
       border-radius: 50%;
+      box-shadow: 0 0 18px #4da6ff, 0 0 1px #4da6ff;
     }
-
 
     
 /* フローティングボタンの共通デザイン */
@@ -242,7 +266,7 @@
     }
     
     function text_trim(text){
-      const com1 = "<type[mess]acco[takuan]time[" + new Date() + "]val1[" + text + "]>";
+      const com1 = "<type[mess]acco[" + token3 + "]time[" + new Date() + "]val1[" + text + "]>";
       return com1;
     }
 
@@ -286,12 +310,10 @@ var new_content = 0;
 async function page_update(){
   const res = await fetch(WEB_APP_URL);
   const data = await res.json();
-
   const text1 = data.content;
 
   // ① 文字列をログごとに配列へ
   const logs = splitLogs(text1);
-  //console.log("logs:", logs);
 
   // ② それぞれのログをパース → 多次元配列へ
   const message2 = logs.map(log => {
@@ -300,19 +322,20 @@ async function page_update(){
   });
 
   // ③ 出力
-  //for(let i = 0; i < message2.length; i++){
-  //  for(let j = 0; j < message2[i].length; j++){
-  //    console.log(message2[i][j]);
-  // }
-  //}
-
   old_content = new_content;
   new_content = message2.length;
   if(old_content != new_content){
     for(let i = old_content; i < message2.length; i++){
-      addMessage_sent1(message2[i][3], toHHMM(message2[i][2]));
+      if(message2[i][0] == "mess"){
+        if(message2[i][1] == token3){
+          addMessage_sent1(message2[i][3], toHHMM(message2[i][2]));
+        }else{
+          addMessage_received1(message2[i][3], toHHMM(message2[i][2]));
+        }
+      }
     }
   }
+
 
 }
 
@@ -321,22 +344,36 @@ async function page_update(){
       page_update()
     }timer1 = setInterval(event1,1000);
 
-  </script>
-<div id="reloadBtn" class="floating-btn" onclick="reload()">↻</div>
-<div id="logoutBtn" class="floating-btn" onclick="backPage()">⇦</div>
-<script>
+  const urlParams = new URLSearchParams(location.search);
+  const token1 = urlParams.get("key1");
+  localStorage.setItem("requestPage1", "");
+  const token3 = localStorage.getItem("account1");
+  localStorage.setItem("account1", "");
+  if((token1 !== localStorage.getItem("key1")) || (token3 == "")){
+    localStorage.setItem("key1", "unauthorized");
+    localStorage.setItem("requestPage1", "chat/chat0004/chat0004");
+    location.href = "https://wakaruwakaru.github.io/game-sites/";
+  }else{
+    localStorage.setItem("key1", "");
+  }
+
   function reload(){
     const key1 = crypto.randomUUID();
-  //localStorage.setItem("key1", key1);
-  //location.href = "https://wakaruwakaru.github.io/game-sites/top0002?key1=" + key1;
-    location.href = "https://wakaruwakaru.github.io/game-sites/chat/chat0004/chat0004";
+    localStorage.setItem("key1", key1);
+    localStorage.setItem("account1", token3);
+    location.href = "https://wakaruwakaru.github.io/game-sites/chat/chat0004/chat0004" + key1;
   }
   function backPage(){
     const key1 = crypto.randomUUID();
     localStorage.setItem("key1", key1);
+    localStorage.setItem("account1", token3);
     location.href = "https://wakaruwakaru.github.io/game-sites/top0001?key1=" + key1;
   }
 </script>
+<div id="reloadBtn" class="floating-btn" onclick="reload()">↻</div>
+<div id="logoutBtn" class="floating-btn" onclick="backPage()">⇦</div>
 </body>
 
 </html>
+
+
