@@ -333,8 +333,15 @@ function addDatePill(text){
       return com1;
     }
 
-
-
+const box = document.getElementById("textBox1");
+box.addEventListener("keydown", (e) => {  // キー入力で「>」をブロック
+  if (e.key === ">") {
+    e.preventDefault();
+  }
+});
+box.addEventListener("input", () => {  // ペーストなどで入った「>」を取り除く
+  box.value = box.value.replace(/>/g, "");
+});
 
 
 
