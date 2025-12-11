@@ -450,19 +450,22 @@ async function page_update(){
 
 }
 
-    var timer1 = null;
-    var update_rate = 1000;
-    function event1(){
-      page_update()
-    }timer1 = setInterval(event1,update_rate);
+var timer1 = null;
+var update_rate = 500;
+function event1(){
+  page_update()
+}
+timer1 = setInterval(event1,update_rate);
 
 function rate_change(){
-    if(update_rate == 1000){
-      document.querySelector(".icon-right").style.backgroundColor = "4da6ff";
+    if(update_rate == 500){
+      document.querySelector(".icon-right").style.backgroundColor = "6dc6ff";
       update_rate = 5000;
+      timer1 = setInterval(event1,update_rate);
     }else{
       document.querySelector(".icon-right").style.backgroundColor = "#000000";
-      update_rate = 1000;
+      update_rate = 500;
+      timer1 = setInterval(event1,update_rate);
     }
 }
 
