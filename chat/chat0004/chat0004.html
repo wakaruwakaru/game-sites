@@ -375,6 +375,36 @@ function toYYYYMMDD(dateString) {
   return `${year}年${month}月${day}日`;
 }
 
+function getScrollPercentage(){
+    const currentScroll = window.scrollY;                      // A. 現在のスクロール位置（上端からの距離）
+    const fullHeight = document.documentElement.scrollHeight;  // B. ページのコンテンツ全体の高さ
+    const viewportHeight = window.innerHeight;                 // C. ブラウザのビューポート（表示領域）の高さ
+    // ----------------------------------------------------
+    // 2. スクロール可能な最大の距離を計算   ページ全長から表示領域の分を引く
+    const maxScrollDistance = fullHeight - viewportHeight;
+    // 最大距離が0の場合は、スクロールできない（ページが短い）ため0%を返す
+    if (maxScrollDistance === 0) {
+        return 0;
+    }
+    // ----------------------------------------------------
+    // 3. 相対値（%）を計算し、小数点以下を丸める
+    const scrollPercentage = (currentScroll / maxScrollDistance) * 100;
+    // 0〜100の間に収まるように調整（念のため）
+    return Math.min(100, Math.max(0, scrollPercentage));
+}
+    
+function autoScrollValue(){
+    const currentScroll = window.scrollY;
+    const fullHeight = document.documentElement.scrollHeight;
+    const viewportHeight = window.innerHeight;
+    const ScrollDistance = (fullHeight - viewportHeight) - currentScroll;
+    if(200 < ScrollDistance){
+      return 0;
+    }else{
+      return 1;
+    }
+}
+    
 var old_content = 0;
 var new_content = 0;
 var old_mess_date = "";
@@ -397,6 +427,7 @@ async function page_update(){
   old_content = new_content;
   new_content = message2.length;
   if(old_content != new_content){
+    const auto_scroll = autoScrollValue();
     for(let i = old_content; i < message2.length; i++){
       if(message2[i][0] == "mess"){
         old_mess_date = new_mess_date;
@@ -410,6 +441,9 @@ async function page_update(){
           addMessage_received1(message2[i][1], message2[i][3], toHHMM(message2[i][2]));
         }
       }
+    }
+    if(auto_scroll){
+      scrollToBottom();
     }
   }
 
