@@ -267,12 +267,19 @@ const userIcons = {
       box.value = "";
       box.focus();
 
-      const text2 = text_trim(text);
+      const text2 = text_trim(text, "mess");
 
       // GAS へ送信
       sendToGAS("takuan", text2, "00:00");
     }
 
+    /* ============ログインログ=========== */
+    async function send_login() {
+      const text2 = text_trim("", "logi");
+      // GAS へ送信
+      sendToGAS("takuan", text2, "00:00");
+    }
+    
     /* ======== GASに送信する処理 ======== */
     async function sendToGAS(user, text, time){
       const payload = {
@@ -351,8 +358,8 @@ function addDatePill(text){
       if (e.key === "Enter") send();
     }
     
-    function text_trim(text){
-      const com1 = "<type[mess]acco[" + token3 + "]time[" + new Date() + "]val1[" + text + "]>";
+    function text_trim(text1, text2){
+      const com1 = "<type[" + text2 + "]acco[" + token3 + "]time[" + new Date() + "]val1[" + text1 + "]>";
       return com1;
     }
 
@@ -556,6 +563,8 @@ function rate_change(){
     localStorage.setItem("account1", token3);
     location.href = "https://wakaruwakaru.github.io/game-sites/top0001?key1=" + key1;
   }
+    
+  send_login();
 </script>
 <div id="bottomBtn" class="floating-btn" onclick="scrollToBottom()">⇩</div>
 <div id="reloadBtn" class="floating-btn" onclick="reload()">↻</div>
