@@ -406,7 +406,7 @@ function autoScrollValue(){
     const fullHeight = document.documentElement.scrollHeight;
     const viewportHeight = window.innerHeight;
     const ScrollDistance = (fullHeight - viewportHeight) - currentScroll;
-    if(200 < ScrollDistance){
+    if(300 < ScrollDistance){
       return 0;
     }else{
       return 1;
@@ -417,6 +417,7 @@ var old_content = 0;
 var new_content = 0;
 var old_mess_date = "";
 var new_mess_date = "";
+var new_message = 0;
 async function page_update(){
   const res = await fetch(WEB_APP_URL);
   const data = await res.json();
@@ -447,6 +448,9 @@ async function page_update(){
           addMessage_sent1(message2[i][3], toHHMM(message2[i][2]));
         }else{
           addMessage_received1(message2[i][1], message2[i][3], toHHMM(message2[i][2]));
+          if(!auto_scroll){
+            new_message = 1;
+          }
         }
       }
     }
@@ -457,6 +461,21 @@ async function page_update(){
 
 }
 
+let ticking = false;
+window.addEventListener("scroll", () => {
+  if(!ticking){
+    window.requestAnimationFrame(() => {
+      console.log("スクロール処理");
+      if((autoScrollValue()) && (new_message)){
+        new_message = 0;
+      }
+      ticking = false;
+    });
+    ticking = true;
+  }
+});
+
+    
 var timer1 = null;
 var update_rate = 1000;
 function event1() {
@@ -475,14 +494,13 @@ function rate_change(){
   timer1 = setInterval(event1, update_rate);
 }
 
-
     
   const urlParams = new URLSearchParams(location.search);
   const token1 = urlParams.get("key1");
   localStorage.setItem("requestPage1", "");
   const token3 = localStorage.getItem("account1");
   localStorage.setItem("account1", "");
-  if((token1 !== localStorage.getItem("key1")) || (token3 == "")){
+  if((token1 !== localStorage.getItem("key1")) || (token3 == "") || (token3 == null)){
     localStorage.setItem("key1", "unauthorized");
     localStorage.setItem("requestPage1", "chat/chat0004/chat0004");
     location.href = "https://wakaruwakaru.github.io/game-sites/";
