@@ -187,6 +187,22 @@ h1{
 <hr />
 <div class="news-list">
 
+    <div class="news-item" onclick="jumpLink7()">
+        <div class="news-thumb">
+            <img src="https://wakaruwakaru.github.io/game-sites/topic/topic0007/picture0001.png" alt="">
+        </div>
+        <div class="news-content">
+            <div class="news-meta">
+                <div class="news-date">2025.12.11</div>
+                <div class="news-category">お知らせ</div>
+            </div>
+            <div class="news-title">新ゲーム「スネークゲーム」が登場!</div>
+            <div class="news-text">
+                新ゲーム「スネークゲーム」がリリース! なぜか飽きない不朽の名作風…
+            </div>
+        </div>
+    </div>
+  
     <div class="news-item" onclick="jumpLink6()">
         <div class="news-thumb">
             <img src="https://wakaruwakaru.github.io/game-sites/topic/topic0006/picture0001.png" alt="">
@@ -327,6 +343,11 @@ h1{
             const key1 = crypto.randomUUID();
             localStorage.setItem("key1", key1);
             location.href = "https://wakaruwakaru.github.io/game-sites/topic/topic0006/topic0006?key1=" + key1;
+        }
+        function jumpLink7(){
+            const key1 = crypto.randomUUID();
+            localStorage.setItem("key1", key1);
+            location.href = "https://wakaruwakaru.github.io/game-sites/page0010?key1=" + key1;
         }
         function reload(){
             const key1 = crypto.randomUUID();
