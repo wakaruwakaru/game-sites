@@ -163,7 +163,25 @@
     text-align:center;
 }
 
-    
+
+.new-msg {
+  position: fixed;
+  bottom: 120px;
+  left: 20px;
+  background: rgba(0,0,0,0.75);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  font-size: 14px;
+}
+.new-msg.show {
+  opacity: 1;
+}
+
+
 /* フローティングボタンの共通デザイン */
 .floating-btn{
     position: fixed;
@@ -216,6 +234,9 @@
     <input type="text" placeholder="メッセージを送信" id="textBox1" onkeyup="enterSend(event)">
     <div class="icon-right" onclick="rate_change()"></div>
   </div>
+
+  <!-- 新規メッセージログ -->
+  <div id="new-msg" class="new-msg"></div>
 
   <script>
     /* ======== Google Apps Script Web App URL ======== */
@@ -412,6 +433,18 @@ function autoScrollValue(){
       return 1;
     }
 }
+
+const msg1 = document.getElementById("new-msg");
+function new_msg(text){
+  msg1.textContent = text;
+  msg1.classList.add("show");
+
+  /* 1.5秒後にフェードアウト
+  setTimeout(() => {
+    msg1.classList.remove("show");
+  }, 1500);
+  */
+}
     
 var old_content = 0;
 var new_content = 0;
@@ -448,8 +481,9 @@ async function page_update(){
           addMessage_sent1(message2[i][3], toHHMM(message2[i][2]));
         }else{
           addMessage_received1(message2[i][1], message2[i][3], toHHMM(message2[i][2]));
-          if(!auto_scroll){
+          if((!auto_scroll) && (!new_message)){
             new_message = 1;
+            new_msg("新規メッセージ");
           }
         }
       }
@@ -465,8 +499,8 @@ let ticking = false;
 window.addEventListener("scroll", () => {
   if(!ticking){
     window.requestAnimationFrame(() => {
-      console.log("スクロール処理");
       if((autoScrollValue()) && (new_message)){
+        msg1.classList.remove("show");
         new_message = 0;
       }
       ticking = false;
