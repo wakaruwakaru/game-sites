@@ -210,7 +210,9 @@ h1{
     <script>
         const urlParams = new URLSearchParams(location.search);
         const token1 = urlParams.get("key1");
-        if(token1 !== localStorage.getItem("key1")){
+        const token3 = localStorage.getItem("account1");
+        localStorage.setItem("account1", "");
+        if((token1 !== localStorage.getItem("key1")) || (token3 == "") || (token3 == null)){
             localStorage.setItem("key1", "unauthorized");
             localStorage.setItem("requestPage1", "topic/topic0005/topic0005");
             location.href = "https://wakaruwakaru.github.io/game-sites/";
@@ -223,16 +225,19 @@ h1{
         function jumpLink1(){
         //  const key1 = crypto.randomUUID();
         //  localStorage.setItem("key1", key1);
+        //  localStorage.setItem("account1", token3);
         //  location.href = "https://wakaruwakaru.github.io/game-sites/page0007-1?key1=" + key1;
         }
         function reload(){
             const key1 = crypto.randomUUID();
             localStorage.setItem("key1", key1);
+            localStorage.setItem("account1", token3);
             location.href = "https://wakaruwakaru.github.io/game-sites/topic/topic0005/topic0005?key1=" + key1;
         }
         function backPage(){
             const key1 = crypto.randomUUID();
             localStorage.setItem("key1", key1);
+            localStorage.setItem("account1", token3);
             location.href = "https://wakaruwakaru.github.io/game-sites/topic/top-topic0001?key1=" + key1;
         }
     </script>
