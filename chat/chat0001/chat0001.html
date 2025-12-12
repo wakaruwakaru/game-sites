@@ -548,6 +548,7 @@ function rate_change(){
   }else{
     localStorage.setItem("key1", "");
     localStorage.setItem("requestPage1", "");
+    send_login();
   }
 
   function reload(){
@@ -562,8 +563,6 @@ function rate_change(){
     localStorage.setItem("account1", token3);
     location.href = "https://wakaruwakaru.github.io/game-sites/top0001?key1=" + key1;
   }
-    
-  send_login();
 </script>
 <div id="bottomBtn" class="floating-btn" onclick="scrollToBottom()">⇩</div>
 <div id="reloadBtn" class="floating-btn" onclick="reload()">↻</div>
