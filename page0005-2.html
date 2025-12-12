@@ -401,7 +401,9 @@ let throughCount = 0; // 見逃し数
 <script>
     const urlParams = new URLSearchParams(location.search);
     const token1 = urlParams.get("key1");
-    if(token1 !== localStorage.getItem("key1")){
+    const token3 = localStorage.getItem("account1");
+    localStorage.setItem("account1", "");
+    if((token1 !== localStorage.getItem("key1")) || (token3 == "") || (token3 == null)){
         localStorage.setItem("key1", "unauthorized");
 		localStorage.setItem("requestPage1", "page0005-2");
         location.href = "https://wakaruwakaru.github.io/game-sites/";
@@ -412,11 +414,13 @@ let throughCount = 0; // 見逃し数
     function reload(){
         const key1 = crypto.randomUUID();
         localStorage.setItem("key1", key1);
+		localStorage.setItem("account1", token3);
         location.href = "https://wakaruwakaru.github.io/game-sites/page0005-2?key1=" + key1;
     }
     function backPage(){
         const key1 = crypto.randomUUID();
         localStorage.setItem("key1", key1);
+		localStorage.setItem("account1", token3);
         location.href = "https://wakaruwakaru.github.io/game-sites/top0001?key1=" + key1;
     }
 </script>
