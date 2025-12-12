@@ -78,12 +78,19 @@ h1{
         width: 100%;
         border-radius: 10px;
         margin-bottom: 25px;
-
         box-shadow:
             0 0 10px #0ff,
             0 0 25px rgba(0, 255, 255, 0.4);
     }
-
+    .article-image2 {
+        width: 50%;
+        border-radius: 10px;
+        margin-bottom: 25px;
+        box-shadow:
+            0 0 10px #0ff,
+            0 0 25px rgba(0, 255, 255, 0.4);
+    }
+  
     /* 記事本文 */
     .article-body {
         font-size: 18px;
@@ -189,7 +196,7 @@ h1{
 
 <div class="article-container">
     <div class="article-title">新サービスのチャットがリリース!</div>
-    <img class="article-image" src="./picture0001.jpg" alt="記事画像">
+    <img class="article-image" src="./picture0001.jpg" alt="記事画像" />
     <div class="article-body">
         <p>「game-sites」独自技術のチャットが登場! 一般的な連絡アプリと同程度のクオリティに</p>
         <h2>■ 「game-sites」独自のチャット</h2>
@@ -199,12 +206,15 @@ h1{
         <h2>■ 使い方</h2>
         <p>　チャットを開くと画面中央にはメッセージ欄、画面右側には3つのボタン、画面下側にはユーザーの入力欄が表示されます。使い方は非常にシンプルで、画面下側のメッセージを送信と書かれた欄に送信したい内容を入力した後、その横の＋ボタンまたはEnterキーを押すことで内容が送信されます。他のユーザーからのメッセージは画面中央にアイコンと共に表示されます。</p>
         <h2>■ 便利機能</h2>
+    </div>
+    <img class="article-image" src="./picture0002.png" alt="記事画像" />
+    <div class="article-body">
         <p>　今回新リリースされたチャットは「game-sites」独自開発されたもので、様々な便利機能が実装されているそうです。その一部を以下で紹介します!!</p>
-        <p>1|自動スクロール</p>
+        <p>1,自動スクロール</p>
         <p>　メッセージ最下部を閲覧中に新着メッセージが届いたとき、自動で新着メッセージまでスクロールされます。過去のメッセージを閲覧中は自動スクロールが無効になります。</p>
-        <p>2|新着メッセージ通知</p>
+        <p>2,新着メッセージ通知</p>
         <p>　過去のメッセージを閲覧中に新着メッセージが届いたとき、画面左下に通知が表示されます。この通知は新着メッセージを閲覧すると自動で消えます。</p>
-        <p>3|低レート通信モード</p>
+        <p>3,低レート通信モード</p>
         <p>　メッセージの入力欄右側の黒いアイコンをタップするとマーク内部が光り、低レート通信モードに入ります。このモードが有効になると、チャットの更新頻度が低下する代わりに通信量とデバイスへの負荷が軽減されます。WiFiが使えない環境やデバイスに負荷をかけたくない場合に有効にすることが好ましいです。もう一度アイコンをタップすると低レート通信モードは無効になります。</p>
         <div class="side-set"><button id="copyBtn" class="neonButton">📥</button></div>
         <p style="margin-top: 30px; opacity: 0.7;">Ⓒgame-sites　　2025.12.12</p>
