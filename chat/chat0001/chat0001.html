@@ -295,7 +295,6 @@ const userIcons = {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload)
         });
-
         // no-cors のためレスポンスは読めない（仕様）
       } catch (e) {
         console.error("送信エラー:", e);
@@ -544,7 +543,7 @@ function rate_change(){
   localStorage.setItem("account1", "");
   if((token1 !== localStorage.getItem("key1")) || (token3 == "") || (token3 == null)){
     localStorage.setItem("key1", "unauthorized");
-    localStorage.setItem("requestPage1", "chat/chat0004/chat0004");
+    localStorage.setItem("requestPage1", "chat/chat0001/chat0001");
     location.href = "https://wakaruwakaru.github.io/game-sites/";
   }else{
     localStorage.setItem("key1", "");
@@ -555,7 +554,7 @@ function rate_change(){
     const key1 = crypto.randomUUID();
     localStorage.setItem("key1", key1);
     localStorage.setItem("account1", token3);
-    location.href = "https://wakaruwakaru.github.io/game-sites/chat/chat0004/chat0004?key1=" + key1;
+    location.href = "https://wakaruwakaru.github.io/game-sites/chat/chat0001/chat0001?key1=" + key1;
   }
   function backPage(){
     const key1 = crypto.randomUUID();
