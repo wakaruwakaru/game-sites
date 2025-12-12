@@ -540,7 +540,6 @@ function rate_change(){
     
   const urlParams = new URLSearchParams(location.search);
   const token1 = urlParams.get("key1");
-  localStorage.setItem("requestPage1", "");
   const token3 = localStorage.getItem("account1");
   localStorage.setItem("account1", "");
   if((token1 !== localStorage.getItem("key1")) || (token3 == "") || (token3 == null)){
@@ -549,6 +548,7 @@ function rate_change(){
     location.href = "https://wakaruwakaru.github.io/game-sites/";
   }else{
     localStorage.setItem("key1", "");
+    localStorage.setItem("requestPage1", "");
   }
 
   function reload(){
