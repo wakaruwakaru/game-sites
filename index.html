@@ -28,6 +28,22 @@
 <div class="back-border">
 <div class="news-list">
 
+    <div class="news-item" onclick="jumpTopic8()">
+        <div class="news-thumb">
+            <img src="https://wakaruwakaru.github.io/game-sites/topic/topic0008/picture0001.jpg" alt="">
+        </div>
+        <div class="news-content">
+            <div class="news-meta">
+                <div class="news-date">2025.12.12</div>
+                <div class="news-category">お知らせ</div>
+            </div>
+            <div class="news-title">新サービスのチャットがリリース!</div>
+            <div class="news-text">
+                「game-sites」独自技術のチャットが登場! 一般的な連絡アプリと…
+            </div>
+        </div>
+    </div>
+  
     <div class="news-item" onclick="jumpTopic7()">
         <div class="news-thumb">
             <img src="https://wakaruwakaru.github.io/game-sites/topic/topic0007/picture0001.png" alt="">
@@ -40,22 +56,6 @@
             <div class="news-title">新ゲーム「スネークゲーム」が登場!</div>
             <div class="news-text">
                 新ゲーム「スネークゲーム」がリリース! なぜか飽きない不朽の名作風…
-            </div>
-        </div>
-    </div>
-  
-    <div class="news-item" onclick="jumpTopic6()">
-        <div class="news-thumb">
-            <img src="./topic/topic0006/picture0001.png" alt="">
-        </div>
-        <div class="news-content">
-            <div class="news-meta">
-                <div class="news-date">2025.12.07</div>
-                <div class="news-category">お知らせ</div>
-            </div>
-            <div class="news-title">最新トピックがログイン画面に登場!</div>
-            <div class="news-text">
-                最新トピックがログイン画面に登場! 記事コピー機能も新たに登場…
             </div>
         </div>
     </div>
@@ -117,82 +117,79 @@ updateWidget('ww_e81726654fd56',0);
   }
 
   async function gate(){
-  //連打対策：実行中なら無視
-  if(!loadingLock){
-    loadingLock = true;
+    if(!loadingLock){  //連打対策：実行中なら無視
+      loadingLock = true;
 
-    var user1 = document.getElementById("user1").value;
-    var pass1 = document.getElementById("pass1").value;
-    let displayPattern1 = -2;
-    let userNumber1 = null;
-    const hashedPass1 = await sha256(pass1);
-    //パスワード照合
-    for(let count1 = 0; count1 < accountKey1.length; count1++){
-      if(user1 == accountKey1[count1][0] && hashedPass1 == accountKey1[count1][1]){
-        displayPattern1 = accountKey1[count1][2];
-        userNumber1 = count1;
-        break;
+      var user1 = document.getElementById("user1").value;
+      var pass1 = document.getElementById("pass1").value;
+      let displayPattern1 = -2;
+      let userNumber1 = null;
+      const hashedPass1 = await sha256(pass1);
+      for(let count1 = 0; count1 < accountKey1.length; count1++){  //パスワード照合
+        if(user1 == accountKey1[count1][0] && hashedPass1 == accountKey1[count1][1]){
+          displayPattern1 = accountKey1[count1][2];
+          userNumber1 = count1;
+          break;
+        }
       }
-    }
-    //roading animation
-    document.getElementById("no1").innerHTML = "";
-    document.getElementById("com1").innerHTML = "";
-    for(let count1 = 0; count1 < 5; count1++){
-      document.getElementById("road1").innerHTML = "□□■";
-      await delay(200);
-      document.getElementById("road1").innerHTML = "□■■";
-      await delay(200);
-      document.getElementById("road1").innerHTML = "■■■";
-      await delay(200);
-      if(displayPattern1 != -2){
-        break;
-      }
-    }
-    document.getElementById("road1").innerHTML = "";
-    //照合結果の描画
-    if(displayPattern1 == -2){
-      document.getElementById("no1").innerHTML = "not found";
-      token1 = "";
-      token2 = "";
-    }else{
+      //roading animation
       document.getElementById("no1").innerHTML = "";
-    }
-    if(displayPattern1 != -2){
-      document.getElementById("com1").innerHTML = "Welcome " + accountKey1[userNumber1][0] + "!";
-      const key1 = crypto.randomUUID();
-      localStorage.setItem("key1", key1);
-      localStorage.setItem("account1", accountKey1[userNumber1][0]);
-      if(((token1 == "unauthorized") || (token1 == "jumpTopic")) && (token2 != null) && (token2 != "")){
-        location.href = "https://wakaruwakaru.github.io/game-sites/" + token2 + "?key1=" + key1;
-      }else{
-        location.href = "https://wakaruwakaru.github.io/game-sites/top0001?key1=" + key1;
-      }
-    }else{
       document.getElementById("com1").innerHTML = "";
+      for(let count1 = 0; count1 < 5; count1++){
+        document.getElementById("road1").innerHTML = "□□■";
+        await delay(200);
+        document.getElementById("road1").innerHTML = "□■■";
+        await delay(200);
+        document.getElementById("road1").innerHTML = "■■■";
+        await delay(200);
+        if(displayPattern1 != -2){
+          break;
+        }
+      }
+      document.getElementById("road1").innerHTML = "";
+      //照合結果の描画
+      if(displayPattern1 == -2){
+        document.getElementById("no1").innerHTML = "not found";
+        token1 = "";
+        token2 = "";
+      }else{
+        document.getElementById("no1").innerHTML = "";
+      }
+      if(displayPattern1 != -2){
+        document.getElementById("com1").innerHTML = "Welcome " + accountKey1[userNumber1][0] + "!";
+        const key1 = crypto.randomUUID();
+        localStorage.setItem("key1", key1);
+        localStorage.setItem("account1", accountKey1[userNumber1][0]);
+        if(((token1 == "unauthorized") || (token1 == "jumpTopic")) && (token2 != null) && (token2 != "")){
+          location.href = "https://wakaruwakaru.github.io/game-sites/" + token2 + "?key1=" + key1;
+        }else{
+          location.href = "https://wakaruwakaru.github.io/game-sites/top0001?key1=" + key1;
+        }
+      }else{
+        document.getElementById("com1").innerHTML = "";
+      }
+      loadingLock = false;
     }
-
-    loadingLock = false;
-  }
   }
 
 
-  function delay(ms) {
+  function delay(ms){
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
-  function enterMove(e) {
-    if (e.key === "Enter") {
+  function enterMove(e){
+    if(e.key === "Enter"){
       document.getElementById("pass1").focus(); // パス欄へフォーカス
     }
   }
   
-  function enterLogin(e) {
-    if (e.key === "Enter") {
+  function enterLogin(e){
+    if(e.key === "Enter"){
       gate();
     }
   }
 
-  async function sha256(text) {
+  async function sha256(text){
     const encoder = new TextEncoder();
     const data = encoder.encode(text);
     const hashBuffer = await crypto.subtle.digest("SHA-256", data);
@@ -320,29 +317,16 @@ updateWidget('ww_e81726654fd56',0);
     }
 
 
-    function jumpTopic6(){
-      token1 = "jumpTopic";
-      token2 = "topic/topic0006/topic0006";
-      document.getElementById("user1").focus(); //ユーザー欄へフォーカス
-    }
     function jumpTopic7(){
       token1 = "jumpTopic";
       token2 = "page0010";
       document.getElementById("user1").focus(); //ユーザー欄へフォーカス
     }
+    function jumpTopic8(){
+      token1 = "jumpTopic";
+      token2 = "topic/topic0008/topic0008";
+      document.getElementById("user1").focus(); //ユーザー欄へフォーカス
+    }
   </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
