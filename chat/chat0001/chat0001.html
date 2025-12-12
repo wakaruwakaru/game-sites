@@ -455,12 +455,18 @@ const msg1 = document.getElementById("new-msg");
 function new_msg(text){
   msg1.textContent = text;
   msg1.classList.add("show");
-
   /* 1.5秒後にフェードアウト
   setTimeout(() => {
     msg1.classList.remove("show");
   }, 1500);
   */
+}
+
+function diffSeconds(get_old_date) {
+  const oldTime = new Date(get_old_date).getTime();  // 過去の時刻（ミリ秒）
+  const nowTime = Date.now();                    // 現在の時刻（ミリ秒）
+  const diffMs = nowTime - oldTime;              // ミリ秒差
+  return Math.floor(diffMs / 1000);              // 秒に変換
 }
     
 var old_content = 0;
