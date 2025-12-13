@@ -367,8 +367,9 @@ function addDatePill(text){
     }
     
     function text_trim(text1, text2){
-      const com1 = "<type[" + text2 + "]acco[" + token3 + "]time[" + new Date() + "]val1[" + text1 + "]>";
-      return com1;
+      //const com1 = "<type[" + text2 + "]acco[" + token3 + "]time[" + new Date() + "]val1[" + text1 + "]>";
+      //return com1;
+      return `<type[${text2}]acco[${token3}]time[${new Date()}]val1[${text1}]>`;
     }
 
 const box = document.getElementById("textBox1");
