@@ -190,7 +190,7 @@
   align-items: center;
   font-size: 10px;
   display: flex;
-  transform: translateX(clamp(-300px, -40%, 0px));
+  transform: translateX(clamp(-200px, -40%, 0px));
 }
 
 /* フローティングボタンの共通デザイン */
@@ -491,6 +491,7 @@ async function page_update(){
   });
 
   // ③ 出力
+  renew_time = new Date();
   old_content = new_content;
   new_content = message2.length;
   if(old_content != new_content){
@@ -516,7 +517,6 @@ async function page_update(){
     if(auto_scroll){
       scrollToBottom();
     }
-    renew_time = new Date();
   }
 
 }
