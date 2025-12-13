@@ -245,10 +245,11 @@
     <input type="text" placeholder="メッセージを送信" id="textBox1" onkeyup="enterSend(event)">
     <div class="icon-right" onclick="rate_change()"></div>
   </div>
-
   <!-- 新規メッセージログ -->
   <div id="new-msg" class="new-msg"></div>
-
+  <!-- 最終更新時間 -->
+  <div id="last-change-time" class="last-change-time">データを取得中</div>
+  
   <script>
     /* ======== Google Apps Script Web App URL ======== */
     const WEB_APP_URL =
@@ -474,6 +475,7 @@ var new_content = 0;
 var old_mess_date = "";
 var new_mess_date = "";
 var new_message = 0;
+var renew_time = 0;
 async function page_update(){
   const res = await fetch(WEB_APP_URL);
   const data = await res.json();
@@ -514,6 +516,7 @@ async function page_update(){
     if(auto_scroll){
       scrollToBottom();
     }
+    renew_time = new Date();
   }
 
 }
@@ -551,6 +554,16 @@ function rate_change(){
   timer1 = setInterval(event1, update_rate);
 }
 
+var timer2 = null;
+function event2(){
+  if(renew_time != 0){
+    if(diffSeconds(renew_time) < 60){
+      document.getElementById("last-change-time").innerHTML = "最終更新: " + diffSeconds(renew_time) + "秒前";
+    }else{
+      document.getElementById("last-change-time").innerHTML = "最終更新: " + toHHMM(renew_time);
+    }
+  }
+}timer2 = setInterval(event2, 100);
     
   const urlParams = new URLSearchParams(location.search);
   const token1 = urlParams.get("key1");
