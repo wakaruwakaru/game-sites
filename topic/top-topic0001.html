@@ -188,6 +188,22 @@ h1{
 <hr />
 <div class="news-list">
 
+    <div class="news-item" onclick="jumpLink10()">
+        <div class="news-thumb">
+            <img src="https://wakaruwakaru.github.io/game-sites/topic/topic0010/picture0001.jpg" alt="">
+        </div>
+        <div class="news-content">
+            <div class="news-meta">
+                <div class="news-date">2025.12.15</div>
+                <div class="news-category">お知らせ</div>
+            </div>
+            <div class="news-title">テトリスがついにリリース!</div>
+            <div class="news-text">
+                新ゲームのテトリスがリリース! スマホでも遊びやすいサイズ感と…
+            </div>
+        </div>
+    </div>
+  
     <div class="news-item" onclick="jumpLink9()">
         <div class="news-thumb">
             <img src="https://wakaruwakaru.github.io/game-sites/topic/topic0009/picture0001.jpg" alt="">
@@ -195,7 +211,7 @@ h1{
         <div class="news-content">
             <div class="news-meta">
                 <div class="news-date">2025.12.14</div>
-                <div class="news-category">バグ修正 </div>
+                <div class="news-category">バグ修正</div>
             </div>
             <div class="news-title">チャットのバグ修正</div>
             <div class="news-text">
@@ -391,6 +407,11 @@ h1{
             const key1 = crypto.randomUUID();
             localStorage.setItem("key1", key1);
             location.href = "https://wakaruwakaru.github.io/game-sites/topic/topic0009/topic0009?key1=" + key1;
+        }
+        function jumpLink10(){
+            const key1 = crypto.randomUUID();
+            localStorage.setItem("key1", key1);
+            location.href = "https://wakaruwakaru.github.io/game-sites/page0011?key1=" + key1;
         }
         function reload(){
             const key1 = crypto.randomUUID();
