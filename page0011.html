@@ -17,8 +17,7 @@
   }
   .game{
     display:flex;
-    gap:20px;
-    align-items:flex-start;
+    flex-direction: column;
   }
   canvas{
     background:#111;
@@ -131,30 +130,26 @@
 <body>
 
 <div class="game">
-  <canvas id="game" width="240" height="400"></canvas>
   <div class="info">
     <h1>テトリス</h1>
     <p>スコア: <span id="score">0</span></p>
-    <p>
-      ← → : 移動<br>
-      ↓ : ソフトドロップ<br>
-      ↑ : 回転<br>
-      Space : ハードドロップ
-    </p>
+  </div>
+  <canvas id="game" width="240" height="400"></canvas>
+
+  <div class="controls">
+    <div></div>
+    <div class="btn" data-dir="up">▲</div>
+    <div></div>
+    <div class="btn" data-dir="left">◀</div>
+    <div class="btn" data-dir="spa">●</div>
+    <div class="btn" data-dir="right">▶</div>
+    <div></div>
+    <div class="btn" data-dir="down">▼</div>
+    <div></div>
   </div>
 </div>
 
-<div class="controls">
-  <div></div>
-  <div class="btn" data-dir="up">▲</div>
-  <div></div>
-  <div class="btn" data-dir="left">◀</div>
-  <div class="btn" data-dir="spa">●</div>
-  <div class="btn" data-dir="right">▶</div>
-  <div></div>
-  <div class="btn" data-dir="down">▼</div>
-  <div></div>
-</div>
+
 
 <script>
 const canvas = document.getElementById("game");
