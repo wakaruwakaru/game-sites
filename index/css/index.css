@@ -9,6 +9,7 @@ body{
   background-position: center;   /* 画像の中心をページ中央に */
   background-repeat: no-repeat;  /* 繰り返し防止 */
   background-attachment: fixed;  /* （任意）スクロールしても固定 */
+  user-select:none;
 }
 .back-border{
   position: relative;
