@@ -114,7 +114,7 @@
   <div class="btn" data-dir="up">▲</div>
   <div></div>
   <div class="btn" data-dir="left">◀</div>
-  <div></div>
+  <div class="btn" data-dir="spa">●</div>
   <div class="btn" data-dir="right">▶</div>
   <div></div>
   <div class="btn" data-dir="down">▼</div>
@@ -285,14 +285,15 @@ document.addEventListener("keydown",e=>{
 document.querySelectorAll(".btn").forEach(btn=>{
   btn.addEventListener("click", ()=>{
     const dir = btn.dataset.dir;
-    if(dir==="up" && vy===0){
+    if(dir==="up"){
     const old = player.matrix;
     player.matrix = rotate(player.matrix);
     if(collide()) player.matrix = old;
   }
-    if(dir==="down" && vy===0){drop();}
-    if(dir==="left" && vx===0){player.x--; if(collide()) player.x++;}
-    if(dir==="right" && vx===0){player.x++; if(collide()) player.x--;}
+    if(dir==="down"){drop();}
+    if(dir==="left"){player.x--; if(collide()) player.x++;}
+    if(dir==="right"){player.x++; if(collide()) player.x--;}
+    if(dir==="spa"){hardDrop();}
   });
 });
 
