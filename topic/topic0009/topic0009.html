@@ -1,9 +1,293 @@
 <html>
-  <style></style>
-  <body>
-    <p>404 not found</p>
-  </body>
-  <script>
-    location.href = "https://wakaruwakaru.github.io/game-sites/";
-  </script>
+<head>
+<meta charset="utf-8">
+<title>バグ修正のお知らせ</title>
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="shortcut icon" href="https://wakaruwakaru.github.io/game-sites/index/icon/icon1.png" >
+<style type="text/css">
+body{
+  margin:0;
+  padding:0;
+  font-family:'Segoe UI',sans-serif;
+  background:#000;
+  color:white;
+  user-select:none;
+}
+
+h1{
+  text-align:center;
+  margin-top:60px;
+  font-size:32px;
+  letter-spacing:3px;
+  color:#8ab9ff;
+}
+
+.link-list{
+  width:80%;
+  max-width:500px;
+  margin:40px auto;
+}
+
+.neon-btn{
+  font-size:20px;
+  margin:20px 0;
+  padding:18px;
+  text-align:center;
+  border:2px solid #4da6ff;
+  border-radius:12px;
+  color:#bcdfff;
+  cursor:pointer;
+  transition:0.25s;
+  box-shadow:0 0 8px #3d8cffaa;
+}
+.neon-btn:hover{
+  background:#4da6ff33;
+  box-shadow:0 0 14px #4da6ffaa;
+}
+.neon-btn:active {
+    transform: scale(0.94);
+}
+
+    /* 全体コンテナ */
+    .article-container {
+        max-width: 900px;
+        margin: 50px auto;
+        padding: 30px;
+        background: rgba(0, 0, 0, 0.5);
+        border: 2px solid #0af;
+        border-radius: 20px;
+        box-shadow:
+            0 0 15px #0af,
+            0 0 40px rgba(0, 170, 255, 0.5);
+
+        backdrop-filter: blur(6px);
+    }
+
+    /* タイトル */
+    .article-title {
+        font-size: 32px;
+        margin-bottom: 20px;
+        color: #9cf;
+        text-shadow: 
+            0 0 10px #3cf,
+            0 0 20px #06f;
+    }
+
+    /* 画像 */
+    .article-image {
+        width: 100%;
+        border-radius: 10px;
+        margin-bottom: 25px;
+        box-shadow:
+            0 0 10px #0ff,
+            0 0 25px rgba(0, 255, 255, 0.4);
+    }
+    .article-image2 {
+        width: 30%;
+        border-radius: 10px;
+        margin-bottom: 25px;
+        box-shadow:
+            0 0 10px #0ff,
+            0 0 25px rgba(0, 255, 255, 0.4);
+    }
+  
+    /* 記事本文 */
+    .article-body {
+        font-size: 18px;
+        line-height: 1.8;
+        color: #cfe8ff;
+        text-shadow: 0 0 5px #0277ff80;
+    }
+
+    /* 小見出し */
+    .article-body h2 {
+        margin-top: 30px;
+        color: #8fccff;
+        text-shadow: 0 0 8px #39f;
+    }
+  
+/* フローティングボタンの共通デザイン */
+.floating-btn{
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: #111;
+    border: 2px solid #4da6ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 26px;
+    color: #bcdfff;
+    cursor: pointer;
+    transition: 0.25s;
+    box-shadow: 0 0 10px #3d8cff88;
+}
+/* ホバー時に光る */
+.floating-btn:hover{
+    background: #4da6ff33;
+    box-shadow: 0 0 16px #4da6ffcc;
+}
+/* クリック時に縮む */
+.floating-btn:active{
+    transform: scale(0.9);
+}
+/* ボタン位置調整 */
+#reloadBtn{
+    bottom: 90px; /* logout の上に配置 */
+}
+#logoutBtn{
+    bottom: 20px;
+}
+
+/* ダウンロードボタン */
+.neonButton {
+  padding: 6px 11px;
+  border: 2px solid #4da6ff;
+  background: #000;
+  color: #bcdfff;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 18px;
+  box-shadow: 0 0 10px #4da6ff99,
+              0 0 20px #4da6ff66 inset;
+  transition: 0.25s;
+}
+.neonButton:hover {
+  box-shadow: 0 0 18px #4da6ff,
+              0 0 28px #4da6ffaa inset;
+}
+.side-set{
+  text-align:right;
+}
+
+/* 画像のコピーメッセージ */
+.toast {
+  position: fixed;
+  top: 30px;
+  right: 30px;
+  padding: 12px 20px;
+  background: #000000;
+  border: 1px solid #4da6ff;
+  border-radius: 8px;
+  color: #ffffff;
+  font-size: 16px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 0 10px #4da6ff, 0 0 20px #4da6ff inset;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(20px);
+  transition: opacity .4s ease, transform .4s ease;
+  z-index: 9999;
+}
+.toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+</style>
+</head>
+<body>
+<h1>トピック</h1>
+<hr />
+<div id="articleArea">
+<!-- 記事の画像や本文  -->
+
+<div class="article-container">
+    <div class="article-title">チャットのバグ修正</div>
+    <img class="article-image" src="./picture0001.jpg" alt="記事画像" />
+    <div class="article-body">
+        <p>度々発生していたチャットでのアカウント認証バグが修正　が…</p>
+        <h2>■ 修正内容</h2>
+        <p>　近日実装されたチャットについて、認証の不具合により自身のアカウントが照合されずに匿名ユーザーとしてログインした状態になってしまうバグが修正されました。</p>
+        <p>　しかし公式は、完全な原因究明には至っていない可能性があると発表しています。今後もこのようなバグが発生する可能性はゼロではないため、不具合に遭遇した場合は再ログインするのがおすすめです。</p>
+        <div class="side-set"><button id="copyBtn" class="neonButton">📥</button></div>
+        <p style="margin-top: 30px; opacity: 0.7;">Ⓒgame-sites　　2025.12.14</p>
+    </div>
+</div>
+
+<!-- 記録される記事の最後 -->
+</div>
+<hr />
+<div id="reloadBtn" class="floating-btn" onclick="reload()">↻</div>
+<div id="logoutBtn" class="floating-btn" onclick="backPage()">⇦</div>
+<div id="toast" class="toast">記事をコピーしました</div>
+</body>
+    <script>
+        const urlParams = new URLSearchParams(location.search);
+        const token1 = urlParams.get("key1");
+        const token3 = localStorage.getItem("account1");
+        localStorage.setItem("account1", "");
+        if((token1 !== localStorage.getItem("key1")) || (token3 == "") || (token3 == null)){
+            localStorage.setItem("key1", "unauthorized");
+            localStorage.setItem("requestPage1", "topic/topic0009/topic0009");
+            location.href = "https://wakaruwakaru.github.io/game-sites/";
+        }else{
+            localStorage.setItem("key1", "");
+            localStorage.setItem("requestPage1", "");
+        }
+
+        function jumpLink1(){
+        //  const key1 = crypto.randomUUID();
+        //  localStorage.setItem("key1", key1);
+        //  localStorage.setItem("account1", token3);
+        //  location.href = "https://wakaruwakaru.github.io/game-sites/page0007-1?key1=" + key1;
+        }
+        function reload(){
+            const key1 = crypto.randomUUID();
+            localStorage.setItem("key1", key1);
+            localStorage.setItem("account1", token3);
+            location.href = "https://wakaruwakaru.github.io/game-sites/topic/topic0009/topic0009?key1=" + key1;
+        }
+        function backPage(){
+            const key1 = crypto.randomUUID();
+            localStorage.setItem("key1", key1);
+            localStorage.setItem("account1", token3);
+            location.href = "https://wakaruwakaru.github.io/game-sites/topic/top-topic0001?key1=" + key1;
+        }
+    </script>
+    <script src="https://wakaruwakaru.github.io/game-sites/index/dist/html2canvas.js"></script>
+    <script>
+      document.getElementById("copyBtn").addEventListener("click", async () => {
+        try {
+          const target = document.getElementById("articleArea");
+          // 🎚️ 高画質スケール倍率（2～5で調整可能）
+          const scale = 3;
+          // 📸 高解像度スクショ生成
+          const canvas = await html2canvas(target, {
+          scale: scale,
+          useCORS: true,          // 外部画像対策
+          imageSmoothingEnabled: true,
+          imageSmoothingQuality: "high",
+          backgroundColor: null   // 背景透過（必要なければ削ってOK）
+        });
+        // 🔄 PNG Blob に変換
+        const blob = await new Promise(resolve =>
+          canvas.toBlob(resolve, "image/png")
+        );
+        // 📋 高画質画像をクリップボードにコピー
+        await navigator.clipboard.write([
+        new ClipboardItem({
+          "image/png": blob
+        })
+      ]);
+      /*alert("スクショ画像をコピーしました！\nクリップボードからペーストできます");*/
+      showToast("記事をコピーしました");
+    } catch (err) {
+      console.error(err);
+      /*alert("コピーに失敗しました\n対応していないブラウザの可能性があります");*/
+      showToast("記事のコピーができませんでした");
+    }
+  });
+
+      function showToast(msg = "コピーしました！"){
+        const toast = document.getElementById("toast");
+        toast.textContent = msg;
+        toast.classList.add("show");
+        setTimeout(() => {
+          toast.classList.remove("show");
+        }, 2500); // 2.5秒で消える
+      }
+</script>
 </html>
