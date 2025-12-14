@@ -281,6 +281,20 @@ document.addEventListener("keydown",e=>{
   if(e.code==="Space") hardDrop();
 });
 
+document.querySelectorAll(".btn").forEach(btn=>{
+  btn.addEventListener("click", ()=>{
+    const dir = btn.dataset.dir;
+    if(dir==="up" && vy===0){
+    const old = player.matrix;
+    player.matrix = rotate(player.matrix);
+    if(collide()) player.matrix = old;
+  }
+    if(dir==="down" && vy===0){drop();}
+    if(dir==="left" && vx===0){player.x--; if(collide()) player.x++;}
+    if(dir==="right" && vx===0){player.x++; if(collide()) player.x--;}
+  });
+});
+
 resetPlayer();
 update();
 </script>
