@@ -93,6 +93,12 @@
 #logoutBtn{
     bottom: 20px;
 }
+  
+#next{
+  background:#111;
+  border-radius:6px;
+  box-shadow:0 0 10px rgba(0,255,255,.3);
+}
 </style>
 </head>
 <body>
@@ -103,9 +109,8 @@
     <p>スコア: <span id="score">0</span></p>
   </div>
   <canvas id="game" width="240" height="400"></canvas>
-
   <div class="controls">
-    <div></div>
+    <div><canvas id="next" width="60" height="64"></canvas></div>
     <div class="btn" data-dir="up">▲</div>
     <div></div>
     <div class="btn" data-dir="left">◀</div>
@@ -124,6 +129,11 @@ const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 const scoreEl = document.getElementById("score");
 
+const nextCanvas = document.getElementById("next");
+const nextCtx = nextCanvas.getContext("2d");
+let nextType = Math.floor(Math.random()*7)+1;
+
+  
 const COLS = 10;
 const ROWS = 20;
 const BLOCK = 20;
@@ -244,12 +254,31 @@ function hardDrop(){
   resetPlayer();
 }
 
+function drawNext(){
+  nextCtx.clearRect(0,0,nextCanvas.width,nextCanvas.height);
+
+  const matrix = SHAPES[nextType];
+  const size = 16;
+
+  matrix.forEach((row,y)=>{
+    row.forEach((v,x)=>{
+      if(v){
+        nextCtx.fillStyle = COLORS[v];
+        nextCtx.fillRect(x*size+8, y*size+8, size-1, size-1);
+      }
+    });
+  });
+}
+  
 function resetPlayer(){
-  const type = Math.floor(Math.random()*7)+1;
-  player.matrix = SHAPES[type];
+  player.matrix = SHAPES[nextType];
+  nextType = Math.floor(Math.random()*7)+1;
+  drawNext();
+
   player.y = 0;
   player.x = (COLS/2|0) - (player.matrix[0].length/2|0);
 }
+
 
 let dropCounter = 0;
 let dropInterval = 500;
@@ -294,7 +323,8 @@ document.querySelectorAll(".btn").forEach(btn=>{
     if(dir==="spa"){hardDrop();}
   });
 });
-
+  
+drawNext();
 resetPlayer();
 update();
 </script>
