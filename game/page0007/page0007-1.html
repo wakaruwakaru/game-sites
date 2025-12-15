@@ -1,0 +1,958 @@
+<!DOCTYPE html>
+<html>
+<head>
+        <title>3D迷路</title>
+        <link rel="shortcut icon" href="/game-sites/index/icon/icon1.png" >
+        <meta name="viewport" content="width=device-width,initial-scale=1" />
+        <style type="text/css">
+/* ---------------------------------------------------- */
+/* --- 修正なしの元のCSS (ただし.engineのサイズはJS側で調整される) --- */
+/* ---------------------------------------------------- */
+html{
+  font-family:Helvetica;
+}
+body{
+  user-select:none;
+}
+.game {
+  width: 360px;
+  height: 640px;
+}
+.engine {
+  position: absolute;
+  left: 0;
+  /* CSSで定義されたサイズは、JSのloadイベントで上書きされます */
+  width: 377px; 
+  height: 221px; 
+}
+  .engine canvas {
+    width: 100%;
+    height: 100%; 
+}
+.view {
+  position: absolute;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%; 
+}
+  .view canvas {
+    width: 100% !important;
+    height: 100% !important; 
+}
+.guideimg {
+  position: absolute;
+  background-image: url('./page0007/canvas-image1/arrow.png');
+  background-size: 100% 100%;
+}
+  .guideimg canvas {
+    width: 100%;
+    height: 100%;
+}
+.guideimg2 {
+  position: absolute;
+  background-image: url('./page0007/canvas-image1/space.png');
+  background-size: 100% 100%;
+}
+  .guideimg2 canvas {
+    width: 100%;
+    height: 100%;
+}
+
+/* フローティングボタンの共通デザイン */
+.floating-btn{
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: #111;
+    border: 2px solid #4da6ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 26px;
+    color: #bcdfff;
+    cursor: pointer;
+    transition: 0.25s;
+    box-shadow: 0 0 10px #3d8cff88;
+}
+
+/* ホバー時に光る */
+.floating-btn:hover{
+    background: #4da6ff33;
+    box-shadow: 0 0 16px #4da6ffcc;
+}
+
+/* クリック時に縮む */
+.floating-btn:active{
+    transform: scale(0.9);
+}
+
+/* ボタン位置調整 */
+#reloadBtn{
+    top: 90px; /* logout の上に配置 */
+}
+
+#logoutBtn{
+    top: 20px;
+}
+        </style>
+        <script src="/page0007/js-file/Physics-Engine1.js"></script>
+</head>
+<body ontouchmove="event.preventDefault()">
+<div class="view" id="js-view"></div>
+<div class="engine" id="js-engine"></div>
+<div class="guideimg" id="js-guideimg"></div>
+<div class="guideimg2" id="js-guideimg2"></div>
+<script>
+(function () {
+    // グローバルな変数宣言（matter.js/three.jsの初期化ロジックの前に定義）
+    let MAP = [];
+    let brock = [];
+    let brockno = 0;
+    let brock3D = [];
+    let right = false;
+    let left = false;
+    let game = false;
+    let gameok = true;
+    let speed = 0;
+    const mapSize = 21;
+    let ex = 0;
+    let ey = 0;
+    let ex0 = 0;
+    let ey0 = 0;
+    let ex1 = 0;
+    let ey1 = 0;
+    let ex2 = 0;
+    let ey2 = 0;
+    let ex3 = 0;
+    let ey3 = 0;
+    let ex4 = 0;
+    let ey4 = 0;
+    let eforcex = 0;
+    let eforcey = 0;
+    let oldex = 0;
+    let oldey = 0;
+    let fire = false;
+    let fifrag = true;
+    let hit = false;
+    let countgem = 0;
+    let vistime = 6000;
+    let damage = false;
+    let monsHP = 4;
+    let step = 0.00002;
+    let timer = 0;
+    let maxHP = 4;
+    let plaSpeed = 0.00006;
+    
+    // タッチ操作用の変数をここで初期化 (未定義エラー回避)
+    let imagesize, image2size, imageX, imageY, image2Y;
+
+
+    //matter.js用の設定
+    const Engine = Matter.Engine,
+        Render = Matter.Render,
+        World = Matter.World,
+        Bodies = Matter.Bodies;
+    
+    // Matter.jsのコンテナを設定
+    const container = document.getElementById('js-engine');
+    
+    // Matter.jsエンジンを作成 (Renderオプションはそのまま)
+    const engine = Engine.create(container, { render: { options: { wireframes: false, width: 420, height: 420 } } });
+    
+    //matter.js重力の設定
+    engine.world.gravity.y = 0;
+
+
+    let player = Matter.Bodies.polygon(0, 0, 8, 8, { restitution: 0.1, friction: 0, frictionAir: 0.2, label: 'player', render: { fillStyle: 'skyblue' } });
+    let enemy = Matter.Bodies.circle(420, 420, 6, { friction: 0, frictionAir: 0.2, label: 'enemy', collisionFilter: { group: -1 }, render: { fillStyle: 'gold' } });
+    let gem1 = Matter.Bodies.rectangle(10, -30, 5, 5, { isStatic: true, label: 'gem1', collisionFilter: { group: -1 }, render: { fillStyle: 'yellow' } });
+    let gem2 = Matter.Bodies.rectangle(20, -30, 5, 5, { isStatic: true, label: 'gem2', collisionFilter: { group: -1 }, render: { fillStyle: 'yellow' } });
+    let gem3 = Matter.Bodies.rectangle(30, -30, 5, 5, { isStatic: true, label: 'gem3', collisionFilter: { group: -1 }, render: { fillStyle: 'yellow' } });
+    let gem4 = Matter.Bodies.rectangle(40, -30, 5, 5, { isStatic: true, label: 'gem4', collisionFilter: { group: -1 }, render: { fillStyle: 'yellow' } });
+    let bullet = Matter.Bodies.circle(50, -20, 1, { frictionAir: 0, label: 'bullet', render: { fillStyle: 'white' } });
+    World.add(engine.world, [player, enemy, bullet, gem1, gem2, gem3, gem4]); // gemをWorldに初期追加 (setgemで位置調整)
+
+
+    //three.js用の設定
+    const scene = new THREE.Scene();
+    const renderer = new THREE.WebGLRenderer();
+    renderer.setClearColor(0x000000, 1);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+
+
+    // 【修正】Three.jsのキャンバスを`#js-view`に追加
+    document.getElementById('js-view').appendChild(renderer.domElement);
+    
+    renderer.shadowMapEnabled = false; 
+    
+    // light
+    var light = new THREE.PointLight(0xffffff, 1.0, 80, 1.0);
+    light.position.set(0, 10, 0);
+    scene.add(light);
+    var ambient = new THREE.AmbientLight(0xFFFFFF, 0.3);
+    scene.add(ambient);
+    
+    // カメラ
+    const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 1, 1200);
+    camera.position.y = 11;
+
+
+    let geometry = new THREE.PlaneGeometry(20 * 21, 20 * 21);
+    let material = new THREE.MeshLambertMaterial({ color: 'saddlebrown', side: THREE.BackSide });
+    const floor = new THREE.Mesh(geometry, material);
+    floor.position.set(10 * 21, 0, 10 * 21);
+    floor.rotation.x = Math.atan2(1, 0);
+    scene.add(floor);
+
+
+    geometry = new THREE.PlaneGeometry(20 * 21, 20 * 21);
+    material = new THREE.MeshLambertMaterial({ color: 'gray' });
+    const roof = new THREE.Mesh(geometry, material);
+    roof.position.set(10 * 21, 20, 10 * 21);
+    roof.rotation.x = Math.atan2(1, 0);
+    scene.add(roof);
+
+
+    //three.js敵
+    let enemy3D = Monster();
+    scene.add(enemy3D);
+
+
+    //three.jsプレイヤー
+    geometry = new THREE.CylinderGeometry(12, 12, 3, 6);
+    material = new THREE.MeshBasicMaterial({ color: 'blue' });
+    const machine = new THREE.Mesh(geometry, material);
+    machine.position.y = 10;
+    scene.add(machine);
+
+
+    //three.js弾
+    geometry = new THREE.SphereGeometry(1, 8, 8);
+    material = new THREE.MeshPhongMaterial({ color: 'gold' });
+    const sphere = new THREE.Mesh(geometry, material);
+    sphere.position.y = 4;
+    scene.add(sphere);
+
+
+    //宝石1-4
+    gemD1 = new THREE.Mesh(new THREE.BoxBufferGeometry(5, 5, 5), [
+        new THREE.MeshPhongMaterial({ color: 'gold' }),
+        new THREE.MeshPhongMaterial({ color: 'gold' }),
+        new THREE.MeshPhongMaterial({ color: 'gold' }), ,
+        new THREE.MeshPhongMaterial({ color: 'gold' }),
+        new THREE.MeshPhongMaterial({ color: 'gold' })
+    ]);
+    gemD2 = new THREE.Mesh(new THREE.BoxBufferGeometry(5, 5, 5), [
+        new THREE.MeshPhongMaterial({ color: 'gold' }),
+        new THREE.MeshPhongMaterial({ color: 'gold' }),
+        new THREE.MeshPhongMaterial({ color: 'gold' }), ,
+        new THREE.MeshPhongMaterial({ color: 'gold' }),
+        new THREE.MeshPhongMaterial({ color: 'gold' })
+    ]);
+    gemD3 = new THREE.Mesh(new THREE.BoxBufferGeometry(5, 5, 5), [
+        new THREE.MeshPhongMaterial({ color: 'gold' }),
+        new THREE.MeshPhongMaterial({ color: 'gold' }),
+        new THREE.MeshPhongMaterial({ color: 'gold' }), ,
+        new THREE.MeshPhongMaterial({ color: 'gold' }),
+        new THREE.MeshPhongMaterial({ color: 'gold' })
+    ]);
+    gemD4 = new THREE.Mesh(new THREE.BoxBufferGeometry(5, 5, 5), [
+        new THREE.MeshPhongMaterial({ color: 'gold' }),
+        new THREE.MeshPhongMaterial({ color: 'gold' }),
+        new THREE.MeshPhongMaterial({ color: 'gold' }), ,
+        new THREE.MeshPhongMaterial({ color: 'gold' }),
+        new THREE.MeshPhongMaterial({ color: 'gold' })
+    ]);
+
+
+    //ゴール地点
+    geometry = new THREE.CylinderGeometry(6, 6, 16, 20);
+    material = new THREE.MeshPhongMaterial({
+        color: 0x00ffff,
+        transparent: true,
+        opacity: 0.5
+    });
+    const cube = new THREE.Mesh(geometry, material);
+    cube.position.set(30, 8, 30);
+    scene.add(cube);
+
+
+    //衝突イベント
+    Matter.Events.on(engine, 'collisionStart', function (event) {
+        pairs = event.pairs;
+        for (i = 0; i < pairs.length; i++) {
+            var pair = pairs[i];
+            if (pair.bodyA.label == 'bullet' && pair.bodyB.label == 'enemy' || pair.bodyA.label == 'enemy' && pair.bodyB.label == 'bullet') {
+                hit = true;
+            }
+            // 弾丸が何かに当たったら画面外に戻す
+            if (pair.bodyA.label == 'bullet' || pair.bodyB.label == 'bullet') {
+                Matter.Body.setPosition(bullet,{x:50,y: -20});Matter.Body.setVelocity(bullet,{x:0, y:0});
+            }
+            // プレイヤーと敵が衝突
+            if (pair.bodyA.label == 'player' && pair.bodyB.label == 'enemy' || pair.bodyA.label == 'enemy' && pair.bodyB.label == 'player') {
+                info.innerHTML = 'GAME OVER';gameok = false;damage = true;
+                window.setTimeout(function() {info.innerHTML = ' ';gameok = true;damage = false;vistime = 6000}, 2000);
+                monsHP = maxHP;
+                generateMaze();
+                Initialset();
+                setgem();
+                refresh();
+                break;
+            }
+            // 宝石1をゲット
+            if (pair.bodyA.label == 'player' && pair.bodyB.label == 'gem1' || pair.bodyA.label == 'gem1' && pair.bodyB.label == 'player') {
+                World.remove(engine.world, [gem1]);countgem++;
+                scene.remove(gemD1);
+                for (i = 0; i < brock.length; i += 1) { brock[i].render.visible = true } // 壁を表示
+                window.setTimeout(function () { for (i = 0; i < brock.length; i += 1) { brock[i].render.visible = false } }, vistime);// vistime後に壁を隠す
+                break;
+            }
+            // 宝石2をゲット
+            if (pair.bodyA.label == 'player' && pair.bodyB.label == 'gem2' || pair.bodyA.label == 'gem2' && pair.bodyB.label == 'player') {
+                World.remove(engine.world, [gem2]);countgem++;
+                scene.remove(gemD2);
+                for (i = 0; i < brock.length; i += 1) { brock[i].render.visible = true }
+                window.setTimeout(function () { for (i = 0; i < brock.length; i += 1) { brock[i].render.visible = false } }, vistime);
+                break;
+            }
+            // 宝石3をゲット
+            if (pair.bodyA.label == 'player' && pair.bodyB.label == 'gem3' || pair.bodyA.label == 'gem3' && pair.bodyB.label == 'player') {
+                World.remove(engine.world, [gem3]);countgem++;
+                scene.remove(gemD3);
+                for (i = 0; i < brock.length; i += 1) { brock[i].render.visible = true }
+                window.setTimeout(function () { for (i = 0; i < brock.length; i += 1) { brock[i].render.visible = false } }, vistime);
+                break;
+            }
+            // 宝石4をゲット
+            if (pair.bodyA.label == 'player' && pair.bodyB.label == 'gem4' || pair.bodyA.label == 'gem4' && pair.bodyB.label == 'player') {
+                World.remove(engine.world, [gem4]);countgem++;
+                scene.remove(gemD4);
+                for (i = 0; i < brock.length; i += 1) { brock[i].render.visible = true }
+                window.setTimeout(function () { for (i = 0; i < brock.length; i += 1) { brock[i].render.visible = false } }, vistime);
+                break;
+            }
+        }
+    });
+
+
+    function shuffle(inputArray = []) { // Fisher-Yates shuffle
+        for (i = inputArray.length - 1; i >= 0; i--) {
+            let randomIndex = Math.floor(Math.random() * (i + 1));
+            let itemAtIndex = inputArray[randomIndex];
+            inputArray[randomIndex] = inputArray[i];
+            inputArray[i] = itemAtIndex;
+        }
+        return inputArray;
+    }
+    
+    // 迷路生成ロジック
+    function generateMaze() {
+        var wallPoints = [],
+            point,
+            // ゴール設定用の範囲
+            min = Math.floor((mapSize + 1) * 3 / 4),
+            max = mapSize - 1,
+            pointsOnBottomRight = [],
+            deadEndPoints = [],
+            extendWall = (function () {
+                var DIRECTION = [
+                    [0, 1],
+                    [0, -1],
+                    [1, 0],
+                    [-1, 0]
+                ];
+                return function extendWall(p) {
+                    var indexes = shuffle([0, 1, 2, 3]),
+                        dx, dy,
+                        i;
+                    for (i = 0; i < 4; i += 1) {
+                        dx = DIRECTION[indexes[i]][0];
+                        dy = DIRECTION[indexes[i]][1];
+                        if (p[1] + dx >= 0 && p[1] + dx < mapSize && p[0] + dy >= 0 && p[0] + dy < mapSize) {
+                            if (MAP[p[0] + dy * 2] && MAP[p[0] + dy * 2][p[1] + dx * 2] === 0) {
+                                MAP[p[0] + dy][p[1] + dx] = 1;
+                                MAP[p[0] + dy * 2][p[1] + dx * 2] = 1;
+                                extendWall([p[0] + dy * 2, p[1] + dx * 2]);
+                            }
+                        }
+                    }
+                    if (wallPoints.length) {
+                        point = wallPoints.pop();
+                        extendWall(point);
+                    }
+                };
+            }()),
+            i, j;
+        
+        function isDeadEnd(p) {
+            if (MAP[p[0]] && MAP[p[0]][p[1]] !== 0) {
+                return false;
+            }
+            var countWall = 0,
+                surroundingPoints = [
+                    [p[0] - 1, p[1]], // 上
+                    [p[0], p[1] + 1], // 右
+                    [p[0] + 1, p[1]], // 下
+                    [p[0], p[1] - 1] // 左
+                ];
+            surroundingPoints.forEach(function (sp) {
+                if (MAP[sp[0]] && MAP[sp[0]][sp[1]] === 1) {
+                    countWall += 1;
+                }
+            });
+            return (countWall === 3);
+        }
+        
+        do {
+            // 迷路の初期化
+            for (i = 0; i < mapSize; i += 1) {
+                MAP[i] = [];
+            }
+            for (i = 0; i < mapSize; i += 1) {
+                MAP[0][i] = 1; // 上
+                MAP[mapSize - 1][i] = 1; // 下
+                MAP[i][0] = 1; // 左
+                MAP[i][mapSize - 1] = 1; // 右
+                if (i % 2 === 0 && i !== 0 && i !== mapSize - 1) {
+                    wallPoints.push([0, i]);
+                    wallPoints.push([mapSize - 1, i]);
+                    wallPoints.push([i, 0]);
+                    wallPoints.push([i, mapSize - 1]);
+                }
+            }
+            for (i = 1; i < mapSize - 1; i += 1) {
+                for (j = 1; j < mapSize - 1; j += 1) {
+                    MAP[i][j] = 0;
+                }
+            }
+            shuffle(wallPoints);
+            point = wallPoints.pop();
+            extendWall(point);
+            /*
+             * ゴール設定
+             */
+            // 右下にある場所を候補に追加
+            for (i = min; i < max; i += 1) {
+                for (j = min; j < max; j += 1) {
+                    pointsOnBottomRight.push([i, j]);
+                }
+            }
+            // 行き止まりの場所のみ抽出
+            deadEndPoints = pointsOnBottomRight.filter(isDeadEnd);
+        } while (!deadEndPoints.length);
+        
+        var goal = shuffle(deadEndPoints).pop();
+        var collision = MAP.map(function (cols) {
+            return cols.map(function (chip) {
+                return chip === 1 ? 1 : 0;
+            });
+        });
+        collision[goal[0]][goal[1]] = 1; // ゴール地点を壁(1)として記録？ (ロジック上は通路(0)の場所を行き止まりから選んでいる)
+    }
+
+
+    //ゲームループの処理
+    Matter.Events.on(engine, 'beforeUpdate', function () {
+        if (game) {
+            step = 0.00002 + (countgem * 0.00002);
+            sco.innerHTML = 'Monster HP:' + monsHP + '/' + maxHP + ' Gem:' + countgem + '/4 time:' + (timer / 10);
+            if (right) { Matter.Body.setAngularVelocity(player, Math.PI / 64) };
+            if (left) { Matter.Body.setAngularVelocity(player, -Math.PI / 64) };
+            // 進行方向に力を加える
+            Matter.Body.applyForce(player, { x: player.position.x, y: player.position.y }, { x: Math.cos(player.angle) * speed, y: Math.sin(player.angle) * speed });
+            
+            if (fire) {
+                // プレイヤーの少し前に弾をセットし、発射
+                //console.log(countgem);
+                Matter.Body.setPosition(bullet,{x:player.position.x + Math.cos(player.angle) * 8,y:player.position.y + Math.sin(player.angle) * 8});
+                Matter.Body.setVelocity(bullet,{x:0, y:0});
+                Matter.Body.applyForce(bullet,{x:bullet.position.x,y:bullet.position.y}, {x: Math.cos(player.angle) * 0.00003,y: Math.sin(player.angle) * 0.00003});
+                fire = false;
+            }
+            
+            Saurus(); // 敵の移動方向決定ロジック
+            Matter.Body.applyForce(enemy, { x: enemy.position.x, y: enemy.position.y }, { x: eforcex, y: eforcey }); // 敵の移動
+        }
+        
+        // ダメージ中のプレイヤー回転アニメーション
+        if (damage) { Matter.Body.setAngularVelocity(player, Math.PI / 32) }
+        
+        // matter.jsの座標・角度をthree.jsの3Dモデルに反映
+        enemy3D.position.x = enemy.position.x;
+        enemy3D.position.z = enemy.position.y;
+        enemy3D.rotation.y = enemy.angle;
+        
+        machine.position.x = player.position.x;
+        machine.position.z = player.position.y;
+        machine.rotation.y = player.angle;
+        
+        sphere.position.z = bullet.position.y;
+        sphere.position.x = bullet.position.x;
+        
+        // ライトとカメラをプレイヤーの背後・進行方向を向くように設定
+        light.position.x = machine.position.x - Math.cos(player.angle) * 6;
+        light.position.z = machine.position.z - Math.sin(player.angle) * 6;
+        light.lookAt(machine.position);
+
+
+        camera.position.x = machine.position.x - Math.cos(player.angle) * 6;
+        camera.position.z = machine.position.z - Math.sin(player.angle) * 6;
+        camera.lookAt(machine.position);
+        
+        renderer.render(scene, camera);
+    });
+    
+    // ゲーム開始
+    generateMaze();
+    Initialset();
+    setgem();
+    refresh();
+
+
+    // 敵の移動ロジック
+    function Saurus() {
+        ex = ex4;
+        ey = ey4;
+        ex4 = ex3;
+        ey4 = ey3;
+        ex3 = ex2;
+        ey3 = ey2;
+        ex2 = ex1;
+        ey2 = ey1;
+        ex1 = ex0;
+        ey1 = ey0;
+        
+        // 現在のマップ座標を計算
+        ex0 = Math.round((enemy.position.x + 10) / 20) - 1;
+        ey0 = Math.round((enemy.position.y + 10) / 20) - 1;
+        
+        // 敵が動いていないなら方向記憶をリセット
+        if (Math.abs(enemy.velocity.x) < 0.0000000001 && Math.abs(enemy.velocity.y) < 0.0000000001) {oldex = 0;oldey = 0}
+        if(monsHP < 1){
+          monsHP = maxHP;
+          Matter.Body.setPosition(enemy, { x: 390, y: 390 });
+          //Matter.Body.setPosition(bullet,{x:50,y: -20});Matter.Body.setVelocity(bullet,{x:0, y:0});
+        }
+        // 敵が新しいマップセルに移動したとき
+        if (ex != oldex || ey != oldey) {
+            
+            // 弾丸に当たった場合 (プレイヤーに向かって移動)
+            if (hit) {
+                monsHP -= 1;
+
+
+                enemy.render.fillStyle = "#ff0000"; // 敵を赤く
+                setTimeout(() => {
+                  enemy.render.fillStyle = 'gold'; // 元の色に戻す（ここは元の色に合わせて変更）
+                }, 200); // 0.2秒後に戻す
+
+
+                enemy3D.children.forEach(mesh => {
+                  mesh.material.color.setRGB(255/255, 0/255, 0/255);
+                });
+                setTimeout(() => {
+                  enemy3D.children.forEach(mesh => {
+                    mesh.material.color.setRGB(0/255, 209/255, 0/255);
+                  });
+                }, 200);
+
+
+                if(monsHP < 1){
+                  monsHP = maxHP;
+                  Matter.Body.setPosition(enemy, { x: 390, y: 390 });
+                  enemy3D.children.forEach(mesh => {
+                    mesh.material.color.setRGB(0/255, 209/255, 0/255);
+                  });
+                  if(countgem > 3){
+                    info.innerHTML = 'GAME CLEAR!!!!!!!!!!!!!!!!!!!!!!!!!';gameok = false;
+                    window.setTimeout(function() {info.innerHTML = ' ';gameok = true}, 10000);
+                    step = 0.00002;
+                    generateMaze();
+                    Initialset();
+                    setgem();
+                    refresh();
+                  }
+                }
+
+
+                if (eforcey == 0) { 
+                    if (enemy.position.x - player.position.x > 0) {eforcex = -step} else {eforcex = step}
+                }
+                if (eforcex == 0) { 
+                    if (enemy.position.y - player.position.y > 0) {eforcey = -step} else {eforcey = step}
+                }
+                oldex = ex; oldey = ey;hit = false;
+                return
+            }
+            
+            // 突き当たり (T字路/L字路など、移動方向が1つしかない場合)
+            if (MAP[ex][ey - 1] == 1 && MAP[ex + 1][ey] == 0 && MAP[ex][ey + 1] == 1 && MAP[ex - 1][ey] == 1) { eforcex = step; eforcey = 0 } // 右のみ通路
+            if (MAP[ex][ey - 1] == 1 && MAP[ex + 1][ey] == 1 && MAP[ex][ey + 1] == 0 && MAP[ex - 1][ey] == 1) { eforcex = 0; eforcey = step } // 下のみ通路
+            if (MAP[ex][ey - 1] == 1 && MAP[ex + 1][ey] == 1 && MAP[ex][ey + 1] == 1 && MAP[ex - 1][ey] == 0) { eforcex = -step; eforcey = 0 } // 左のみ通路
+            if (MAP[ex][ey - 1] == 0 && MAP[ex + 1][ey] == 1 && MAP[ex][ey + 1] == 1 && MAP[ex - 1][ey] == 1) { eforcex = 0; eforcey = -step } // 上のみ通路
+            
+            // 2つの通路がある場合 (L字/直進)
+            if (MAP[ex][ey - 1] == 1 && MAP[ex + 1][ey] == 0 && MAP[ex][ey + 1] == 0 && MAP[ex - 1][ey] == 1) { // 右と下の通路
+                if (eforcex == 0) { eforcex = step; eforcey = 0 } else { eforcex = 0; eforcey = step } // 上下移動から来たなら右、左右移動から来たなら下
+            }
+            if (MAP[ex][ey - 1] == 1 && MAP[ex + 1][ey] == 1 && MAP[ex][ey + 1] == 0 && MAP[ex - 1][ey] == 0) { // 下と左の通路
+                if (eforcex == 0) { eforcex = -step; eforcey = 0 } else { eforcex = 0; eforcey = step } // 上下移動から来たなら左、左右移動から来たなら下
+            }
+            if (MAP[ex][ey - 1] == 0 && MAP[ex + 1][ey] == 1 && MAP[ex][ey + 1] == 1 && MAP[ex - 1][ey] == 0) { // 上と左の通路
+                if (eforcex == 0) { eforcex = -step; eforcey = 0 } else { eforcex = 0; eforcey = -step } // 上下移動から来たなら左、左右移動から来たなら上
+            }
+            if (MAP[ex][ey - 1] == 0 && MAP[ex + 1][ey] == 0 && MAP[ex][ey + 1] == 1 && MAP[ex - 1][ey] == 1) { // 上と右の通路
+                if (eforcex == 0) { eforcex = step; eforcey = 0 } else { eforcex = 0; eforcey = -step } // 上下移動から来たなら右、左右移動から来たなら上
+            }
+            
+            // 3つの通路がある場合 (T字路、ランダムに方向転換)
+            if (MAP[ex][ey - 1] == 1 && MAP[ex + 1][ey] == 0 && MAP[ex][ey + 1] == 0 && MAP[ex - 1][ey] == 0) { // 上だけ壁
+                if (eforcex == 0) { // 上下移動から来た
+                    if (Math.floor(Math.random() * 2) == 0) { eforcex = step; eforcey = 0 } else { eforcex = -step; eforcey = 0 } // 左右のどちらかにランダムに曲がる
+                } else { // 左右移動から来た
+                    if (Math.floor(Math.random() * 2) == 0) { eforcex = 0; eforcey = step } // 下に直進 or 左右のどちらかにランダム
+                }
+            }
+            if (MAP[ex][ey - 1] == 0 && MAP[ex + 1][ey] == 1 && MAP[ex][ey + 1] == 0 && MAP[ex - 1][ey] == 0) { // 右だけ壁
+                if (eforcey == 0) { // 左右移動から来た
+                    if (Math.floor(Math.random() * 2) == 0) { eforcex = 0; eforcey = step } else { eforcex = 0; eforcey = -step } // 上下のどちらかにランダムに曲がる
+                } else { // 上下移動から来た
+                    if (Math.floor(Math.random() * 2) == 0) { eforcex = -step; eforcey = 0 } // 左に直進
+                }
+            }
+            if (MAP[ex][ey - 1] == 0 && MAP[ex + 1][ey] == 0 && MAP[ex][ey + 1] == 1 && MAP[ex - 1][ey] == 0) { // 下だけ壁
+                if (eforcex == 0) { // 上下移動から来た
+                    if (Math.floor(Math.random() * 2) == 0) { eforcex = step; eforcey = 0 } else { eforcex = -step; eforcey = 0 } // 左右のどちらかにランダムに曲がる
+                } else { // 左右移動から来た
+                    if (Math.floor(Math.random() * 2) == 0) { eforcex = 0; eforcey = -step } // 上に直進
+                }
+            }
+            if (MAP[ex][ey - 1] == 0 && MAP[ex + 1][ey] == 0 && MAP[ex][ey + 1] == 0 && MAP[ex - 1][ey] == 1) { // 左だけ壁
+                if (eforcey == 0) { // 左右移動から来た
+                    if (Math.floor(Math.random() * 2) == 0) { eforcex = 0; eforcey = step } else { eforcex = 0; eforcey = -step } // 上下のどちらかにランダムに曲がる
+                } else { // 上下移動から来た
+                    if (Math.floor(Math.random() * 2) == 0) { eforcex = step; eforcey = 0 } // 右に直進
+                }
+            }
+            
+            // 4つの通路がある場合 (交差点、ランダムに方向転換)
+            if (MAP[ex][ey - 1] == 0 && MAP[ex + 1][ey] == 0 && MAP[ex][ey + 1] == 0 && MAP[ex - 1][ey] == 0) {
+                const move = Math.floor(Math.random() * 3); // 3方向にランダム (来た方向を避けるため)
+                
+                if (eforcex != 0) { // 左右移動から来た場合 (上下に曲がるか、直進)
+                    if (move == 0) { eforcex = 0; eforcey = step } // 下
+                    if (move == 1) { eforcex = 0; eforcey = -step } // 上
+                    // move == 2 の場合は来た方向と同じ (直進)
+                }
+                if (eforcey != 0) { // 上下移動から来た場合 (左右に曲がるか、直進)
+                    if (move == 0) { eforcex = step; eforcey = 0 } // 右
+                    if (move == 1) { eforcex = -step; eforcey = 0 } // 左
+                    // move == 2 の場合は来た方向と同じ (直進)
+                }
+            }
+            oldex = ex; oldey = ey;
+        }
+    }
+
+
+    //迷路描画
+    function Initialset() {
+        for (i = 0; i < brock.length; i++) {World.remove(engine.world, brock[i])}
+        for (i = 0; i < brock3D.length; i++) {scene.remove(brock3D[i])}
+        brockno = 0;
+        
+        for (i = 0; i < mapSize; i += 1) {
+            for (j = 0; j < mapSize; j += 1) {
+                //壁の場合
+                if (MAP[i][j] == 1) {
+                    // matter.jsの壁 (Matter.jsの表示は通常オフ)
+                    brock[brockno] = Bodies.rectangle(i * 20 + 10, j * 20 + 10, 20, 20, { friction: 0, restitution: 0, isStatic: true, render: { visible: false } });
+                    World.add(engine.world, [brock[brockno]]);
+                    
+                    // 3Dの壁
+                    brock3D[brockno] = new THREE.Mesh(new THREE.BoxBufferGeometry(20, 20, 20), [
+                        new THREE.MeshLambertMaterial({ color: 'powderblue' }),
+                        new THREE.MeshLambertMaterial({ color: 'powderblue' }), , ,
+                        new THREE.MeshLambertMaterial({ color: 'plum' }),
+                        new THREE.MeshLambertMaterial({ color: 'plum' })
+                    ]);
+                    brock3D[brockno].position.set(i * 20 + 10, 10, j * 20 + 10);
+                    scene.add(brock3D[brockno]);
+                    brockno += 1;
+                }
+            }
+        }
+        // スタート地点を色付け
+        if (brock.length > 0) {
+           brock[0].render.fillStyle = 'royalblue';
+        }
+    }
+
+
+    function Monster() { // three.js敵モデル
+        const monster = new THREE.Group();
+        geometry = new THREE.CylinderGeometry(6, 6, 16, 20);
+        material = new THREE.MeshToonMaterial({ color: 0x00d100 });
+        const main = new THREE.Mesh(geometry, material);
+        main.position.set(0, 0, 0);
+        monster.add(main);
+        geometry = new THREE.SphereGeometry(6, 32, 32);
+        material = new THREE.MeshToonMaterial({ color: 0x00d100 });
+        const cabin = new THREE.Mesh(geometry, material);
+        cabin.position.set(0, 8, 0);
+        monster.add(cabin);
+        return monster;
+    }
+
+
+    //リフレッシュ
+    function refresh() {
+        Matter.Body.setPosition(player, { x: 30, y: 30 });
+        Matter.Body.setAngle(player, 0);
+        Matter.Body.setPosition(enemy, { x: 390, y: 390 });
+        eforcey = -step;
+        countgem = 0;
+        game = false;
+        
+        // 弾丸を画面外に戻す
+        Matter.Body.setPosition(bullet,{x:50,y: -20});Matter.Body.setVelocity(bullet,{x:0, y:0});
+    }
+
+
+    //宝石配置
+    function setgem() {
+        // 既存の宝石を削除
+        World.remove(engine.world, [gem1]);scene.remove(gemD1);
+        World.remove(engine.world, [gem2]);scene.remove(gemD2);
+        World.remove(engine.world, [gem3]);scene.remove(gemD3);
+        World.remove(engine.world, [gem4]);scene.remove(gemD4);
+        
+        // ランダムな配置位置を決定
+        rand1 = Math.floor(Math.random() * 48) + 8;
+        rand2 = Math.floor(Math.random() * 48) + 56;
+        rand3 = Math.floor(Math.random() * 48) + 104;
+        rand4 = Math.floor(Math.random() * 48) + 152;
+        
+        b = 0;
+        for (i = 0; i < mapSize; i += 1) {
+            for (j = 0; j < mapSize; j += 1) {
+                if (MAP[i][j] == 0) { // 通路の場合
+                    b = b + 1;
+                    if (rand1 == b) {
+                        Matter.Body.setPosition(gem1, { x: i * 20 + 10, y: j * 20 + 10 });
+                        World.add(engine.world, [gem1]);
+                        gemD1.position.set(i * 20 + 10, 2.5, j * 20 + 10);
+                        scene.add(gemD1);
+                    }
+                    if (rand2 == b) {
+                        Matter.Body.setPosition(gem2, { x: i * 20 + 10, y: j * 20 + 10 });
+                        World.add(engine.world, [gem2]);
+                        gemD2.position.set(i * 20 + 10, 2.5, j * 20 + 10);
+                        scene.add(gemD2);
+                    }
+                    if (rand3 == b) {
+                        Matter.Body.setPosition(gem3, { x: i * 20 + 10, y: j * 20 + 10 });
+                        World.add(engine.world, [gem3]);
+                        gemD3.position.set(i * 20 + 10, 2.5, j * 20 + 10);
+                        scene.add(gemD3);
+                    }
+                    if (rand4 == b) {
+                        Matter.Body.setPosition(gem4, { x: i * 20 + 10, y: j * 20 + 10 });
+                        World.add(engine.world, [gem4]);
+                        gemD4.position.set(i * 20 + 10, 2.5, j * 20 + 10);
+                        scene.add(gemD4);
+                    }
+                }
+            }
+        }
+    }
+
+
+    //run the engine
+    Engine.run(engine);
+
+
+    //キー入力イベント
+    window.addEventListener('keydown', (e) => {
+        e.preventDefault();
+        if (e.key === "a" || e.key === "A" || e.key == 'ArrowLeft') { left = true }
+        if (e.key === "d" || e.key === "D" || e.key == 'ArrowRight') { right = true }
+        if (e.key === "w" || e.key === "W" || e.key == 'ArrowUp') { speed = plaSpeed }
+        if (e.key === "s" || e.key === "S" || e.key == 'ArrowDown') { speed = -plaSpeed }
+        if (e.key == ' ') { if (fifrag) {fire = true;fifrag = false} }
+    });
+    window.addEventListener('keyup', (e) => {
+        e.preventDefault();
+        if (e.key === "a" || e.key === "A" || e.key == 'ArrowLeft') { left = false }
+        if (e.key === "d" || e.key === "D" || e.key == 'ArrowRight') { right = false }
+        if (e.key === "w" || e.key === "W" || e.key === "s" || e.key === "S" || e.key == 'ArrowUp' || e.key == 'ArrowDown') { speed = 0 }
+        if (e.key == ' ') { fifrag = true }
+        if (!game) { if (gameok) {game = true} }
+    });
+    
+    // 【修正】モバイルコントローラーのサイズと位置を事前に設定 (タッチイベントで利用するため)
+    
+    // c2 (#js-guideimg - pad.png) のサイズと位置設定ロジック
+    const c2 = document.getElementById('js-guideimg');
+    if (window.innerWidth < window.innerHeight) { imagesize = 200 } else { imagesize = 200 }
+    imageX = window.innerWidth - imagesize;
+    imageY = window.innerHeight - imagesize;
+    c2.style.right = 0 + 'px'; c2.style.top = imageY + 'px';
+    c2.style.width = imagesize + 'px'; c2.style.height = imagesize + 'px';
+
+
+    // c3 (#js-guideimg2 - pad2.png) のサイズと位置設定ロジック
+    const c3 = document.getElementById('js-guideimg2');
+    if (window.innerWidth < window.innerHeight) { image2size = 120 } else { image2size = 120 }
+    image2Y = window.innerHeight - image2size * 1.5;
+    c3.style.left = 0 + 'px'; c3.style.top = image2Y + 'px';
+    c3.style.width = image2size + 'px'; c3.style.height = image2size + 'px';
+    
+    // 【修正】Matter.jsのMAP表示サイズ調整のみを残したloadイベント
+    const c1 = document.getElementById('js-engine');
+    window.addEventListener('load', function (e) {
+        let w, h;
+        if (window.innerHeight < window.innerWidth) {
+            h = window.innerHeight * 0.4;
+            w = h;
+        } else {
+            w = window.innerWidth * 0.4;
+            h = w;
+        }
+        c1.style.height = h + 'px';
+        c1.style.width = w + 'px';
+    });
+
+
+    //タッチ操作イベント
+    window.addEventListener('touchstart', function (e) {
+        e.preventDefault();
+        // 画像の中心からの相対座標を計算
+        const imageCenterX = imageX + imagesize / 2;
+        const imageCenterY = imageY + imagesize / 2;
+        x = e.changedTouches[0].pageX - imageCenterX;
+        y = e.changedTouches[0].pageY - imageCenterY;
+
+
+        // 右側のパッド内での操作
+        if (x * x + y * y <= (imagesize * imagesize / 4)) { // imagesize * imagesize / 4 はパッドの半径の二乗
+            // 閾値の設定が複雑なので、タッチパッドの中心からの距離をシンプルに判定
+            if (x < -10 && Math.abs(y) < Math.abs(x) * 0.5) { left = true; right = false; speed = 0; }
+            if (x > 10 && Math.abs(y) < Math.abs(x) * 0.5) { right = true; left = false; speed = 0; }
+            if (y < -10 && Math.abs(x) < Math.abs(y) * 0.5) { speed = plaSpeed; left = false; right = false; }
+            if (y > 10 && Math.abs(x) < Math.abs(y) * 0.5) { speed = -plaSpeed; left = false; right = false; }
+        }
+        
+        // 左側のパッド内での操作 (発射)
+        if (e.changedTouches[0].pageX < image2size * 2 && e.changedTouches[0].pageY > image2Y) { 
+            if (fifrag) {fire = true;fifrag = false} 
+        }
+    }, { passive: false });
+    
+    window.addEventListener('touchend', function (e) {
+        e.preventDefault();
+        // 画像の中心からの相対座標を計算
+        const imageCenterX = imageX + imagesize / 2;
+        const imageCenterY = imageY + imagesize / 2;
+        x = e.changedTouches[0].pageX - imageCenterX;
+        y = e.changedTouches[0].pageY - imageCenterY;
+
+
+        // 右側のパッド内での操作が終了した場合
+        if (x * x + y * y <= (imagesize * imagesize / 4)) { 
+            left = false; right = false; speed = 0;
+        }
+        
+        fifrag = true;
+        if (!game) { if (gameok) {game = true} }
+    }, { passive: false });
+
+
+    // 【修正】情報表示のコンテナを body に追加し、info要素を作成
+    const infoContainer = document.createElement('div');
+    document.body.appendChild(infoContainer);
+    var info = document.createElement('div');
+    info.style.position = 'absolute';
+    info.style.left = '10%';
+    info.style.top = '20%';
+    info.style.width = '80%';
+    info.style.color = "white";
+    info.style.fontWeight = "bold";
+    info.style.fontSize = '220%';
+
+
+    info.innerHTML = '[←]A [↑]W [↓]S [→]D [Space]Fire';
+    infoContainer.appendChild(info);
+    window.setTimeout(function() {info.innerHTML = ' '}, 5000);
+
+
+
+
+    const scoContainer = document.createElement('div');
+    document.body.appendChild(scoContainer);
+    var sco = document.createElement('div');
+    sco.style.position = 'absolute';
+    sco.style.left = '30%';
+    sco.style.top = '5%';
+    sco.style.width = '80%';
+    sco.style.color = "white";
+    sco.style.fontWeight = "bold";
+    sco.style.fontSize = '150%';
+
+
+    sco.innerHTML = 'NORMAL MODE Loading...';
+    scoContainer.appendChild(sco);
+    window.setTimeout(function() {sco.innerHTML = ' '}, 5000);
+
+
+
+
+    var timer1 = null;
+    function event1(){
+      if(game){
+        timer++;
+        if(((timer % 100) == 0) && (0 < monsHP) && (monsHP < maxHP)){
+          monsHP++;
+        }
+      }
+    }
+    timer1 = setInterval(event1,100);
+
+
+})();
+</script>
+<div id="reloadBtn" class="floating-btn" onclick="reload()">↻</div>
+<div id="logoutBtn" class="floating-btn" onclick="backPage()">⇦</div>
+</body>
+<script>
+    const urlParams = new URLSearchParams(location.search);
+    const token1 = urlParams.get("key1");
+    const token3 = localStorage.getItem("account1");
+    localStorage.setItem("account1", "");
+    if((token1 !== localStorage.getItem("key1")) || (token3 == "") || (token3 == null)){
+        localStorage.setItem("key1", "unauthorized");
+        localStorage.setItem("requestPage1", "/game-sites/game/page0007/page0007-1");
+        location.href = "/game-sites/";
+    }else{
+        localStorage.setItem("key1", "");
+        localStorage.setItem("requestPage1", "");
+    }
+    function reload(){
+        const key1 = crypto.randomUUID();
+        localStorage.setItem("key1", key1);
+        localStorage.setItem("account1", token3);
+        location.href = "/game-sites/game/page0007/page0007-1?key1=" + key1;
+    }
+    function backPage(){
+        const key1 = crypto.randomUUID();
+        localStorage.setItem("key1", key1);
+        localStorage.setItem("account1", token3);
+        location.href = "/game-sites/top0001?key1=" + key1;
+    }
+</script>
+</html>
