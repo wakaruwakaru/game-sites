@@ -1,298 +1,205 @@
 * {
-
 	padding: 0;
 	margin: 0;
-
 }
-
 html, body {
-
 	height: 100%;
-
 	overflow: auto;
-
 	font-family: sans-serif;
-
 }
-
 #main_holder {
-
 	position: relative;
-
 	width: 100%;
 	height: 100%;
-
 }
-
 #main_header {
-
 	display: block;
 	position: fixed;
-
 	z-index: 1;
-
 	width: 100%;
 	height: 2.4rem;
-
 	left: 0;
 	top: 0;
-
 	background: #d8d8d8;
-
 }
-
 #main_contents {
-
 	width: 100%;
 	min-height: calc(100% - 2.4rem);
-
 	display: flex;
 	flex-direction: row;
 	align-items: stretch;
-
 	padding-top: 2.4rem;
-
 }
-
 #main_footer {
-
 	width: 100%;
 	height: 2.4rem;
-
 	background: linear-gradient(to bottom, #fafdfd, #f7fbfb);
-
 }
-
 #contents_article {
-
 	width: calc(100% - 348px);
-
 	flex-grow: 1;
 	order: 1;
-
 	background: #fafdfd;
-
 }
-
 #contents_aside_a {
-
 	width: 166px;
-
 	flex-grow: 0;
 	order: 0;
-
 	background: linear-gradient(to right, #f5fafa, #fafdfd);
-
 }
-
 #contents_aside_b {
-
 	width: 182px;
-
 	flex-grow: 0;
 	order: 2;
-
 	background: linear-gradient(to right, #fafdfd, #f5fafa);
-
 }
-
 #header_nav {
-
 	display: inline-block;
-
 }
-
 #header_nav_items {
-
 	display: inline-block;
-
 }
-
 #header_nav_items li {
-
 	display: inline;
-
 	margin-left: 0.25rem;
 	margin-right: 0.5rem;
-
 }
-
 #aside_ad {
-
 	width: 162px;
-
 	margin-top: 2.1rem;
-
 	margin-left: auto;
 	margin-right: auto;
-
 }
-
 h1 {
-
 	font-size: 1.6rem;
-
 	text-align: center;
-
 	margin-top: 0.5rem;
 	margin-bottom: 0.5rem;
-
 	font-family: serif;
-
 }
-
 h2 {
-
 	font-size: 1.3rem;
-
 	margin-top: 0.5rem;
 	margin-bottom: 0.5rem;
-
 }
-
 h3 {
-
 	font-size: 1.15rem;
-
 	margin-top: 0.5rem;
 	margin-bottom: 0.5rem;
-
 }
-
 p {
-
 	font-size: 1.0rem;
-
 	line-height: 1.25;
-
 	margin-left: 0.25rem;
 	margin-right: 0.25rem;
 	margin-top: 0.5rem;
 	margin-bottom: 0.5rem;
-
 }
-
 ol {
-
 	list-style-position: inside;
 	padding: 0.25rem;
-
 }
-
 ul {
-
 	list-style-position: inside;
 	padding: 0.25rem;
-
 }
-
 .code_box {
-
 	max-width: 98%;
-
 	margin-left: auto;
 	margin-right: auto;
-
 	border: 1px solid;
 	background: e0e0e0;
-
 }
-
 .code_holder {
-
 	overflow: auto;
-
 	overflow-wrap: break-word;
 	white-space: pre-wrap;
-
 	padding: 0.25rem;
-
 }
-
 #contents_footer_ad {
-
 	margin-top: 0.75rem;
 	margin-bottom: 0.75rem;
 	margin-left: auto;
 	margin-right: auto;
-
 	width: 92%;
 	max-height: 124px;
-
 }
-
 #main_footer_info {
-
 	text-align: center;
-
 	height: 2.4rem;
 	line-height: 2.4rem;
-
 }
-
 @media screen and (max-width: 640px) {
-
 	#main_contents {
-
 		flex-direction: column;
-
 		width: 100%;
-
 	}
-
 	#main_footer {
-
 		background: #ffffff;
-
 	}
-
 	#contents_article {
-
 		width: 100%;
-
 		order: 0;
 		stretch: 1;
-
 		background: #ffffff;
-
 	}
-
 	#contents_aside_a {
-
 		width: 100%;
 		height: 164px;
-
 		order: 1;
-
-		background: #ffffff;
-
+	    background: #ffffff;
 	}
-
 	#contents_aside_b {
-
 		width: 100%;
 		height: 64px;
-
 		order: 2;
-
 		background: #ffffff;
-
 	}
-
 	#aside_ad {
-
 		width: 162px;
 		height: 162px;
-
 		margin-top: 2.1rem;
-
 		margin-left: auto;
 		margin-right: auto;
-
 	}
-
 	#contents_footer_ad {
 		display: none;
 	}
+}
 
+
+/* フローティングボタンの共通デザイン */
+.floating-btn{
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: #111;
+    border: 2px solid #4da6ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 26px;
+    color: #bcdfff;
+    cursor: pointer;
+    transition: 0.25s;
+    box-shadow: 0 0 10px #3d8cff88;
+}
+/* ホバー時に光る */
+.floating-btn:hover{
+    background: #4da6ff33;
+    box-shadow: 0 0 16px #4da6ffcc;
+}
+/* クリック時に縮む */
+.floating-btn:active{
+    transform: scale(0.9);
+}
+/* ボタン位置調整 */
+#reloadBtn{
+    bottom: 90px; /* logout の上に配置 */
+}
+#logoutBtn{
+    bottom: 20px;
 }
