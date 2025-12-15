@@ -1,8 +1,8 @@
-<html lang="ja">
+<html>
 <head>
 <meta charset="utf-8" />
 <title>インフォメーション</title>
-<link rel="shortcut icon" href="https://wakaruwakaru.github.io/game-sites/index/icon/icon1.png" >
+<link rel="shortcut icon" href="/game-sites/index/icon/icon1.png" >
 <meta name="viewport" content="width=device-width,initial-scale=1" />
 <style type="text/css">
 body{
@@ -112,7 +112,7 @@ h1{
         localStorage.setItem("account1", "");
         if((token1 !== localStorage.getItem("key1")) || (token3 == "") || (token3 == null)){
             localStorage.setItem("key1", "unauthorized");
-            location.href = "https://wakaruwakaru.github.io/game-sites/";
+            location.href = "/game-sites/";
         }else{
             localStorage.setItem("key1", "");
         }
@@ -126,13 +126,13 @@ h1{
             const key1 = crypto.randomUUID();
             localStorage.setItem("key1", key1);
             localStorage.setItem("account1", token3);
-            location.href = "https://wakaruwakaru.github.io/game-sites/top-information0001?key1=" + key1;
+            location.href = "/game-sites/top-information0001?key1=" + key1;
         }
         function backPage(){
             const key1 = crypto.randomUUID();
             localStorage.setItem("key1", key1);
             localStorage.setItem("account1", token3);
-            location.href = "https://wakaruwakaru.github.io/game-sites/top0001?key1=" + key1;
+            location.href = "/game-sites/top/top0001/top0001?key1=" + key1;
         }
     </script>
 </html>
