@@ -297,15 +297,34 @@ function update(time=0){
 }
 
 document.addEventListener("keydown",e=>{
-  if(e.key==="ArrowLeft"){player.x--; if(collide()) player.x++;}
-  if(e.key==="ArrowRight"){player.x++; if(collide()) player.x--;}
-  if(e.key==="ArrowDown"){drop();}
+  if(e.key==="ArrowLeft"){
+    player.x--;
+    if(collide()){
+      player.x++;
+    }
+  }
+  if(e.key==="ArrowRight"){
+    player.x++;
+    if(collide()){
+      player.x--;
+    }
+  }
+  if(e.key==="ArrowDown"){
+    drop();
+    event.preventDefault();
+  }
   if(e.key==="ArrowUp"){
     const old = player.matrix;
     player.matrix = rotate(player.matrix);
-    if(collide()) player.matrix = old;
+    if(collide()){
+      player.matrix = old;
+    }
+    event.preventDefault();
   }
-  if(e.code==="Space") hardDrop();
+  if(e.code==="Space"){
+    hardDrop();
+    event.preventDefault();
+  }
 });
 
 // スマホボタン
@@ -313,14 +332,30 @@ document.querySelectorAll(".btn").forEach(btn=>{
   btn.addEventListener("click", ()=>{
     const dir = btn.dataset.dir;
     if(dir==="up"){
-    const old = player.matrix;
-    player.matrix = rotate(player.matrix);
-    if(collide()) player.matrix = old;
-  }
-    if(dir==="down"){drop();}
-    if(dir==="left"){player.x--; if(collide()) player.x++;}
-    if(dir==="right"){player.x++; if(collide()) player.x--;}
-    if(dir==="spa"){hardDrop();}
+      const old = player.matrix;
+      player.matrix = rotate(player.matrix);
+      if(collide()){
+        player.matrix = old;
+      }
+    }
+    if(dir==="down"){
+      drop();
+    }
+    if(dir==="left"){
+      player.x--;
+      if(collide()){
+        player.x++;
+      }
+    }
+    if(dir==="right"){
+      player.x++;
+      if(collide()){
+        player.x--;
+      }
+    }
+    if(dir==="spa"){
+      hardDrop();
+    }
   });
 });
   
