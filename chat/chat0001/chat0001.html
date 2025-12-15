@@ -1,4 +1,3 @@
-
 <html>
 <head>
   <meta charset="UTF-8">
@@ -573,7 +572,7 @@ function event2(){
   if((token1 !== localStorage.getItem("key1")) || (token3 == "token3")  || (token3 == "") || (token3 == null)){
     localStorage.setItem("key1", "unauthorized");
     localStorage.setItem("requestPage1", "chat/chat0001/chat0001");
-    location.href = "https://wakaruwakaru.github.io/game-sites/";
+    location.href = "/game-sites/";
   }else{
     localStorage.setItem("key1", "");
     localStorage.setItem("requestPage1", "");
@@ -584,13 +583,13 @@ function event2(){
     const key1 = crypto.randomUUID();
     localStorage.setItem("key1", key1);
     localStorage.setItem("account1", token3);
-    location.href = "https://wakaruwakaru.github.io/game-sites/chat/chat0001/chat0001?key1=" + key1;
+    location.href = "/game-sites/chat/chat0001/chat0001?key1=" + key1;
   }
   function backPage(){
     const key1 = crypto.randomUUID();
     localStorage.setItem("key1", key1);
     localStorage.setItem("account1", token3);
-    location.href = "https://wakaruwakaru.github.io/game-sites/top0001?key1=" + key1;
+    location.href = "/game-sites/top/top0001/top0001?key1=" + key1;
   }
 </script>
 <div id="bottomBtn" class="floating-btn" onclick="scrollToBottom()">⇩</div>
