@@ -160,7 +160,7 @@ updateWidget('ww_e81726654fd56',0);
         if(((token1 == "unauthorized") || (token1 == "jumpTopic")) && (token2 != null) && (token2 != "")){
           location.href = "/game-sites/" + token2 + "?key1=" + key1;
         }else{
-          location.href = "/game-sites/top0001?key1=" + key1;
+          location.href = "/game-sites/top/top0001/top0001?key1=" + key1;
         }
       }else{
         document.getElementById("com1").innerHTML = "";
@@ -197,7 +197,7 @@ updateWidget('ww_e81726654fd56',0);
   function reload(){
     localStorage.setItem("key1", token1);
     localStorage.setItem("requestPage1", token2);
-    location.href = "https://wakaruwakaru.github.io/game-sites/";
+    location.href = "/game-sites/";
   }
 
 
@@ -327,8 +327,3 @@ updateWidget('ww_e81726654fd56',0);
   </script>
 </body>
 </html>
-
-
-
-
-
