@@ -82,24 +82,24 @@ window.addEventListener('load', sg99a_init);
     localStorage.setItem("account1", "");
     if((token1 !== localStorage.getItem("key1")) || (token3 == "") || (token3 == null)){
         localStorage.setItem("key1", "unauthorized");
-	    	localStorage.setItem("requestPage1", "game/page0002/page0002");
-        location.href = "https://wakaruwakaru.github.io/game-sites/";
+	    localStorage.setItem("requestPage1", "game/page0002/page0002");
+        location.href = "/game-sites/";
     }else{
         localStorage.setItem("key1", "");
-	    	localStorage.setItem("requestPage1", "");
+	    localStorage.setItem("requestPage1", "");
     }
 
     function reload(){
         const key1 = crypto.randomUUID();
         localStorage.setItem("key1", key1);
-		    localStorage.setItem("account1", token3);
-        location.href = "https://wakaruwakaru.github.io/game-sites/game/page0002/page0002?key1=" + key1;
+		localStorage.setItem("account1", token3);
+        location.href = "/game-sites/game/page0002/page0002?key1=" + key1;
     }
     function backPage(){
         const key1 = crypto.randomUUID();
         localStorage.setItem("key1", key1);
-	    	localStorage.setItem("account1", token3);
-        location.href = "https://wakaruwakaru.github.io/game-sites/top0001?key1=" + key1;
+	    localStorage.setItem("account1", token3);
+        location.href = "/game-sites/top/top0001/top0001?key1=" + key1;
     }
 </script>
 </html>
