@@ -3,7 +3,7 @@
 <meta charset="utf-8">
 <title>バグ修正のお知らせ</title>
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<link rel="shortcut icon" href="https://wakaruwakaru.github.io/game-sites/index/icon/icon1.png" >
+<link rel="shortcut icon" href="/game-sites/index/icon/icon1.png" >
 <style type="text/css">
 body{
   margin:0;
@@ -190,7 +190,7 @@ h1{
 
 <div class="article-container">
     <div class="article-title">スマホ版「game-sites」のバグ修正</div>
-    <img class="article-image" src="https://wakaruwakaru.github.io/game-sites/topic/topic0003/picture0001.jpg" alt="記事画像">
+    <img class="article-image" src="/game-sites/topic/topic0003/picture0001.jpg" alt="記事画像">
     <div class="article-body">
         <p>　スマホ版「game-sites」で画面サイズが異常に小さくなるバグが修正されました。</p>
         <h2>■ 修正内容</h2>
@@ -218,7 +218,7 @@ h1{
         if((token1 !== localStorage.getItem("key1")) || (token3 == "") || (token3 == null)){
             localStorage.setItem("key1", "unauthorized");
             localStorage.setItem("requestPage1", "topic/topic0003/topic0003");
-            location.href = "https://wakaruwakaru.github.io/game-sites/";
+            location.href = "/game-sites/";
         }else{
             localStorage.setItem("key1", "");
             localStorage.setItem("requestPage1", "");
@@ -228,22 +228,22 @@ h1{
         //  const key1 = crypto.randomUUID();
         //  localStorage.setItem("key1", key1);
         //  localStorage.setItem("account1", token3);
-        //  location.href = "https://wakaruwakaru.github.io/game-sites/page0007-1?key1=" + key1;
+        //  location.href = "/game-sites/page0007-1?key1=" + key1;
         }
         function reload(){
             const key1 = crypto.randomUUID();
             localStorage.setItem("key1", key1);
             localStorage.setItem("account1", token3);
-            location.href = "https://wakaruwakaru.github.io/game-sites/topic/topic0003/topic0003?key1=" + key1;
+            location.href = "/game-sites/topic/topic0003/topic0003?key1=" + key1;
         }
         function backPage(){
             const key1 = crypto.randomUUID();
             localStorage.setItem("key1", key1);
             localStorage.setItem("account1", token3);
-            location.href = "https://wakaruwakaru.github.io/game-sites/topic/top-topic0001?key1=" + key1;
+            location.href = "/game-sites/topic/top-topic0001?key1=" + key1;
         }
     </script>
-    <script src="https://wakaruwakaru.github.io/game-sites/index/dist/html2canvas.js"></script>
+    <script src="/game-sites/index/dist/html2canvas.js"></script>
     <script>
       document.getElementById("copyBtn").addEventListener("click", async () => {
         try {
