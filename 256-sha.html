@@ -7,7 +7,9 @@
     <button id="gen">Generate</button>
     <div id="log1"></div>
     <div id="log2"></div>
-    
+    <canvas id="myChart"></canvas>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <script>
 
       const template1 =
@@ -23,6 +25,7 @@
         run(pass);
       });
 
+      let counter = 0;
       async function run(pass){
         let count1 = 0;
         let passworld;
@@ -36,10 +39,20 @@
             break;
           }
           count1++;
+          counter++;
           await delay(1);
         }
         document.getElementById("log1").innerHTML = "見つかりました！！";
         document.getElementById("log2").innerHTML = passworld;
+      }
+      
+
+      const data = [];
+      const labels = [];
+      function addChart(value1) {
+        labels.push(labels.length + 1);
+        data.push(value1);
+        chart.update();
       }
 
       function indexToString(index, chars){
@@ -63,6 +76,11 @@
         const hashArray = Array.from(new Uint8Array(hashBuffer));
         return hashArray.map(b=>b.toString(16).padStart(2,'0')).join('');
       }
+
+      setInterval(() => {
+        addChart(counter);
+        counter = 0;
+      }, 1000);
     </script>
   </body>
 </html>
