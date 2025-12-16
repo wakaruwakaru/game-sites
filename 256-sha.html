@@ -60,14 +60,17 @@
         }
       });
 
-      function addChart(value1){
-        labels.push(new Date().toLocaleTimeString());
-        data.push(value1);
-        if(data.length > 10){
-          data.shift();   // 古いデータ削除
-          labels.shift();
+      function addChart(value1) {
+        const v = Number(value1);
+        if (Number.isNaN(v)) return;
+        const d = chart.data;
+        d.labels.push(new Date().toLocaleTimeString());
+        d.datasets[0].data.push(v);
+        if(d.datasets[0].data.length > 10){
+          d.labels.shift();
+          d.datasets[0].data.shift();
         }
-        chart.update();
+        chart.update("none");
       }
 
       function indexToString(index, chars){
