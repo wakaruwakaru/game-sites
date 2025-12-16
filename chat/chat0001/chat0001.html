@@ -2,7 +2,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="shortcut icon" href="https://wakaruwakaru.github.io/game-sites/index/icon/icon1.png" >
+  <link rel="shortcut icon" href="/game-sites/index/icon/icon1.png" >
   <title>チャット</title>
 
   <style>
@@ -257,11 +257,11 @@
     
 // アカウントID → アイコンURL
 const userIcons = {
-  default:      "https://wakaruwakaru.github.io/game-sites/chat/chatIcons/default-0001.png",
-  wakaruwakaru: "https://wakaruwakaru.github.io/game-sites/chat/chatIcons/wakaruwakaru-0001.png",
-  dabada:       "https://wakaruwakaru.github.io/game-sites/chat/chatIcons/dabada-0001.png",
-  173:          "https://wakaruwakaru.github.io/game-sites/chat/chatIcons/173-0001.png",
-  RTX5090rairai:"https://wakaruwakaru.github.io/game-sites/chat/chatIcons/rairai-0001.png"
+  default:      "/game-sites/chat/chatIcons/default-0001.png",
+  wakaruwakaru: "/game-sites/chat/chatIcons/wakaruwakaru-0001.png",
+  dabada:       "/game-sites/chat/chatIcons/dabada-0001.png",
+  173:          "/game-sites/chat/chatIcons/173-0001.png",
+  RTX5090rairai:"/game-sites/chat/chatIcons/rairai-0001.png"
 };
 
     
@@ -367,8 +367,6 @@ function addDatePill(text){
     }
     
     function text_trim(text1, text2){
-      //const com1 = "<type[" + text2 + "]acco[" + token3 + "]time[" + new Date() + "]val1[" + text1 + "]>";
-      //return com1;
       return `<type[${text2}]acco[${token3}]time[${new Date()}]val1[${text1}]>`;
     }
 
@@ -381,9 +379,6 @@ box.addEventListener("keydown", (e) => {  // キー入力をブロック
 box.addEventListener("input", () => {  // まとめて除去
   box.value = box.value.replace(/[<>\[\]]/g, "");
 });
-
-
-
 
 
 function splitLogs(text){
