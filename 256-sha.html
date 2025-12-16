@@ -60,9 +60,13 @@
         }
       });
 
-      function addChart(value1) {
-        labels.push(labels.length + 1);
+      function addChart(value1){
+        labels.push(new Date().toLocaleTimeString());
         data.push(value1);
+        if(data.length > 60){
+          data.shift();   // 古いデータ削除
+          labels.shift();
+        }
         chart.update();
       }
 
