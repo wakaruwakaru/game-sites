@@ -30,6 +30,7 @@
           const expect2 = await sha256Hex(expect1);
           document.getElementById("log1").innerHTML = expect1;
           document.getElementById("log2").innerHTML = expect2;
+          count1++;
           await delay(10);
         }
       }
