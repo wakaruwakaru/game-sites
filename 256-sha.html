@@ -45,10 +45,21 @@
         document.getElementById("log1").innerHTML = "見つかりました！！";
         document.getElementById("log2").innerHTML = passworld;
       }
-      
 
       const data = [];
-      const labels = [];
+      const labels = [];    
+      const chart = new Chart(document.getElementById("myChart"), {
+        type: "line",
+        data: {
+          labels,
+          datasets: [{
+            label: "入力値",
+            data,
+            borderWidth: 2
+          }]
+        }
+      });
+
       function addChart(value1) {
         labels.push(labels.length + 1);
         data.push(value1);
