@@ -5,6 +5,7 @@
 
     <input type="text" id="pass" placeholder="pass" />
     <button id="gen">Generate</button>
+    <div id="log1"></div>
     
     <script>
 
@@ -21,8 +22,13 @@
         run(pass);
       });
 
-      async function run(text){
-        //a256Hex()
+      async function run(pass){
+        let count1 = 0;
+        while(true){
+          const expect = await sha256Hex(indexToString(count1, template1));
+          document.getElementById("log1").innerHTML = expect;
+          await delay(10);
+        }
       }
 
       function indexToString(index, chars){
@@ -35,16 +41,10 @@
         return result;
       }
 
-let i = 0;
+      function delay(ms){
+        return new Promise(resolve => setTimeout(resolve, ms));
+      }
 
-setInterval(() => {
-  console.log(indexToString(i, template1));
-  i++;
-}, 100); // 10msごと
-
-
-      
-      
       async function sha256Hex(text){
         const enc = new TextEncoder();
         const data = enc.encode(text);
