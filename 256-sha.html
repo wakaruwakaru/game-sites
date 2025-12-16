@@ -25,19 +25,21 @@
 
       async function run(pass){
         let count1 = 0;
+        let passworld;
         while(true){
           const expect1 = indexToString(count1, template1);
           const expect2 = await sha256Hex(expect1);
           document.getElementById("log1").innerHTML = expect1;
           document.getElementById("log2").innerHTML = expect2;
           if(pass == expect2){
+            passworld = expect1;
             break;
           }
           count1++;
           await delay(10);
         }
         document.getElementById("log1").innerHTML = "見つかりました！！";
-        document.getElementById("log2").innerHTML = expect1;
+        document.getElementById("log2").innerHTML = passworld;
       }
 
       function indexToString(index, chars){
