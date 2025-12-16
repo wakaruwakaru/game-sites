@@ -66,7 +66,7 @@
         const d = chart.data;
         d.labels.push(new Date().toLocaleTimeString());
         d.datasets[0].data.push(v);
-        if(d.datasets[0].data.length > 10){
+        if(d.datasets[0].data.length > 30){
           d.labels.shift();
           d.datasets[0].data.shift();
         }
