@@ -155,6 +155,8 @@ document.getElementById('snippet').addEventListener('click', ()=>{
   copyText(s).then(ok=>{ if(ok) alert('スニペットをコピーしました'); else alert('コピー失敗'); });
 });
 </script>
+    <div id="reloadBtn" class="floating-btn" onclick="reload()">↻</div>
+    <div id="logoutBtn" class="floating-btn" onclick="backPage()">⇦</div>
 </body>
   <script>
     const urlParams = new URLSearchParams(location.search);
