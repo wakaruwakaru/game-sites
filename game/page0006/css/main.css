@@ -1,0 +1,90 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f4f4f4;
+	user-select:none;
+}
+
+#gameBoard {
+    display: grid;
+    margin: 20px auto;
+    gap: 2px;
+    width: fit-content;
+}
+
+.cell {
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    line-height: 30px;
+    font-size: 16px;
+    background-color: #ccc;
+    border: 1px solid #999;
+    cursor: pointer;
+    user-select: none;
+}
+
+.cell.revealed {
+    background-color: #eee;
+    cursor: default;
+}
+
+.cell.mine {
+    background-color: #f44336;
+    color: white;
+}
+
+.cell.flag {
+    background-color: #ffa726;
+}
+
+#statusBar {
+    display: inline-flex;
+    align-items: center;
+}
+
+#timer,
+#remainingFlags {
+    font-size: 16px;
+    padding: 0px 20px;
+}
+
+/* フローティングボタンの共通デザイン */
+.floating-btn{
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: #111;
+    border: 2px solid #4da6ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 26px;
+    color: #bcdfff;
+    cursor: pointer;
+    transition: 0.25s;
+    box-shadow: 0 0 10px #3d8cff88;
+}
+
+/* ホバー時に光る */
+.floating-btn:hover{
+    background: #4da6ff33;
+    box-shadow: 0 0 16px #4da6ffcc;
+}
+
+/* クリック時に縮む */
+.floating-btn:active{
+    transform: scale(0.9);
+}
+
+/* ボタン位置調整 */
+#reloadBtn{
+    bottom: 90px; /* logout の上に配置 */
+}
+
+#logoutBtn{
+    bottom: 20px;
+}
