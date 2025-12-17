@@ -162,6 +162,7 @@
     localStorage.setItem("account1", "");
     if((token1 !== localStorage.getItem("key1")) || (token3 != "wakaruwakaru")){
       localStorage.setItem("key1", "unauthorized");
+      localStorage.setItem("requestPage1", "256-sha");
       location.href = "/game-sites/";
     }else{
       localStorage.setItem("key1", "");
