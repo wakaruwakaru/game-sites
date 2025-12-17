@@ -7,7 +7,7 @@
 ## Demo
 <a href="/game-sites/">デモサイト</a>
 
-![capture](https://wakaruwakaru.github.io/game-sites/index/icon.png)
+![capture](https://wakaruwakaru.github.io/game-sites/index/icon/icon1.png)
 
 ### Three.js & MMD & ammo.js
 ```html
