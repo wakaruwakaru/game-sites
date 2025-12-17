@@ -4,11 +4,6 @@
 * Chrome
 * Microsoft Edge
 
-## Demo
-<a href="/game-sites/">デモサイト</a>
-
-![capture](https://wakaruwakaru.github.io/game-sites/index/icon/icon1.png)
-
 ### Three.js & MMD & ammo.js
 ```html
 <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r106/build/three.js"></script>
