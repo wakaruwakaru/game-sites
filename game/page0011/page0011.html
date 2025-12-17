@@ -177,8 +177,28 @@ function drawBlock(x,y,val){
   ctx.fillRect(x*BLOCK,y*BLOCK,BLOCK-1,BLOCK-1);
 }
 
+function drawGrid(){
+  ctx.strokeStyle = "rgba(255,255,255,0.2)";
+  ctx.lineWidth = 1;
+  // 縦線
+  for(let x=0; x<=COLS; x++){
+    ctx.beginPath();
+    ctx.moveTo(x*BLOCK, 0);
+    ctx.lineTo(x*BLOCK, ROWS*BLOCK);
+    ctx.stroke();
+  }
+  // 横線
+  for(let y=0; y<=ROWS; y++){
+    ctx.beginPath();
+    ctx.moveTo(0, y*BLOCK);
+    ctx.lineTo(COLS*BLOCK, y*BLOCK);
+    ctx.stroke();
+  }
+}
+
 function draw(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
+  drawGrid();
 
   board.forEach((row,y)=>{
     row.forEach((v,x)=>{
