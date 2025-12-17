@@ -28,17 +28,15 @@
     const WEB_APP_URL =
       "https://script.google.com/macros/s/AKfycbwO-h9O7dQhfKSnpVvE2opZXEJJlPV9LAGBSiFUR3-2m6jh8pCvo5JbJUW0cWxRn7MS/exec";
 
-    
-// アカウントID → アイコンURL
-const userIcons = {
-  default:      "/game-sites/chat/chatIcons/default-0001.png",
-  wakaruwakaru: "/game-sites/chat/chatIcons/wakaruwakaru-0001.png",
-  dabada:       "/game-sites/chat/chatIcons/dabada-0001.png",
-  173:          "/game-sites/chat/chatIcons/173-0001.png",
-  RTX5090rairai:"/game-sites/chat/chatIcons/rairai-0001.png"
-};
+    // アカウントID → アイコンURL
+    const userIcons = {
+      default:      "/game-sites/chat/chatIcons/default-0001.png",
+      wakaruwakaru: "/game-sites/chat/chatIcons/wakaruwakaru-0001.png",
+      dabada:       "/game-sites/chat/chatIcons/dabada-0001.png",
+      173:          "/game-sites/chat/chatIcons/173-0001.png",
+      RTX5090rairai:"/game-sites/chat/chatIcons/rairai-0001.png"
+    };
 
-    
     /* ======== メッセージ送信 ======== */
     async function send() {
       const box = document.getElementById("textBox1");
