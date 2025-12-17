@@ -1,10 +1,10 @@
 # 色々なゲームを提供するサイトのサンプル
 
-## 動作確認済みのブラウザ
+### 動作確認済みのブラウザ
 * Chrome
 * Microsoft Edge
 
-### Three.js & MMD & ammo.js
+### js
 ```html
 <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r106/build/three.js"></script>
 <script src="https://cdn.jsdelivr.net/gh/mrdoob/three.js@r106/examples/js/libs/mmdparser.min.js"></script>
