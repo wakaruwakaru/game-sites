@@ -121,15 +121,7 @@
   <div id="new-msg" class="new-msg"></div>
   <!-- 最終更新時間 -->
   <div id="last-change-time" class="last-change-time">データを取得中</div>
-  
-<script>
-const panel = document.getElementById("mediaPanel");
 
-function toggleMediaPanel(){
-  panel.classList.toggle("show");
-}
-
-</script>
 <!-- スタンプ / GIF パネル -->
 <div id="mediaPanel" class="media-panel">
   <div class="media-header">
@@ -157,6 +149,12 @@ function toggleMediaPanel(){
 <div id="logoutBtn" class="floating-btn" onclick="backPage()">⇦</div>
 </body>
 <script>
+
+const panel = document.getElementById("mediaPanel");
+function toggleMediaPanel(){
+  panel.classList.toggle("show");
+}
+  
     /* ======== Google Apps Script Web App URL ======== */
     const WEB_APP_URL =
       "https://script.google.com/macros/s/AKfycbwO-h9O7dQhfKSnpVvE2opZXEJJlPV9LAGBSiFUR3-2m6jh8pCvo5JbJUW0cWxRn7MS/exec";
