@@ -1,0 +1,161 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="/game-sites/index/icon/icon1.png" >
+  <link rel="stylesheet" href="./css/main.css" />
+  <title>チャット</title>
+  <style type="text/css">
+/* ===== メディアパネル本体 ===== */
+.media-panel{
+  position: fixed;
+  bottom: 90px; /* 入力欄の上 */
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  width: 600px;
+  max-width: 92%;
+  height: 340px;
+  background: #0a0f18;
+  border-radius: 16px;
+  border: 2px solid #4da6ff;
+  box-shadow:
+    0 0 20px #4da6ff88,
+    0 0 60px #4da6ff44;
+  opacity: 0;
+  pointer-events: none;
+  transition: 
+    opacity 0.25s ease,
+    transform 0.25s ease;
+  z-index: 9998;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 表示状態 */
+.media-panel.show{
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ===== ヘッダ（タブ） ===== */
+.media-header{
+  display: flex;
+  gap: 8px;
+  padding: 10px;
+  border-bottom: 1px solid #4da6ff55;
+}
+
+.media-header .tab{
+  background: transparent;
+  border: none;
+  color: #8bbcff;
+  padding: 6px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.media-header .tab.active{
+  background: #4da6ff22;
+  box-shadow: 0 0 10px #4da6ff99;
+  color: #e6f7ff;
+}
+
+/* ===== 検索欄 ===== */
+.media-search{
+  padding: 8px 10px;
+}
+
+.media-search input{
+  width: 100%;
+  background: #000;
+  border: 1px solid #4da6ff;
+  border-radius: 8px;
+  padding: 6px 10px;
+  color: #8bbcff;
+}
+
+/* ===== 中身 ===== */
+.media-content{
+  flex: 1;
+  padding: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(56px, 1fr));
+  gap: 10px;
+  overflow-y: auto;
+}
+
+.media-item{
+  height: 56px;
+  background: #000;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  cursor: pointer;
+  box-shadow: 0 0 6px #4da6ff55;
+  transition: 0.2s;
+}
+
+.media-item:hover{
+  transform: scale(1.1);
+  box-shadow: 0 0 16px #4da6ffcc;
+}
+
+  </style>
+</head>
+
+<body>
+  <!-- チャット本体 -->
+  <div class="chat-container" id="message1"></div>
+
+  <!-- 入力欄 -->
+  <div class="input-wrapper">
+    <div class="icon-left" onclick="toggleMediaPanel()">+</div>
+    <input type="text" placeholder="メッセージを送信" id="textBox1" onkeyup="enterSend(event)">
+    <div class="icon-right" onclick="rate_change()"></div>
+  </div>
+  <!-- 新規メッセージログ -->
+  <div id="new-msg" class="new-msg"></div>
+  <!-- 最終更新時間 -->
+  <div id="last-change-time" class="last-change-time">データを取得中</div>
+  
+<script src="./js/main.js"></script>
+<script>
+const panel = document.getElementById("mediaPanel");
+
+function toggleMediaPanel(){
+  panel.classList.toggle("show");
+}
+
+</script>
+<!-- スタンプ / GIF パネル -->
+<div id="mediaPanel" class="media-panel">
+  <div class="media-header">
+    <button class="tab active">GIF</button>
+    <button class="tab">スタンプ</button>
+    <button class="tab">絵文字</button>
+  </div>
+
+  <div class="media-search">
+    <input type="text" placeholder="検索…" />
+  </div>
+
+  <div class="media-content">
+    <!-- 仮スタンプ -->
+    <div class="media-item">😀</div>
+    <div class="media-item">😂</div>
+    <div class="media-item">👍</div>
+    <div class="media-item">🔥</div>
+    <div class="media-item">👽</div>
+    <div class="media-item">🤓</div>
+  </div>
+</div>
+<div id="bottomBtn" class="floating-btn" onclick="scrollToBottom()">⇩</div>
+<div id="reloadBtn" class="floating-btn" onclick="reload()">↻</div>
+<div id="logoutBtn" class="floating-btn" onclick="backPage()">⇦</div>
+</body>
+
+</html>
