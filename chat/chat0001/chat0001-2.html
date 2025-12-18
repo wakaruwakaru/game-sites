@@ -122,7 +122,6 @@
   <!-- 最終更新時間 -->
   <div id="last-change-time" class="last-change-time">データを取得中</div>
   
-<script src="./js/main.js"></script>
 <script>
 const panel = document.getElementById("mediaPanel");
 
@@ -157,5 +156,340 @@ function toggleMediaPanel(){
 <div id="reloadBtn" class="floating-btn" onclick="reload()">↻</div>
 <div id="logoutBtn" class="floating-btn" onclick="backPage()">⇦</div>
 </body>
+<script>
+    /* ======== Google Apps Script Web App URL ======== */
+    const WEB_APP_URL =
+      "https://script.google.com/macros/s/AKfycbwO-h9O7dQhfKSnpVvE2opZXEJJlPV9LAGBSiFUR3-2m6jh8pCvo5JbJUW0cWxRn7MS/exec";
 
+    // アカウントID → アイコンURL
+    const userIcons = {
+      default:      "/game-sites/chat/chatIcons/default-0001.png",
+      wakaruwakaru: "/game-sites/chat/chatIcons/wakaruwakaru-0001.png",
+      dabada:       "/game-sites/chat/chatIcons/dabada-0001.png",
+      173:          "/game-sites/chat/chatIcons/173-0001.png",
+      RTX5090rairai:"/game-sites/chat/chatIcons/rairai-0001.png"
+    };
+
+    /* ======== メッセージ送信 ======== */
+    async function send() {
+      const box = document.getElementById("textBox1");
+      const text = box.value.trim();
+      if (!text) return;
+      
+      scrollToBottom();
+      // 入力欄リセット
+      box.value = "";
+      box.focus();
+
+      const text2 = text_trim(text, "mess");
+
+      // GAS へ送信
+      sendToGAS("takuan", text2, "00:00");
+    }
+
+    /* ============ログインログ=========== */
+    async function send_login() {
+      const text2 = text_trim("", "logi");
+      // GAS へ送信
+      sendToGAS("takuan", text2, "00:00");
+    }
+    
+    /* ======== GASに送信する処理 ======== */
+    async function sendToGAS(user, text, time){
+      const payload = {
+        user,
+        message: text,
+        time
+      };
+
+      try {
+        await fetch(WEB_APP_URL, {
+          method: "POST",
+          mode: "no-cors",   // ← GAS が CORS 許可してないため必要
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        // no-cors のためレスポンスは読めない（仕様）
+      } catch (e) {
+        console.error("送信エラー:", e);
+      }
+    }
+
+    /* ======== 吹き出し追加（送信側） ======== */
+    function addMessage_sent1(text, time){
+      const msg = document.createElement("div");
+      msg.className = "message sent";
+      msg.innerHTML = `
+        <div class="message-content">
+          <p>${text}</p>
+          <span class="timestamp">${time}</span>
+        </div>
+      `;
+      document.getElementById("message1").appendChild(msg);
+    }
+
+    /* ======== 吹き出し追加（受信側） ======== */
+function addMessage_received1(user, text, time){
+  const iconUrl = userIcons[user] || userIcons["default"]; // なければデフォルト
+
+  const msg = document.createElement("div");
+  msg.className = "message received";
+  msg.innerHTML = `
+    <div class="user-icon" style="background-image:url('${iconUrl}');"></div>
+    <div class="message-content">
+      <p>${text}</p>
+      <span class="timestamp">${time}</span>
+    </div>
+  `;
+  document.getElementById("message1").appendChild(msg);
+}
+/*=============時間ピル追加==============*/
+function addDatePill(text){
+  // ラッパー（中央寄せ）
+  const wrapper = document.createElement("div");
+  wrapper.className = "center-set";
+  // ピル本体（見た目）
+  const pill = document.createElement("div");
+  pill.className = "chat-date-pill";
+  pill.textContent = text;
+  // wrapper の中に pill を入れる
+  wrapper.appendChild(pill);
+  // message1 に挿入
+  document.getElementById("message1").appendChild(wrapper);
+}
+
+    /* ======== 自動スクロール ======== */
+    function scrollToBottom(){
+      window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: "smooth"
+      });
+    }
+
+    /* ======== エンター送信 ======== */
+    function enterSend(e){
+      if (e.key === "Enter") send();
+    }
+    
+    function text_trim(text1, text2){
+      return `<type[${text2}]acco[${token3}]time[${new Date()}]val1[${text1}]>`;
+    }
+
+const box = document.getElementById("textBox1");
+box.addEventListener("keydown", (e) => {  // キー入力をブロック
+  if(["<", ">", "[", "]"].includes(e.key)){
+    e.preventDefault();
+  }
+});
+box.addEventListener("input", () => {  // まとめて除去
+  box.value = box.value.replace(/[<>\[\]]/g, "");
+});
+
+
+function splitLogs(text){
+  return text.match(/<[^>]*>/g) || [];
+}
+
+function parseLog(log){
+  const result = {};
+  const inside = log.slice(1, -1);
+  const parts = inside.split("]");
+
+  for (let i = 0; i < parts.length; i++) {
+    const part = parts[i].trim();
+    if (part === "") continue;
+
+    const keyValue = part.split("[");
+    const key = keyValue[0];
+    const value = keyValue[1];
+
+    result[key] = value;
+  }
+  return result;
+}
+
+function toHHMM(timeString) {
+  const d = new Date(timeString); // 文字列 → Date に変換
+  const hh = String(d.getHours()).padStart(2, "0");
+  const mm = String(d.getMinutes()).padStart(2, "0");
+  return `${hh}:${mm}`;
+}
+function toYYYYMMDD(dateString) {
+  const d = new Date(dateString);
+  const year  = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day   = String(d.getDate()).padStart(2, "0");
+  return `${year}年${month}月${day}日`;
+}
+
+function getScrollPercentage(){
+    const currentScroll = window.scrollY;                      // A. 現在のスクロール位置（上端からの距離）
+    const fullHeight = document.documentElement.scrollHeight;  // B. ページのコンテンツ全体の高さ
+    const viewportHeight = window.innerHeight;                 // C. ブラウザのビューポート（表示領域）の高さ
+    // ----------------------------------------------------
+    // 2. スクロール可能な最大の距離を計算   ページ全長から表示領域の分を引く
+    const maxScrollDistance = fullHeight - viewportHeight;
+    // 最大距離が0の場合は、スクロールできない（ページが短い）ため0%を返す
+    if (maxScrollDistance === 0) {
+        return 0;
+    }
+    // ----------------------------------------------------
+    // 3. 相対値（%）を計算し、小数点以下を丸める
+    const scrollPercentage = (currentScroll / maxScrollDistance) * 100;
+    // 0〜100の間に収まるように調整（念のため）
+    return Math.min(100, Math.max(0, scrollPercentage));
+}
+    
+function autoScrollValue(){
+    const currentScroll = window.scrollY;
+    const fullHeight = document.documentElement.scrollHeight;
+    const viewportHeight = window.innerHeight;
+    const ScrollDistance = (fullHeight - viewportHeight) - currentScroll;
+    if(100 < ScrollDistance){
+      return 0;
+    }else{
+      return 1;
+    }
+}
+
+const msg1 = document.getElementById("new-msg");
+function new_msg(text){
+  msg1.textContent = text;
+  msg1.classList.add("show");
+  /* 1.5秒後にフェードアウト
+  setTimeout(() => {
+    msg1.classList.remove("show");
+  }, 1500);
+  */
+}
+
+function diffSeconds(get_old_date) {
+  const oldTime = new Date(get_old_date).getTime();  // 過去の時刻（ミリ秒）
+  const nowTime = Date.now();                    // 現在の時刻（ミリ秒）
+  const diffMs = nowTime - oldTime;              // ミリ秒差
+  return Math.floor(diffMs / 1000);              // 秒に変換
+}
+    
+var old_content = 0;
+var new_content = 0;
+var old_mess_date = "";
+var new_mess_date = "";
+var new_message = 0;
+var renew_time = 0;
+async function page_update(){
+  const res = await fetch(WEB_APP_URL);
+  const data = await res.json();
+  const text1 = data.content;
+
+  // ① 文字列をログごとに配列へ
+  const logs = splitLogs(text1);
+
+  // ② それぞれのログをパース → 多次元配列へ
+  const message2 = logs.map(log => {
+    const p = parseLog(log);
+    return [ p.type, p.acco, p.time, p.val1 ];
+  });
+
+  // ③ 出力
+  renew_time = new Date();
+  old_content = new_content;
+  new_content = message2.length;
+  if(old_content != new_content){
+    const auto_scroll = autoScrollValue();
+    for(let i = old_content; i < message2.length; i++){
+      if(message2[i][0] == "mess"){
+        old_mess_date = new_mess_date;
+        new_mess_date = toYYYYMMDD(message2[i][2]);
+        if(old_mess_date != new_mess_date){
+          addDatePill(new_mess_date);
+        }
+        if(message2[i][1] == token3){
+          addMessage_sent1(message2[i][3], toHHMM(message2[i][2]));
+        }else{
+          addMessage_received1(message2[i][1], message2[i][3], toHHMM(message2[i][2]));
+          if((!auto_scroll) && (!new_message)){
+            new_message = 1;
+            new_msg("新規メッセージ");
+          }
+        }
+      }
+    }
+    if(auto_scroll){
+      scrollToBottom();
+    }
+  }
+
+}
+
+let ticking = false;
+window.addEventListener("scroll", () => {
+  if(!ticking){
+    window.requestAnimationFrame(() => {
+      if((autoScrollValue()) && (new_message)){
+        msg1.classList.remove("show");
+        new_message = 0;
+      }
+      ticking = false;
+    });
+    ticking = true;
+  }
+});
+
+    
+var timer1 = null;
+var update_rate = 1000;
+function event1() {
+  page_update();
+}
+timer1 = setInterval(event1, update_rate);
+function rate_change(){
+  if(update_rate === 1000) {
+    document.querySelector(".icon-right").style.backgroundColor = "#7dd6ff";
+    update_rate = 5000;
+  }else{
+    document.querySelector(".icon-right").style.backgroundColor = "#000000";
+    update_rate = 1000;
+  }
+  clearInterval(timer1);
+  timer1 = setInterval(event1, update_rate);
+}
+
+var timer2 = null;
+function event2(){
+  if(renew_time != 0){
+    if(diffSeconds(renew_time) < 60){
+      document.getElementById("last-change-time").innerHTML = "最終更新: " + diffSeconds(renew_time) + "秒前";
+    }else{
+      document.getElementById("last-change-time").innerHTML = "最終更新: " + toHHMM(renew_time);
+    }
+  }
+}timer2 = setInterval(event2, 200);
+    
+  const urlParams = new URLSearchParams(location.search);
+  const token1 = urlParams.get("key1");
+  const token3 = localStorage.getItem("account1");
+  localStorage.setItem("account1", "");
+  if((token1 !== localStorage.getItem("key1")) || (token3 == "token3")  || (token3 == "") || (token3 == null)){
+    localStorage.setItem("key1", "unauthorized");
+    localStorage.setItem("requestPage1", "chat/chat0001/chat0001");
+ //   location.href = "/game-sites/";
+  }else{
+    localStorage.setItem("key1", "");
+    localStorage.setItem("requestPage1", "");
+    send_login();
+  }
+
+  function reload(){
+    const key1 = crypto.randomUUID();
+    localStorage.setItem("key1", key1);
+    localStorage.setItem("account1", token3);
+    location.href = "/game-sites/chat/chat0001/chat0001?key1=" + key1;
+  }
+  function backPage(){
+    const key1 = crypto.randomUUID();
+    localStorage.setItem("key1", key1);
+    localStorage.setItem("account1", token3);
+    location.href = "/game-sites/top/top0001/top0001?key1=" + key1;
+  }
+</script>
 </html>
