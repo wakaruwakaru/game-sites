@@ -149,7 +149,7 @@ function toggleMediaPanel(){
   panel.classList.toggle("show");
 }
 /*
-const mediaContent = document.getElementById("mediaContent");
+//const mediaContent = document.getElementById("mediaContent");
 mediaContent.addEventListener("click", (e) => {
   const item = e.target.closest(".media-item");
   if (!item) return;
@@ -188,7 +188,7 @@ function updateMediaContent(type){
   if(type == "stamp"){
     mediaContent.innerHTML = `
       <div class="media-item" data-type="stamp" data-id="s001" data-url="/stamps/001.png">
-        <img src="/stamps/001.png">
+        <img src="https://upload-os-bbs.hoyolab.com/upload/2025/05/07/0428e76648a1dc253f09d9e306e1c429_5001234347721581342.png?x-oss-process=image/auto-orient,0/interlace,1/format,webp/quality,q_70">
       </div>
       <div class="media-item" data-type="stamp" data-id="s002" data-url="/stamps/002.png">
         <img src="/stamps/002.png">
@@ -198,7 +198,7 @@ function updateMediaContent(type){
   if(type == "gif"){
     mediaContent.innerHTML = `
       <div class="media-item" data-type="gif" data-id="g001" data-url="https://media.giphy.com/...">
-        <img src="https://media.giphy.com/...">
+        <img src="https://upload-os-bbs.hoyolab.com/upload/2025/05/07/0428e76648a1dc253f09d9e306e1c429_5001234347721581342.png?x-oss-process=image/auto-orient,0/interlace,1/format,webp/quality,q_70">
       </div>
     `;
   }
