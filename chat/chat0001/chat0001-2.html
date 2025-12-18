@@ -150,13 +150,6 @@ function toggleMediaPanel(){
 }
 /*
 //const mediaContent = document.getElementById("mediaContent");
-mediaContent.addEventListener("click", (e) => {
-  const item = e.target.closest(".media-item");
-  if (!item) return;
-  const type = item.dataset.type;
-  const id   = item.dataset.id;
-  console.log(type, "/", id);
-});
 */
 const tabs = document.querySelectorAll(".media-header .tab");
 const mediaContent = document.getElementById("mediaContent");
@@ -171,6 +164,13 @@ tabs.forEach(tab => {
     // ③ 表示内容切り替え（仮）
     updateMediaContent(target);
   });
+});
+mediaContent.addEventListener("click", (e) => {
+  const item = e.target.closest(".media-item");
+  if (!item) return;
+  const type = item.dataset.type;
+  const id   = item.dataset.id;
+  console.log(type, "/", id);
 });
 
 function updateMediaContent(type){
@@ -191,7 +191,7 @@ function updateMediaContent(type){
         <img src="https://upload-os-bbs.hoyolab.com/upload/2025/05/07/0428e76648a1dc253f09d9e306e1c429_5001234347721581342.png?x-oss-process=image/auto-orient,0/interlace,1/format,webp/quality,q_70">
       </div>
       <div class="media-item" data-type="stamp" data-id="s002" data-url="/stamps/002.png">
-        <img src="/stamps/002.png">
+        <img src="https://upload-os-bbs.hoyolab.com/upload/2025/08/04/7ff6670f47b5bc859f9b49129b7fbb8d_5666365509699685222.png?x-oss-process=image/auto-orient,0/interlace,1/format,webp/quality,q_70">
       </div>
     `;
   }
