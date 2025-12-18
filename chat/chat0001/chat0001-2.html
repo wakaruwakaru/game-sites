@@ -86,24 +86,30 @@
   overflow-y: auto;
 }
 
-.media-item{
-  height: 56px;
-  background: #000;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 28px;
-  cursor: pointer;
-  box-shadow: 0 0 6px #4da6ff55;
-  transition: 0.2s;
-}
-
 .media-item:hover{
   transform: scale(1.1);
   box-shadow: 0 0 16px #4da6ffcc;
 }
 
+.media-item{
+  width: 56px;          /* すでに指定してるサイズに合わせる */
+  height: 56px;
+  border-radius: 10px;
+  overflow: hidden;     /* はみ出し防止 */
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* media-item 内の画像 */
+.media-item img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;    /* ← 最重要 */
+  display: block;
+  pointer-events: none; /* クリックは親が拾う */
+}
   </style>
 </head>
 
