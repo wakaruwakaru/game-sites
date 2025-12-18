@@ -174,9 +174,48 @@ tabs.forEach(tab => {
     // ② mediaContent のモード切り替え
     mediaContent.dataset.mode = target;
     // ③ 表示内容切り替え（仮）
-    //updateMediaContent(target);
+    updateMediaContent(target);
   });
 });
+
+function updateMediaContent(type){
+  mediaContent.innerHTML = "";
+  if(type == "emoji"){
+    mediaContent.innerHTML = `
+      <div class="media-item" data-type="emoji" data-id="0001">😀</div>
+      <div class="media-item" data-type="emoji" data-id="0002">😂</div>
+      <div class="media-item" data-type="emoji" data-id="0003">👍</div>
+      <div class="media-item" data-type="emoji" data-id="0004">🔥</div>
+      <div class="media-item" data-type="emoji" data-id="0005">👽</div>
+      <div class="media-item" data-type="emoji" data-id="0006">🤓</div>
+    `;
+  }
+  if(type == "stamp"){
+    mediaContent.innerHTML = `
+      <div class="media-item" data-type="stamp" data-id="s001" data-url="/stamps/001.png">
+        <img src="/stamps/001.png">
+      </div>
+      <div class="media-item" data-type="stamp" data-id="s002" data-url="/stamps/002.png">
+        <img src="/stamps/002.png">
+      </div>
+    `;
+  }
+  if(type == "gif"){
+    mediaContent.innerHTML = `
+      <div class="media-item" data-type="gif" data-id="g001" data-url="https://media.giphy.com/...">
+        <img src="https://media.giphy.com/...">
+      </div>
+    `;
+  }
+}
+
+
+
+
+
+
+
+
 
 
 
