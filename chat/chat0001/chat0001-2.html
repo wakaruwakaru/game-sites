@@ -129,15 +129,14 @@
 <!-- スタンプ / GIF パネル -->
 <div id="mediaPanel" class="media-panel">
   <div class="media-header">
-    <button class="tab">GIF</button>
-    <button class="tab">スタンプ</button>
-    <button class="tab active">絵文字</button>
+    <button class="tab" data-target="gif">GIF</button>
+    <button class="tab" data-target="stamp">スタンプ</button>
+    <button class="tab active" data-target="emoji">絵文字</button>
   </div>
   <div class="media-search">
     <input type="text" placeholder="検索　実装中…" />
   </div>
-  <div class="media-content" id="mediaContent">
-    <!-- 仮スタンプ -->
+  <div class="media-content" id="mediaContent" data-mode="emoji">
     <div class="media-item" data-type="emoji" data-id="0001">😀</div>
     <div class="media-item" data-type="emoji" data-id="0002">😂</div>
     <div class="media-item" data-type="emoji" data-id="0003">👍</div>
@@ -154,6 +153,7 @@ const panel = document.getElementById("mediaPanel");
 function toggleMediaPanel(){
   panel.classList.toggle("show");
 }
+/*
 const mediaContent = document.getElementById("mediaContent");
 mediaContent.addEventListener("click", (e) => {
   const item = e.target.closest(".media-item");
@@ -162,6 +162,24 @@ mediaContent.addEventListener("click", (e) => {
   const id   = item.dataset.id;
   console.log(type, "/", id);
 });
+*/
+const tabs = document.querySelectorAll(".media-header .tab");
+const mediaContent = document.getElementById("mediaContent");
+tabs.forEach(tab => {
+  tab.addEventListener("click", () => {
+    const target = tab.dataset.target; // gif / stamp / emoji
+    // ① タブの active 切り替え
+    tabs.forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+    // ② mediaContent のモード切り替え
+    mediaContent.dataset.mode = target;
+    // ③ 表示内容切り替え（仮）
+    //updateMediaContent(target);
+  });
+});
+
+
+
 
 
 
