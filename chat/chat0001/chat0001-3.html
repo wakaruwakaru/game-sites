@@ -215,7 +215,8 @@ function updateMediaContent(type){
   }
 }
 
-const emoji_list = Array.from(
+const segmenter = new Intl.Segmenter("ja", { granularity: "grapheme" });
+const emoji_list = [...segmenter.segment(
   "😀😃😄😁😆😅🤣😂🙂🙃😉😉😊😇" +
   "🥰😍🤩😘😗😚😙🥲😋😛😜🤪😝🤑" +
   "🤗🤭🫢🫣🤫🤔🫡" +
@@ -227,12 +228,12 @@ const emoji_list = Array.from(
   "🤡👹👺👻👽👾🤖" +
   "😺😸😹😻😼😽🙀😿😾" +
   "🙈🙉🙊" +
-  "💌💘💝💖💗💓💞💕💟💔❤️‍🔥❤️‍🩹🩷🧡🧡💛💚💙🩵💜🤎🖤🩶🤍"
-);
+  "💌💘💝💖💗💓💞💕💟💔❤️‍🔥❤️‍🩹🩷🧡🧡💛💚💙🩵💜🤎🖤🩶🤍" +
+  "💯💢💥💫💦💨🕳️💣💬👁‍🗨🗨️🗯️💭💤"
+)].map(s => s.segment);
 
 function renderEmojiList(){
   mediaContent.innerHTML = ""; // 初期化
-
   for(let i = 0; i < emoji_list.length; i++){
     const item = document.createElement("div");
     item.className = "media-item";
