@@ -543,10 +543,8 @@ async function page_update(){
           addDatePill(new_mess_date);
         }
         if(message2[i][1] == token3){
-        //addMessage_sent1(message2[i][3], toHHMM(message2[i][2]));
           addMessage_sent(message2[i][0], toHHMM(message2[i][2]), message2[i][3]); //type time value
         }else{
-        //addMessage_received1(message2[i][1], message2[i][3], toHHMM(message2[i][2]));
           addMessage_received(message2[i][1], message2[i][0], toHHMM(message2[i][2]), message2[i][3]); //user type time value
           if((!auto_scroll) && (!new_message)){
             new_message = 1;
@@ -612,7 +610,7 @@ function event2(){
   localStorage.setItem("account1", "");
   if((token1 !== localStorage.getItem("key1")) || (token3 == "token3")  || (token3 == "") || (token3 == null)){
     localStorage.setItem("key1", "unauthorized");
-    localStorage.setItem("requestPage1", "chat/chat0001/chat0001-2");
+    localStorage.setItem("requestPage1", "chat/chat0001/chat0001-3");
   //location.href = "/game-sites/";
   }else{
     localStorage.setItem("key1", "");
@@ -624,7 +622,7 @@ function event2(){
     const key1 = crypto.randomUUID();
     localStorage.setItem("key1", key1);
     localStorage.setItem("account1", token3);
-    location.href = "/game-sites/chat/chat0001/chat0001-2?key1=" + key1;
+    location.href = "/game-sites/chat/chat0001/chat0001-3?key1=" + key1;
   }
   function backPage(){
     const key1 = crypto.randomUUID();
