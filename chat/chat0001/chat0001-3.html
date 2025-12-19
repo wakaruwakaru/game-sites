@@ -189,14 +189,7 @@ mediaContent.addEventListener("click", (e) => {
 function updateMediaContent(type){
   mediaContent.innerHTML = "";
   if(type == "emoji"){
-    mediaContent.innerHTML = `
-      <div class="media-item" data-type="emoji" data-id="0001">😀</div>
-      <div class="media-item" data-type="emoji" data-id="0002">😂</div>
-      <div class="media-item" data-type="emoji" data-id="0003">👍</div>
-      <div class="media-item" data-type="emoji" data-id="0004">🔥</div>
-      <div class="media-item" data-type="emoji" data-id="0005">👽</div>
-      <div class="media-item" data-type="emoji" data-id="0006">🤓</div>
-    `;
+    renderEmojiList();
   }else if(type == "stamp"){
     mediaContent.innerHTML = `
       <div class="media-item" data-type="stamp" data-id="s001" data-url="/stamps/001.png">
@@ -230,8 +223,34 @@ function updateMediaContent(type){
   }
 }
 
+const emoji_list = (
+  "😀😃😄😁😆😅🤣😂🙂🙃😉😉😊😇" +
+  "🥰😍🤩😘😗😚😙🥲😋😛😜🤪😝🤑" +
+  "🤗🤭🫢🫣🤫🤔🫡" +
+  "🤐🤨😐😑😶🫥😶‍🌫️😶‍🌫️😏😒🙄😬😮‍💨🤥🫨🙂‍↔️🙂‍↕️" +
+  "😌😔😪🤤😴🫩" +
+  "😷🤒🤕🤢🤮🤧🥵🥶🥴😵🤯" +
+  "😕🫤😟🙁😮😯😲😳🥺🥹😦😧😨😰😥😢😭😱😖😣😞😓😩😫🥱" +
+  "🤠🥳🥸😎🤓🧐😤😡😠🤬😈👿💀" +
+  "🤡👹👺👻👽👾🤖" +
+  "😺😸😹😻😼😽🙀😿😾" +
+  "🙈🙉🙊" +
+  "💌💘💝💖💗💓💞💕💟💔❤️‍🔥❤️‍🩹🩷🧡🧡💛💚💙🩵💜🤎🖤🩶🤍" +
+  "💯💢💥💫💦💨🕳️💣💬👁‍🗨🗨️🗯️💭💤"
+).split("");
 
+function renderEmojiList(){
+  mediaContent.innerHTML = ""; // 初期化
 
+  for(let i = 0; i < emoji_list.length; i++){
+    const item = document.createElement("div");
+    item.className = "media-item";
+    item.dataset.type = "emoji";
+    item.dataset.id = String(i + 1);   // idは1始まり
+    item.textContent = emoji_list[i];  // innerHTMLじゃないのが重要
+    mediaContent.appendChild(item);
+  }
+}
 
 
 
