@@ -137,7 +137,7 @@
 <!-- スタンプ / GIF パネル -->
 <div id="mediaPanel" class="media-panel">
   <div class="media-header">
-    <button class="tab active" data-target="emoji">絵文字</button>
+    <button class="tab" data-target="emoji">絵文字</button>
     <button class="tab" data-target="stamp">スタンプ</button>
     <button class="tab" data-target="gif">GIF</button>
   </div>
@@ -145,12 +145,6 @@
     <input type="text" placeholder="検索　実装中…" />
   </div>
   <div class="media-content" id="mediaContent" data-mode="emoji">
-    <div class="media-item" data-type="emoji" data-id="00001">😀</div>
-    <div class="media-item" data-type="emoji" data-id="00002">😂</div>
-    <div class="media-item" data-type="emoji" data-id="00003">👍</div>
-    <div class="media-item" data-type="emoji" data-id="00004">🔥</div>
-    <div class="media-item" data-type="emoji" data-id="00005">👽</div>
-    <div class="media-item" data-type="emoji" data-id="00006">🤓</div>
   </div>
 </div>
   
@@ -161,9 +155,7 @@ const panel = document.getElementById("mediaPanel");
 function toggleMediaPanel(){
   panel.classList.toggle("show");
 }
-/*
-//const mediaContent = document.getElementById("mediaContent");
-*/
+
 const tabs = document.querySelectorAll(".media-header .tab");
 const mediaContent = document.getElementById("mediaContent");
 tabs.forEach(tab => {
@@ -223,7 +215,7 @@ function updateMediaContent(type){
   }
 }
 
-const emoji_list = (
+const emoji_list = Array.from(
   "😀😃😄😁😆😅🤣😂🙂🙃😉😉😊😇" +
   "🥰😍🤩😘😗😚😙🥲😋😛😜🤪😝🤑" +
   "🤗🤭🫢🫣🤫🤔🫡" +
@@ -237,7 +229,7 @@ const emoji_list = (
   "🙈🙉🙊" +
   "💌💘💝💖💗💓💞💕💟💔❤️‍🔥❤️‍🩹🩷🧡🧡💛💚💙🩵💜🤎🖤🩶🤍" +
   "💯💢💥💫💦💨🕳️💣💬👁‍🗨🗨️🗯️💭💤"
-).split("");
+);
 
 function renderEmojiList(){
   mediaContent.innerHTML = ""; // 初期化
