@@ -437,6 +437,7 @@ function createMessageBody(type, value){
     case "emoji":{
       const p = document.createElement("p");
       p.textContent = emoji_list[value];
+      p.className = "emoji";
       return p;
     }
     case "stamp":{
