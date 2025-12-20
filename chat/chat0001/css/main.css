@@ -323,6 +323,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
 /* media-item 内の画像 */
@@ -332,4 +333,12 @@
   object-fit: cover;    /* ← 最重要 */
   display: block;
   pointer-events: none; /* クリックは親が拾う */
+}
+
+.media-content::-webkit-scrollbar{
+  width: 6px;
+}
+.media-content::-webkit-scrollbar-thumb{
+  background: #4da6ff88;
+  border-radius: 3px;
 }
