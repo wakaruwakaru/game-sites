@@ -342,6 +342,79 @@
   display: block;
   pointer-events: none; /* クリックは親が拾う */
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* ===== 右上フローティング ===== */
+.presence-panel{
+  position: fixed;
+  top: 20px;
+  right: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  z-index: 1000;
+}
+
+/* ===== ユーザーアイコン ===== */
+.presence-user{
+  position: relative;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  box-shadow:
+    0 0 6px rgba(0,255,255,0.6),
+    0 0 12px rgba(0,255,255,0.4);
+}
+
+/* ===== ステータスマーク ===== */
+.presence-status{
+  position: absolute;
+  bottom: -2px;
+  left: -2px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: gray;
+  box-shadow: 0 0 6px currentColor;
+  border: 2px solid #000;
+}
+
+/* ===== 状態別色 ===== */
+.status-online{
+  color: #00ff9c;
+  background: #00ff9c;
+}
+
+.status-chat{
+  color: #00c8ff;
+  background: #00c8ff;
+}
+
+.status-idle{
+  color: #ffd500;
+  background: #ffd500;
+}
+
+.status-offline{
+  color: #666;
+  background: #666;
+  box-shadow: none;
+  opacity: 0.4;
+}
+
   </style>
 </head>
 
@@ -363,6 +436,9 @@
 <div id="bottomBtn" class="floating-btn" onclick="scrollToBottom()">⇩</div>
 <div id="reloadBtn" class="floating-btn" onclick="reload()">↻</div>
 <div id="logoutBtn" class="floating-btn" onclick="backPage()">⇦</div>
+
+<!-- オンラインユーザー表示 -->
+<div id="presencePanel" class="presence-panel"></div>
 
 <!-- スタンプ / GIF パネル -->
 <div id="mediaPanel" class="media-panel">
@@ -944,11 +1020,47 @@ function parsePresenceData(users){
   list.forEach(u => {
     console.log(u.name, u.status, u.isOnline);
   });
-}
 
+  renderPresencePanel();
+}
 function getPresenceArray(){
   return Object.values(userPresenceMap);
 }
+
+const presencePanel = document.getElementById("presencePanel");
+function renderPresencePanel(){
+  presencePanel.innerHTML = "";
+  const users = Object.values(userPresenceMap);
+  users.forEach(u => {
+    const icon = document.createElement("div");
+    icon.className = "presence-user";
+    icon.style.backgroundImage =
+      `url('${userIcons[u.name] || userIcons.default}')`;
+    // ステータス
+    const status = document.createElement("div");
+    status.className = "presence-status " + getStatusClass(u);
+    icon.appendChild(status);
+    presencePanel.appendChild(icon);
+  });
+}
+
+function getStatusClass(u){
+  if(!u.isOnline) return "status-offline";
+  switch(u.status){
+    case "chat":   return "status-chat";
+    case "online": return "status-online";
+    case "idle":   return "status-idle";
+    default:       return "status-online";
+  }
+}
+
+
+
+
+
+
+
+
 
   const urlParams = new URLSearchParams(location.search);
   const token1 = urlParams.get("key1");
