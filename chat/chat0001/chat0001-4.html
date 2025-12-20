@@ -1013,8 +1013,15 @@ function parsePresenceData(users){
       diff: diff,             // 今から何ms前か
       isOnline: diff < 30000  // 30秒以内ならオンライン扱い
     };
-  }
 
+console.log(  //test log
+  username,
+  u.lastSeen,
+  typeof u.lastSeen,
+  now - u.lastSeen
+);
+
+  }
   //console.log("presence parsed:", userPresenceMap);
   const list = getPresenceArray();
   list.forEach(u => {
