@@ -155,22 +155,17 @@ function toggleMediaPanel(){
   panel.classList.toggle("show");
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// パネル外クリックで閉じる（最小侵襲）
+document.addEventListener("click", (e) => {
+  // パネルが閉じているなら何もしない
+  if (!panel.classList.contains("show")) return;
+  // パネル内クリックなら無視
+  if (panel.contains(e.target)) return;
+  // ＋ボタン自身なら無視
+  if (e.target.closest(".icon-left")) return;
+  // それ以外 → 閉じる
+  panel.classList.remove("show");
+});
 
 
 const tabs = document.querySelectorAll(".media-header .tab");
