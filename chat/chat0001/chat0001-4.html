@@ -190,6 +190,7 @@ mediaContent.addEventListener("click", (e) => {
 
   const text2 = text_trim(id, type);
   sendToGAS("takuan", text2, "00:00");
+  panel.classList.remove("show");
 });
 
 function updateMediaContent(type){
