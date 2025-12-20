@@ -145,7 +145,7 @@ function renderGifList(){
     mediaContent.appendChild(item);
   }
 
-  for(let i = 0; i < 3; i++){ //他GIF描画
+  for(let i = 0; i < 4; i++){ //他GIF描画
     const item = document.createElement("div");
     item.className = "media-item";
     item.dataset.type = "gif";
