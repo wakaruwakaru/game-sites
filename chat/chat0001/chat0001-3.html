@@ -268,7 +268,7 @@ function renderStampList(){
     item.dataset.type = "genshin-stamp";
     item.dataset.id = String(i + 1);
     const img = document.createElement("img");
-    img.src = `/game-sites/chat/stamp/genshin/${i}.gif`;
+    img.src = `/game-sites/chat/stamp/genshin/${i}.png`;
     img.loading = "lazy";      // パフォーマンス向上
     img.alt = `genshin-stamp-${i}`;
 
@@ -282,7 +282,7 @@ function renderStampList(){
     item.dataset.type = "other-stamp";
     item.dataset.id = String(i + 1);
     const img = document.createElement("img");
-    img.src = `/game-sites/chat/stamp/other/${i}.gif`;
+    img.src = `/game-sites/chat/stamp/other/${i}.png`;
     img.loading = "lazy";      // パフォーマンス向上
     img.alt = `other-stamp-${i}`;
 
