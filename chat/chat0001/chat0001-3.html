@@ -185,34 +185,6 @@ function updateMediaContent(type){
     renderStampList();
   }else if(type == "gif"){
     renderGifList();
-    /*
-    mediaContent.innerHTML = `
-      <div class="media-item" data-type="gif" data-id="00001" data-url="">
-        <img src="/game-sites/chat/gif/genshin/1.gif">
-      </div>
-      <div class="media-item" data-type="gif" data-id="00002" data-url="">
-        <img src="/game-sites/chat/gif/genshin/2.gif">
-      </div>
-      <div class="media-item" data-type="gif" data-id="00003" data-url="">
-        <img src="/game-sites/chat/gif/genshin/3.gif">
-      </div>
-      <div class="media-item" data-type="gif" data-id="00004" data-url="">
-        <img src="/game-sites/chat/gif/genshin/4.gif">
-      </div>
-      <div class="media-item" data-type="gif" data-id="00005" data-url="">
-        <img src="/game-sites/chat/gif/starrail/1.gif">
-      </div>
-      <div class="media-item" data-type="gif" data-id="00006" data-url="">
-        <img src="/game-sites/chat/gif/other/1.gif">
-      </div>
-      <div class="media-item" data-type="gif" data-id="00007" data-url="">
-        <img src="/game-sites/chat/gif/other/2.gif">
-      </div>
-      <div class="media-item" data-type="gif" data-id="00008" data-url="">
-        <img src="/game-sites/chat/gif/other/3.gif">
-      </div>
-    `;
-    */
   }
 }
 
@@ -315,7 +287,7 @@ function renderGifList(){
     item.dataset.type = "other-gif";
     item.dataset.id = String(i + 1);
     const img = document.createElement("img");
-    img.src = `/game-sites/chat/gif/starrail/${i + 1}.gif`;
+    img.src = `/game-sites/chat/gif/other/${i + 1}.gif`;
     img.loading = "lazy";      // パフォーマンス向上
     img.alt = `other-gif-${i + 1}`;
 
