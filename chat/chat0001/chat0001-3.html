@@ -174,7 +174,9 @@ mediaContent.addEventListener("click", (e) => {
   if (!item) return;
   const type = item.dataset.type;
   const id = item.dataset.id;
-  console.log(type, "/", id);
+
+  const text2 = text_trim(id, type);
+  sendToGAS("takuan", text2, "00:00");
 });
 
 function updateMediaContent(type){
@@ -327,7 +329,7 @@ function renderGifList(){
       box.value = "";
       box.focus();
 
-      const text2 = text_trim(text, "mess");
+      const text2 = text_trim(text, "message");
 
       // GAS へ送信
       sendToGAS("takuan", text2, "00:00");
@@ -335,7 +337,7 @@ function renderGifList(){
 
     /* ============ログインログ=========== */
     async function send_login() {
-      const text2 = text_trim("", "logi");
+      const text2 = text_trim("", "login");
       // GAS へ送信
       sendToGAS("takuan", text2, "00:00");
     }
@@ -413,15 +415,19 @@ function addMessage_sent(type, time, value){
 
 function createMessageBody(type, value){
   switch(type){
-    case "mess":
-    case "emoji": {
+    case "message":{
       const p = document.createElement("p");
       p.textContent = value;
       return p;
     }
-
-    case "stamp":
-    case "gif": {
+    case "gif":{
+      const img = document.createElement("img");
+      img.src = value;
+      img.loading = "lazy";
+      img.className = "media-img";
+      return img;
+    }
+    case "gif":{
       const img = document.createElement("img");
       img.src = value;
       img.loading = "lazy";
@@ -596,7 +602,7 @@ async function page_update(){
   if(old_content != new_content){
     const auto_scroll = autoScrollValue();
     for(let i = old_content; i < message2.length; i++){
-      if((message2[i][0] == "mess") || (message2[i][0] == "stam") || (message2[i][0] == "gif1")){
+      if((message2[i][0] == "message") || (message2[i][0] == "stam") || (message2[i][0] == "gif1")){
         old_mess_date = new_mess_date;
         new_mess_date = toYYYYMMDD(message2[i][2]);
         if(old_mess_date != new_mess_date){
