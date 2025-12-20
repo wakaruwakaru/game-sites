@@ -559,15 +559,9 @@ function renderGifList(){
 }
 
 
-
-
-
-
-
-
     /* ======== Google Apps Script Web App URL ======== */
     const WEB_APP_URL =
-      "https://script.google.com/macros/s/AKfycbwO-h9O7dQhfKSnpVvE2opZXEJJlPV9LAGBSiFUR3-2m6jh8pCvo5JbJUW0cWxRn7MS/exec";
+      "https://script.google.com/macros/s/AKfycbyKOg1ktDml2MFAr6kOuEjXRyzZ2u2B76mp6wpqaUp6Hn0NzZPBJsW2EchaYT_y1ZTuhA/exec";
 
     // アカウントID → アイコンURL
     const userIcons = {
@@ -590,24 +584,22 @@ function renderGifList(){
       box.focus();
 
       const text2 = text_trim(text, "message");
-
-      // GAS へ送信
-      sendToGAS("takuan", text2, "00:00");
+      sendToGAS(token3, text2, "chat"); // GAS へ送信
     }
 
-    /* ============ログインログ=========== */
+    /* ============チャットログインログ=========== */
     async function send_login() {
       const text2 = text_trim("", "login");
-      // GAS へ送信
-      sendToGAS("takuan", text2, "00:00");
+      sendToGAS(token3, text2, "chat"); // GAS へ送信
     }
     
     /* ======== GASに送信する処理 ======== */
-    async function sendToGAS(user, text, time){
+    async function sendToGAS(user, text, status){
+      const Auser = user.account;
       const payload = {
-        user,
+        Auser,
         message: text,
-        time
+        status
       };
 
       try {
