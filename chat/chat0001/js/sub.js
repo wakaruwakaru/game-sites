@@ -601,3 +601,53 @@ function getStatusClass(u){
   }
 }
 
+function getSortedPresenceArray(){
+  return Object.values(userPresenceMap).sort((a, b) => {
+    // ① オンライン優先
+    if (a.isOnline !== b.isOnline) {
+      return b.isOnline - a.isOnline;
+    }
+    // ② status 優先度
+    const statusPriority = {
+      chat: 3,
+      online: 2,
+      idle: 1,
+      offline: 0
+    };
+    const sa = statusPriority[a.status] ?? 0;
+    const sb = statusPriority[b.status] ?? 0;
+    if (sa !== sb) {
+      return sb - sa;
+    }
+    // ③ 最終アクティブが新しい順
+    return b.lastSeen - a.lastSeen;
+  });
+}
+
+
+  const urlParams = new URLSearchParams(location.search);
+  const token1 = urlParams.get("key1");
+  const token3 = localStorage.getItem("account1");
+  localStorage.setItem("account1", "");
+  if((token1 !== localStorage.getItem("key1")) || (token3 == null)){
+    localStorage.setItem("key1", "unauthorized");
+    localStorage.setItem("requestPage1", "chat/chat0001/chat0001");
+    location.href = "/game-sites/";
+  }else{
+    localStorage.setItem("key1", "");
+    localStorage.setItem("requestPage1", "");
+    send_login();
+  }
+
+  function reload(){
+    const key1 = crypto.randomUUID();
+    localStorage.setItem("key1", key1);
+    localStorage.setItem("account1", token3);
+    location.href = "/game-sites/chat/chat0001/chat0001?key1=" + key1;
+  }
+  function backPage(){
+    const key1 = crypto.randomUUID();
+    localStorage.setItem("key1", key1);
+    localStorage.setItem("account1", token3);
+    location.href = "/game-sites/top/top0001/top0001?key1=" + key1;
+  }
