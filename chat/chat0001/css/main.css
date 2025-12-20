@@ -47,6 +47,7 @@
     }
     .message-content img {
       width: 200px;
+      user-select: none;
     }
     .timestamp {
       font-size: 11px;
