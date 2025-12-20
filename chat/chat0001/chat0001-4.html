@@ -682,7 +682,7 @@ function createMessageBody(type, value){
     }
     case "emoji":{
       const p = document.createElement("p");
-      p.textContent = emoji_list[value];
+      p.textContent = emoji_list[Number(value) - 1];
       p.className = "emoji";
       return p;
     }
@@ -940,10 +940,10 @@ function event2(){
   const token1 = urlParams.get("key1");
   const token3 = localStorage.getItem("account1");
   localStorage.setItem("account1", "");
-  if((token1 !== localStorage.getItem("key1")) || (token3 == "token3")  || (token3 == "") || (token3 == null)){
-  //localStorage.setItem("key1", "unauthorized");
-  //localStorage.setItem("requestPage1", "chat/chat0001/chat0001-4");
-  //location.href = "/game-sites/";
+  if((token1 !== localStorage.getItem("key1")) || (token3 != "wakaruwakaru")){
+    localStorage.setItem("key1", "unauthorized");
+    localStorage.setItem("requestPage1", "chat/chat0001/chat0001-4");
+    location.href = "/game-sites/";
   }else{
     localStorage.setItem("key1", "");
     localStorage.setItem("requestPage1", "");
