@@ -427,14 +427,14 @@ function createMessageBody(type, value){
     }
     case "stamp":{
       const img = document.createElement("img");
-      img.src = value;
+      img.src = "/game-sites/chat/stamp/" + value;
       img.loading = "lazy";
       img.className = "media-img";
       return img;
     }
     case "gif":{
       const img = document.createElement("img");
-      img.src = value;
+      img.src = "/game-sites/chat/gif/" + value;
       img.loading = "lazy";
       img.className = "media-img";
       return img;
