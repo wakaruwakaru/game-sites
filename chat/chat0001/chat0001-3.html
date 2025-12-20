@@ -226,8 +226,8 @@ function renderStampList(){
   for(let i = 0; i < 7; i++){ //原神スタンプ描画
     const item = document.createElement("div");
     item.className = "media-item";
-    item.dataset.type = "genshin-stamp";
-    item.dataset.id = String(i + 1);
+    item.dataset.type = "stamp";
+    item.dataset.id = "genshin/" + String(i + 1);
     const img = document.createElement("img");
     img.src = `/game-sites/chat/stamp/genshin/${i + 1}.png`;
     img.loading = "lazy";      // パフォーマンス向上
@@ -240,8 +240,8 @@ function renderStampList(){
   for(let i = 0; i < 11; i++){ //他スタンプ描画
     const item = document.createElement("div");
     item.className = "media-item";
-    item.dataset.type = "other-stamp";
-    item.dataset.id = String(i + 1);
+    item.dataset.type = "stamp";
+    item.dataset.id = "other/" + String(i + 1);
     const img = document.createElement("img");
     img.src = `/game-sites/chat/stamp/other/${i + 1}.png`;
     img.loading = "lazy";      // パフォーマンス向上
@@ -258,8 +258,8 @@ function renderGifList(){
   for(let i = 0; i < 4; i++){ //原神GIF描画
     const item = document.createElement("div");
     item.className = "media-item";
-    item.dataset.type = "genshin-gif";
-    item.dataset.id = String(i + 1);
+    item.dataset.type = "gif";
+    item.dataset.id = "genshin/" + String(i + 1);
     const img = document.createElement("img");
     img.src = `/game-sites/chat/gif/genshin/${i + 1}.gif`;
     img.loading = "lazy";      // パフォーマンス向上
@@ -272,8 +272,8 @@ function renderGifList(){
   for(let i = 0; i < 1; i++){ //スタレGIF描画
     const item = document.createElement("div");
     item.className = "media-item";
-    item.dataset.type = "starrail-gif";
-    item.dataset.id = String(i + 1);
+    item.dataset.type = "gif";
+    item.dataset.id = "starrail/" + String(i + 1);
     const img = document.createElement("img");
     img.src = `/game-sites/chat/gif/starrail/${i + 1}.gif`;
     img.loading = "lazy";      // パフォーマンス向上
@@ -286,8 +286,8 @@ function renderGifList(){
   for(let i = 0; i < 3; i++){ //他GIF描画
     const item = document.createElement("div");
     item.className = "media-item";
-    item.dataset.type = "other-gif";
-    item.dataset.id = String(i + 1);
+    item.dataset.type = "gif";
+    item.dataset.id = "other/" + String(i + 1);
     const img = document.createElement("img");
     img.src = `/game-sites/chat/gif/other/${i + 1}.gif`;
     img.loading = "lazy";      // パフォーマンス向上
@@ -420,7 +420,12 @@ function createMessageBody(type, value){
       p.textContent = value;
       return p;
     }
-    case "gif":{
+    case "emoji":{
+      const p = document.createElement("p");
+      p.textContent = value;
+      return p;
+    }
+    case "stamp":{
       const img = document.createElement("img");
       img.src = value;
       img.loading = "lazy";
@@ -602,7 +607,7 @@ async function page_update(){
   if(old_content != new_content){
     const auto_scroll = autoScrollValue();
     for(let i = old_content; i < message2.length; i++){
-      if((message2[i][0] == "message") || (message2[i][0] == "stam") || (message2[i][0] == "gif1")){
+      if((message2[i][0] == "message") || (message2[i][0] == "stamp") || (message2[i][0] == "gif")){
         old_mess_date = new_mess_date;
         new_mess_date = toYYYYMMDD(message2[i][2]);
         if(old_mess_date != new_mess_date){
