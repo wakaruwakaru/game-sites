@@ -43,7 +43,7 @@
       word-wrap: break-word;
     }
     .emoji {
-      font-size: 64px;
+      font-size: 48px;
     }
     .message-content img {
       width: 200px;
@@ -225,4 +225,111 @@
 }
 #bottomBtn{
     bottom: 230px;
+}
+
+
+/* ===== メディアパネル本体 ===== */
+.media-panel{
+  position: fixed;
+  bottom: 90px; /* 入力欄の上 */
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  width: 600px;
+  max-width: 92%;
+  height: 340px;
+  background: #0a0f18;
+  border-radius: 16px;
+  border: 2px solid #4da6ff;
+  box-shadow:
+    0 0 20px #4da6ff88,
+    0 0 60px #4da6ff44;
+  opacity: 0;
+  pointer-events: none;
+  transition: 
+    opacity 0.25s ease,
+    transform 0.25s ease;
+  z-index: 9998;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 表示状態 */
+.media-panel.show{
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0);
+}
+
+/* ===== ヘッダ（タブ） ===== */
+.media-header{
+  display: flex;
+  gap: 8px;
+  padding: 10px;
+  border-bottom: 1px solid #4da6ff55;
+}
+
+.media-header .tab{
+  background: transparent;
+  border: none;
+  color: #8bbcff;
+  padding: 6px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.media-header .tab.active{
+  background: #4da6ff22;
+  box-shadow: 0 0 10px #4da6ff99;
+  color: #e6f7ff;
+}
+
+/* ===== 検索欄 ===== */
+.media-search{
+  padding: 8px 10px;
+}
+
+.media-search input{
+  width: 100%;
+  background: #000;
+  border: 1px solid #4da6ff;
+  border-radius: 8px;
+  padding: 6px 10px;
+  color: #8bbcff;
+}
+
+/* ===== 中身 ===== */
+.media-content{
+  flex: 1;
+  padding: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(56px, 1fr));
+  gap: 10px;
+  overflow-y: auto;
+}
+
+.media-item:hover{
+  transform: scale(1.1);
+  box-shadow: 0 0 16px #4da6ffcc;
+}
+
+.media-item{
+  width: 56px;          /* すでに指定してるサイズに合わせる */
+  height: 56px;
+  font-size: 40px;
+  border-radius: 10px;
+  overflow: hidden;     /* はみ出し防止 */
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* media-item 内の画像 */
+.media-item img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;    /* ← 最重要 */
+  display: block;
+  pointer-events: none; /* クリックは親が拾う */
 }
