@@ -664,7 +664,6 @@ function addMessage_sent(type, time, value){
 }
 
 
-
 function createMessageBody(type, value){
   switch(type){
     case "message":{
@@ -698,11 +697,6 @@ function createMessageBody(type, value){
       return null;
   }
 }
-
-
-
-
-
 
 
 /*=============時間ピル追加==============*/
@@ -927,12 +921,16 @@ function event2(){
     }
   }
 }timer2 = setInterval(event2, 200);
-    
+
+setInterval(() => {
+  sendToGAS(token3, "", "chat");
+}, 5000);
+
   const urlParams = new URLSearchParams(location.search);
   const token1 = urlParams.get("key1");
   const token3 = localStorage.getItem("account1");
   localStorage.setItem("account1", "");
-  if((token1 !== localStorage.getItem("key1")) || (token3 != "wakaruwakaru")){
+  if((token1 !== localStorage.getItem("key1")) || (token3 == "")){
     localStorage.setItem("key1", "unauthorized");
     localStorage.setItem("requestPage1", "chat/chat0001/chat0001-3");
     location.href = "/game-sites/";
