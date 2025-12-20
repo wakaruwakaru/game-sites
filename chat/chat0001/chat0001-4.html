@@ -237,21 +237,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* ===== メディアパネル本体 ===== */
 .media-panel{
   position: fixed;
@@ -594,10 +579,9 @@ function renderGifList(){
     }
     
     /* ======== GASに送信する処理 ======== */
-    async function sendToGAS(user, text, status){
-      const Auser = user.account;
+    async function sendToGAS(User, text, status){
       const payload = {
-        Auser,
+        user: User,
         message: text,
         status
       };
