@@ -1037,13 +1037,12 @@ function getPresenceArray(){
 const presencePanel = document.getElementById("presencePanel");
 function renderPresencePanel(){
   presencePanel.innerHTML = "";
-  const users = Object.values(userPresenceMap);
+  const users = getSortedPresenceArray();
   users.forEach(u => {
     const icon = document.createElement("div");
     icon.className = "presence-user";
     icon.style.backgroundImage =
       `url('${userIcons[u.name] || userIcons.default}')`;
-    // ステータス
     const status = document.createElement("div");
     status.className = "presence-status " + getStatusClass(u);
     icon.appendChild(status);
@@ -1061,6 +1060,28 @@ function getStatusClass(u){
   }
 }
 
+function getSortedPresenceArray(){
+  return Object.values(userPresenceMap).sort((a, b) => {
+    // ① オンライン優先
+    if (a.isOnline !== b.isOnline) {
+      return b.isOnline - a.isOnline;
+    }
+    // ② status 優先度
+    const statusPriority = {
+      chat: 3,
+      online: 2,
+      idle: 1,
+      offline: 0
+    };
+    const sa = statusPriority[a.status] ?? 0;
+    const sb = statusPriority[b.status] ?? 0;
+    if (sa !== sb) {
+      return sb - sa;
+    }
+    // ③ 最終アクティブが新しい順
+    return b.lastSeen - a.lastSeen;
+  });
+}
 
 
 
