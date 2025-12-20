@@ -22,7 +22,7 @@
       box.value = "";
       box.focus();
 
-      const text2 = text_trim(text, "mess");
+      const text2 = text_trim(text, "message");
 
       // GAS へ送信
       sendToGAS("takuan", text2, "00:00");
@@ -30,7 +30,7 @@
 
     /* ============ログインログ=========== */
     async function send_login() {
-      const text2 = text_trim("", "logi");
+      const text2 = text_trim("", "login");
       // GAS へ送信
       sendToGAS("takuan", text2, "00:00");
     }
@@ -238,7 +238,7 @@ async function page_update(){
   if(old_content != new_content){
     const auto_scroll = autoScrollValue();
     for(let i = old_content; i < message2.length; i++){
-      if(message2[i][0] == "mess"){
+      if(message2[i][0] == "message"){
         old_mess_date = new_mess_date;
         new_mess_date = toYYYYMMDD(message2[i][2]);
         if(old_mess_date != new_mess_date){
