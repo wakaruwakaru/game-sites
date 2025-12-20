@@ -182,6 +182,8 @@ function updateMediaContent(type){
   if(type == "emoji"){
     renderEmojiList();
   }else if(type == "stamp"){
+    renderStampList();
+    /*
     mediaContent.innerHTML = `
       <div class="media-item" data-type="stamp" data-id="s001" data-url="/stamps/001.png">
         <img src="https://wakaruwakaru.github.io/game-sites/chat/stamp/genshin/1.png">
@@ -196,6 +198,7 @@ function updateMediaContent(type){
         <img src="https://wakaruwakaru.github.io/game-sites/chat/stamp/genshin/4.png">
       </div>
     `;
+    */
   }else if(type == "gif"){
     mediaContent.innerHTML = `
       <div class="media-item" data-type="gif" data-id="00001" data-url="">
@@ -249,13 +252,46 @@ function renderEmojiList(){
     const item = document.createElement("div");
     item.className = "media-item";
     item.dataset.type = "emoji";
-    item.dataset.id = String(i + 1);   // idは1始まり
-    item.textContent = emoji_list[i];  // innerHTMLじゃないのが重要
+    item.dataset.id = String(i + 1); // idは1始まり
+    item.textContent = emoji_list[i];
     mediaContent.appendChild(item);
   }
 }
 renderEmojiList();
 
+function renderStampList(){
+  mediaContent.innerHTML = "";
+
+  for(let i = 0; i < 7; i++){ //原神スタンプ描画
+    const item = document.createElement("div");
+    item.className = "media-item";
+    item.dataset.type = "stamp";
+    item.dataset.id = String(i + 1);
+
+    const img = document.createElement("img");
+    img.src = `/game-sites/chat/gif/genshin/${i}.gif`;
+    img.loading = "lazy";      // パフォーマンス向上
+    img.alt = `stamp-${i}`;
+
+    item.appendChild(img);
+    mediaContent.appendChild(item);
+  }
+
+  for(let i = 0; i < 11; i++){ //他スタンプ描画
+    const item = document.createElement("div");
+    item.className = "media-item";
+    item.dataset.type = "stamp";
+    item.dataset.id = String(i + 1);
+
+    const img = document.createElement("img");
+    img.src = `/game-sites/chat/gif/other/${i}.gif`;
+    img.loading = "lazy";      // パフォーマンス向上
+    img.alt = `stamp-${i}`;
+
+    item.appendChild(img);
+    mediaContent.appendChild(item);
+  }
+}
 
 
 
