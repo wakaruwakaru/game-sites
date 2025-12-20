@@ -423,7 +423,6 @@ function createMessageBody(type, value){
     case "emoji":{
       const p = document.createElement("p");
       p.textContent = emoji_list[value];
-      console.log(emoji_list[value]);
       return p;
     }
     case "stamp":{
@@ -608,7 +607,7 @@ async function page_update(){
   if(old_content != new_content){
     const auto_scroll = autoScrollValue();
     for(let i = old_content; i < message2.length; i++){
-      if((message2[i][0] == "message") || (message2[i][0] == "stamp") || (message2[i][0] == "gif")){
+      if((message2[i][0] == "message") || (message2[i][0] == "emoji") || (message2[i][0] == "stamp") || (message2[i][0] == "gif")){
         old_mess_date = new_mess_date;
         new_mess_date = toYYYYMMDD(message2[i][2]);
         if(old_mess_date != new_mess_date){
