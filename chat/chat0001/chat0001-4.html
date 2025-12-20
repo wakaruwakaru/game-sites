@@ -938,9 +938,17 @@ function parsePresenceData(users){
       isOnline: diff < 30000  // 30秒以内ならオンライン扱い
     };
   }
-  console.log("presence parsed:", userPresenceMap);
+
+  //console.log("presence parsed:", userPresenceMap);
+  const list = getPresenceArray();
+  list.forEach(u => {
+    console.log(u.name, u.status, u.isOnline);
+  });
 }
 
+function getPresenceArray(){
+  return Object.values(userPresenceMap);
+}
 
   const urlParams = new URLSearchParams(location.search);
   const token1 = urlParams.get("key1");
