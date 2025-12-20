@@ -42,6 +42,11 @@
       margin: 0;
       word-wrap: break-word;
     }
+    .message-content .emoji p {
+      margin: 0;
+      word-wrap: break-word;
+      font-size: 64px;
+    }
     .message-content img {
       width: 200px;
     }
