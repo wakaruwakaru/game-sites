@@ -183,22 +183,6 @@ function updateMediaContent(type){
     renderEmojiList();
   }else if(type == "stamp"){
     renderStampList();
-    /*
-    mediaContent.innerHTML = `
-      <div class="media-item" data-type="stamp" data-id="s001" data-url="/stamps/001.png">
-        <img src="https://wakaruwakaru.github.io/game-sites/chat/stamp/genshin/1.png">
-      </div>
-      <div class="media-item" data-type="stamp" data-id="s002" data-url="/stamps/002.png">
-        <img src="https://wakaruwakaru.github.io/game-sites/chat/stamp/genshin/2.png">
-      </div>
-      <div class="media-item" data-type="stamp" data-id="s002" data-url="/stamps/002.png">
-        <img src="https://wakaruwakaru.github.io/game-sites/chat/stamp/genshin/3.png">
-      </div>
-      <div class="media-item" data-type="stamp" data-id="s002" data-url="/stamps/002.png">
-        <img src="https://wakaruwakaru.github.io/game-sites/chat/stamp/genshin/4.png">
-      </div>
-    `;
-    */
   }else if(type == "gif"){
     mediaContent.innerHTML = `
       <div class="media-item" data-type="gif" data-id="00001" data-url="">
@@ -291,6 +275,51 @@ function renderStampList(){
   }
 }
 
+function renderGifList(){
+  mediaContent.innerHTML = "";
+
+  for(let i = 0; i < 4; i++){ //原神GIF描画
+    const item = document.createElement("div");
+    item.className = "media-item";
+    item.dataset.type = "genshin-gif";
+    item.dataset.id = String(i + 1);
+    const img = document.createElement("img");
+    img.src = `/game-sites/chat/stamp/genshin/${i + 1}.gif`;
+    img.loading = "lazy";      // パフォーマンス向上
+    img.alt = `genshin-gif-${i + 1}`;
+
+    item.appendChild(img);
+    mediaContent.appendChild(item);
+  }
+
+  for(let i = 0; i < 1; i++){ //スタレGIF描画
+    const item = document.createElement("div");
+    item.className = "media-item";
+    item.dataset.type = "starrail-gif";
+    item.dataset.id = String(i + 1);
+    const img = document.createElement("img");
+    img.src = `/game-sites/chat/stamp/starrail/${i + 1}.gif`;
+    img.loading = "lazy";      // パフォーマンス向上
+    img.alt = `starrail-gif-${i + 1}`;
+
+    item.appendChild(img);
+    mediaContent.appendChild(item);
+  }
+
+  for(let i = 0; i < 3; i++){ //他GIF描画
+    const item = document.createElement("div");
+    item.className = "media-item";
+    item.dataset.type = "other-gif";
+    item.dataset.id = String(i + 1);
+    const img = document.createElement("img");
+    img.src = `/game-sites/chat/stamp/starrail/${i + 1}.gif`;
+    img.loading = "lazy";      // パフォーマンス向上
+    img.alt = `other-gif-${i + 1}`;
+
+    item.appendChild(img);
+    mediaContent.appendChild(item);
+  }
+}
 
 
 
