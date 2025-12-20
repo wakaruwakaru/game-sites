@@ -3,9 +3,255 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="shortcut icon" href="/game-sites/index/icon/icon1.png" >
-  <link rel="stylesheet" href="./css/main.css" />
   <title>チャット</title>
   <style type="text/css">
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #000000;
+      margin: 0;
+      padding: 0;
+      user-select:none;
+    }
+    .chat-container {
+      max-width: 600px;
+      margin: 20px auto 100px auto;
+      padding: 10px;
+      background-color: #000000;
+      border-radius: 8px;
+      box-shadow: 0 0 8px #4da6ff, 0 0 20px #4da6ff;
+    }
+    .message {
+      display: flex;
+      margin-bottom: 15px;
+      align-items: flex-end;
+    }
+    .received { justify-content: flex-start; }
+    .sent { justify-content: flex-end; }
+
+.user-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  background-color: #333;
+  margin-right: 10px;
+  box-shadow: 0 0 8px #4da6ff, 0 0 18px #4da6ff;
+}
+
+    .message-content {
+      max-width: 70%;
+      padding: 8px 12px;
+      border-radius: 18px;
+      position: relative;
+    }
+    .message-content p {
+      margin: 0;
+      word-wrap: break-word;
+    }
+    .emoji {
+      font-size: 64px;
+    }
+    .message-content img {
+      width: 200px;
+    }
+    .timestamp {
+      font-size: 11px;
+      color: #999;
+      white-space: nowrap;
+    }
+    .received .message-content {
+      background-color: #000000;
+      box-shadow: 0 0 8px #4da6ff, 0 0 20px #4da6ff;
+      color: #ffffff;
+      border-bottom-left-radius: 4px;
+      order: 2;
+    }
+    .received .timestamp { margin-left: 8px; order: 3; }
+    .sent .message-content {
+      background-color: #000000;
+      box-shadow: 0 0 8px #00ffff, 0 0 20px #00ffff;
+      color: #ffffff;
+      border-bottom-right-radius: 4px;
+      order: 2;
+    }
+    .sent .timestamp { margin-right: 8px; order: 1; }
+    .sent { padding-right: 50px; }
+
+    .input-wrapper {
+      display: flex;
+      align-items: center;
+      background: #000000;
+      border-radius: 40px;
+      border: 2px solid #4da6ff;
+      padding: 10px 16px;
+      width: 600px;
+      max-width: 90%;
+      box-shadow: 0 0 0px #4da6ff, 0 0 40px #4da6ff;
+      gap: 12px;
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 9999;
+    }
+    .icon-left {
+      font-size: 20px;
+      font-weight: bold;
+      padding: 6px;
+      color:#4da6ff;
+      cursor: pointer;
+    }
+    .input-wrapper input {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-size: 16px;
+      background-color:#000000;
+      color:#4da6ff;
+      border: 2px solid #4da6ff;
+      padding:5px 10px;
+    }
+    /* フォーカス時：さらに強く光る */
+    .input-wrapper input:focus {
+      box-shadow:
+        0 0 5px #4da6ff,
+        0 0 10px #3d8cff,
+        0 0 15px #3d8fff;
+      border-color: #82c0ff; /* ちょっと明るい色に */
+    }
+    .input-wrapper input::placeholder {
+      color: #8bbcff;
+      opacity: 0.7;
+    }  
+    .icon-right {
+      width: 36px;
+      height: 36px;
+      background: #000000;
+      border: 2px solid #4da6ff;
+      border-radius: 50%;
+      box-shadow: 0 0 18px #4da6ff, 0 0 1px #4da6ff;
+      cursor: pointer;
+    }
+
+
+/* --- 日付ピル（ネオン風） --- */
+.chat-date-pill{
+  display: inline-block;
+  padding: 8px 20px;
+  border-radius: 999px;              /* 丸いピル */
+  background: rgba(10,12,18,0);   /* 半透明の暗い背景（ガラスっぽく） */
+  color: #e6f7ff;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1;
+  text-align: center;
+  border: 1px solid rgba(77,166,255,1);
+  backdrop-filter: blur(6px);        /* 背景のぼかし */
+  position: relative;
+  margin: 18px auto;                 /* 上下にスペース、横は中央（親幅に依存） */
+  box-shadow:
+    0 0 6px rgba(77,166,255,0.12),
+    0 0 18px rgba(77,166,255,0.06);
+  z-index: 10;
+}
+/* 小画面で幅を少し縮める */
+@media (max-width: 420px) {
+  .chat-date-pill {
+    padding: 6px 14px;
+    font-size: 13px;
+  }
+}
+.center-set{
+    text-align:center;
+}
+
+
+.new-msg {
+  position: fixed;
+  bottom: 100px;
+  left: 20px;
+  background: rgba(0,0,0,0.75);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  font-size: 14px;
+  box-shadow: 0 0 0px #ffa6ff, 0 0 20px #ffa6ff;
+  border: 2px solid #ffa6ff;
+}
+.new-msg.show {
+  opacity: 1;
+}
+
+.last-change-time{
+  position: fixed;
+  bottom: 5px;
+  color: #909090;
+  font-size: 10px;
+  display: flex;
+  right: 10px
+}
+
+/* フローティングボタンの共通デザイン */
+.floating-btn{
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 58px;
+    height: 58px;
+    border-radius: 50%;
+    background: #111;
+    border: 2px solid #4da6ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 26px;
+    color: #bcdfff;
+    cursor: pointer;
+    transition: 0.25s;
+    box-shadow: 0 0 10px #3d8cff88;
+}
+/* ホバー時に光る */
+.floating-btn:hover{
+    background: #4da6ff33;
+    box-shadow: 0 0 16px #4da6ffcc;
+}
+/* クリック時に縮む */
+.floating-btn:active{
+    transform: scale(0.9);
+}
+/* ボタン位置調整 */
+#reloadBtn{
+    bottom: 160px; /* logout の上に配置 */
+}
+#logoutBtn{
+    bottom: 90px;
+}
+#bottomBtn{
+    bottom: 230px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* ===== メディアパネル本体 ===== */
 .media-panel{
   position: fixed;
