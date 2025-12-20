@@ -265,13 +265,12 @@ function renderStampList(){
   for(let i = 0; i < 7; i++){ //原神スタンプ描画
     const item = document.createElement("div");
     item.className = "media-item";
-    item.dataset.type = "stamp";
+    item.dataset.type = "genshin-stamp";
     item.dataset.id = String(i + 1);
-
     const img = document.createElement("img");
-    img.src = `/game-sites/chat/gif/genshin/${i}.gif`;
+    img.src = `/game-sites/chat/stamp/genshin/${i}.gif`;
     img.loading = "lazy";      // パフォーマンス向上
-    img.alt = `stamp-${i}`;
+    img.alt = `genshin-stamp-${i}`;
 
     item.appendChild(img);
     mediaContent.appendChild(item);
@@ -280,13 +279,12 @@ function renderStampList(){
   for(let i = 0; i < 11; i++){ //他スタンプ描画
     const item = document.createElement("div");
     item.className = "media-item";
-    item.dataset.type = "stamp";
+    item.dataset.type = "other-stamp";
     item.dataset.id = String(i + 1);
-
     const img = document.createElement("img");
-    img.src = `/game-sites/chat/gif/other/${i}.gif`;
+    img.src = `/game-sites/chat/stamp/other/${i}.gif`;
     img.loading = "lazy";      // パフォーマンス向上
-    img.alt = `stamp-${i}`;
+    img.alt = `other-stamp-${i}`;
 
     item.appendChild(img);
     mediaContent.appendChild(item);
