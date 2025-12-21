@@ -86,9 +86,9 @@ function renderEmojiList(){
 }
 renderEmojiList();
 
-function renderImgList(type, genre, min, max, file){ //画像系描画
+function renderImgList(type, genre, start, end, file){ //画像系描画
 //mediaContent.innerHTML = "";
-  for(let i = (min - 1); i < max; i++){
+  for(let i = (start - 1); i < end; i++){
     const item = document.createElement("div");
     item.className = "media-item";
     item.dataset.type = type;
