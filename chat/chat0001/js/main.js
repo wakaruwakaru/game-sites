@@ -594,10 +594,8 @@ function openProfileModal(username, u){
     `url('${userIcons[username] || userIcons.default}')`;
   document.getElementById("profileName").textContent = username;
   const statusKey = u.isOnline ? u.status : "offline";
-  document.getElementById("profileStatus").textContent =
-  statusMessageMap[statusKey] || "不明な状態";
-  document.getElementById("profileLastSeen").textContent =
-    "Last seen: " + new Date(u.lastSeen).toLocaleString();
+  document.getElementById("profileStatus").textContent = statusMessageMap[statusKey] || "不明な状態";
+//document.getElementById("profileLastSeen").textContent = "Last seen: " + new Date(u.lastSeen).toLocaleString();
   profileModal.classList.add("show");
 }
 
