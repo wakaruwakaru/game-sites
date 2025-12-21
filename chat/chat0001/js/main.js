@@ -633,6 +633,16 @@ function getSortedPresenceArray(){
 }
 
 
+const statusMessageMap = {
+  chat:    "チャット中",
+  page:    "ゲーム中",
+  topic:   "オンライン",
+  top:     "オンライン",
+  info:    "オンライン",
+  online:  "オンライン",
+  idle:    "離席中",
+  offline: "オフライン"
+};
 //プロフィールクリックイベント
 function onUserIconClick(e){
   e.stopPropagation(); // パネル外クリックと競合させない
@@ -647,8 +657,9 @@ function openProfileModal(username, u){
   document.getElementById("profileIcon").style.backgroundImage =
     `url('${userIcons[username] || userIcons.default}')`;
   document.getElementById("profileName").textContent = username;
+  const statusKey = u.isOnline ? u.status : "offline";
   document.getElementById("profileStatus").textContent =
-    u.isOnline ? u.status : "offline";
+  statusMessageMap[statusKey] || "不明な状態";
   document.getElementById("profileLastSeen").textContent =
     "Last seen: " + new Date(u.lastSeen).toLocaleString();
   profileModal.classList.add("show");
