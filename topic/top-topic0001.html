@@ -188,6 +188,22 @@ h1{
 <hr />
 <div class="news-list">
 
+    <div class="news-item" onclick="jumpLink11()">
+        <div class="news-thumb">
+            <img src="/game-sites/topic/topic0011/picture0001.png" alt="">
+        </div>
+        <div class="news-content">
+            <div class="news-meta">
+                <div class="news-date">2025.12.21</div>
+                <div class="news-category">お知らせ</div>
+            </div>
+            <div class="news-title">チャットに新機能が追加!!</div>
+            <div class="news-text">
+                最近実装したチャットに新たな機能が追加!! より幅広いコミュニケーションや…
+            </div>
+        </div>
+    </div>
+
     <div class="news-item" onclick="jumpLink10()">
         <div class="news-thumb">
             <img src="/game-sites/topic/topic0010/picture0001.jpg" alt="">
@@ -446,6 +462,12 @@ h1{
             localStorage.setItem("key1", key1);
             localStorage.setItem("account1", token3);
             location.href = "/game-sites/game/page0011/page0011?key1=" + key1;
+        }
+        function jumpLink11(){
+            const key1 = crypto.randomUUID();
+            localStorage.setItem("key1", key1);
+            localStorage.setItem("account1", token3);
+            location.href = "/game-sites/topic/topic0011/topic0011?key1=" + key1;
         }
         function reload(){
             const key1 = crypto.randomUUID();
