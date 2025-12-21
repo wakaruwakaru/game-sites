@@ -18,7 +18,6 @@
 <hr />
 <div id="reloadBtn" class="floating-btn" onclick="reload()">↻</div>
 <div id="logoutBtn" class="floating-btn" onclick="backPage()">⇦</div>
-</body>
     <script>
         const urlParams = new URLSearchParams(location.search);
         const token1 = urlParams.get("key1");
@@ -35,6 +34,7 @@
             }, 5000);
         }
 
+    /* ======== Google Apps Script Web App URL ======== */
     const WEB_APP_URL =
       "https://script.google.com/macros/s/AKfycbyU69VodYxnQJxMI4BhpCnVyvSlFcdM54XFnio5y8A02Uf_P__36zrWbpwih_Wc3szYHw/exec";
     /* ======== GASに送信する処理 ======== */
@@ -81,4 +81,5 @@
             location.href = "/game-sites/top/top0001/top0001?key1=" + key1;
         }
     </script>
+  </body>
 </html>
