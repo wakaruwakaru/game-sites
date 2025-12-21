@@ -74,7 +74,7 @@
         const key1 = crypto.randomUUID();
         localStorage.setItem("key1", key1);
         localStorage.setItem("account1", token3);
-        location.href = "/game-sites/topic/topic0009/topic0009?key1=" + key1;
+        location.href = "/game-sites/topic/topic0009/topic0011?key1=" + key1;
       }
       function backPage(){
         const key1 = crypto.randomUUID();
@@ -88,8 +88,8 @@
       document.getElementById("copyBtn").addEventListener("click", async () => {
         try{
           const target = document.getElementById("articleArea"); // 🎚️ 高画質スケール倍率（2～5で調整可能）
-            const scale = 3; // 📸 高解像度スクショ生成
-            const canvas = await html2canvas(target, {
+          const scale = 3; // 📸 高解像度スクショ生成
+          const canvas = await html2canvas(target, {
             scale: scale,
             useCORS: true,          // 外部画像対策
             imageSmoothingEnabled: true,
@@ -102,11 +102,11 @@
           );
           // 📋 高画質画像をクリップボードにコピー
           await navigator.clipboard.write([
-          new ClipboardItem({
-            "image/png": blob
-          })
-        ]);
-        /*alert("スクショ画像をコピーしました！\nクリップボードからペーストできます");*/
+            new ClipboardItem({
+              "image/png": blob
+            })
+          ]);
+          /*alert("スクショ画像をコピーしました！\nクリップボードからペーストできます");*/
           showToast("記事をコピーしました");
         }catch (err){
           console.error(err);
