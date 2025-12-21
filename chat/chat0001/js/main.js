@@ -86,7 +86,8 @@ function renderEmojiList(){
 }
 renderEmojiList();
 
-function renderImgList(type, genre, start, end, file){ //画像系描画
+//画像系描画  (画像タイプ, 画像ジャンル, 開始コード(1), 終始コード, ファイル拡張子)
+function renderImgList(type, genre, start, end, file){
 //mediaContent.innerHTML = "";
   for(let i = (start - 1); i < end; i++){
     const item = document.createElement("div");
@@ -497,14 +498,6 @@ function parsePresenceData(users){
       diff: diff,             // 今から何ms前か
       isOnline: diff < 30000  // 30秒以内ならオンライン扱い
     };
-/*
-console.log(  //test log
-  username,
-  u.lastSeen,
-  typeof u.lastSeen,
-  now - u.lastSeen
-);
-*/
   }
 //const list = getPresenceArray();
   renderPresencePanel();
