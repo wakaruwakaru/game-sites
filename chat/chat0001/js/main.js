@@ -554,21 +554,16 @@ function parsePresenceData(users){
       diff: diff,             // 今から何ms前か
       isOnline: diff < 30000  // 30秒以内ならオンライン扱い
     };
-
+/*
 console.log(  //test log
   username,
   u.lastSeen,
   typeof u.lastSeen,
   now - u.lastSeen
 );
-
+*/
   }
-  //console.log("presence parsed:", userPresenceMap);
-  const list = getPresenceArray();
-  list.forEach(u => {
-    //console.log(u.name, u.status, u.isOnline);
-  });
-
+//const list = getPresenceArray();
   renderPresencePanel();
 }
 function getPresenceArray(){
@@ -579,17 +574,20 @@ const presencePanel = document.getElementById("presencePanel");
 function renderPresencePanel(){
   presencePanel.innerHTML = "";
   const users = getSortedPresenceArray();
-  users.forEach(u => {
+  for (const u of users) {
+    // アイコン未定義のユーザーは描画しない
+    if (!userIcons[u.name]) continue;
     const icon = document.createElement("div");
     icon.className = "presence-user";
     icon.style.backgroundImage =
-      `url('${userIcons[u.name] || userIcons.default}')`;
+      `url('${userIcons[u.name]}')`;
     const status = document.createElement("div");
     status.className = "presence-status " + getStatusClass(u);
     icon.appendChild(status);
     presencePanel.appendChild(icon);
-  });
+  }
 }
+
 
 function getStatusClass(u){
   if(!u.isOnline) return "status-offline";
