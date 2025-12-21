@@ -145,6 +145,20 @@ function renderGifList(){
     mediaContent.appendChild(item);
   }
 
+  for(let i = 0; i < 4; i++){ //ジョジョGIF描画
+    const item = document.createElement("div");
+    item.className = "media-item";
+    item.dataset.type = "gif";
+    item.dataset.id = "jojo/" + String(i + 1);
+    const img = document.createElement("img");
+    img.src = `/game-sites/chat/gif/jojo/${i + 1}.gif`;
+    img.loading = "lazy";      // パフォーマンス向上
+    img.alt = `other-gif-${i + 1}`;
+
+    item.appendChild(img);
+    mediaContent.appendChild(item);
+  }
+
   for(let i = 0; i < 4; i++){ //他GIF描画
     const item = document.createElement("div");
     item.className = "media-item";
