@@ -593,6 +593,9 @@ function getStatusClass(u){
   if(!u.isOnline) return "status-offline";
   switch(u.status){
     case "chat":   return "status-chat";
+    case "top":    return "status-online";
+    case "page":   return "status-online";
+    case "topic":  return "status-online";
     case "online": return "status-online";
     case "idle":   return "status-idle";
     default:       return "status-online";
@@ -607,7 +610,10 @@ function getSortedPresenceArray(){
     }
     // ② status 優先度
     const statusPriority = {
-      chat: 3,
+      chat: 4,
+      top: 3,
+      page: 3,
+      topic: 3,
       online: 2,
       idle: 1,
       offline: 0
