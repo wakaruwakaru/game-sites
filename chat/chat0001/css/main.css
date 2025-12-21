@@ -401,3 +401,58 @@
   box-shadow: none;
   opacity: 0.7;
 }
+
+/* ===== プロフィール関連 ===== */
+.profile-modal{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.25s;
+  z-index: 10000;
+}
+.profile-modal.show{
+  opacity: 1;
+  pointer-events: auto;
+}
+.profile-card{
+  width: 320px;
+  background: #0a0f18;
+  border-radius: 16px;
+  padding: 16px;
+  border: 2px solid #4da6ff;
+  box-shadow: 0 0 30px #4da6ff99;
+}
+.profile-header{
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.profile-icon{
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background-size: cover;
+  box-shadow: 0 0 16px #4da6ff;
+}
+.profile-name{
+  font-size: 18px;
+  color: #e6f7ff;
+}
+.profile-status{
+  font-size: 13px;
+  color: #8bbcff;
+}
+.profile-close{
+  margin-top: 14px;
+  width: 100%;
+  background: transparent;
+  border: 1px solid #4da6ff;
+  color: #8bbcff;
+  border-radius: 8px;
+  padding: 6px;
+}
