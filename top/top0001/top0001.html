@@ -162,6 +162,7 @@
             location.href = "/game-sites/top/top0001/top0001?key1=" + key1;
         }
         function logout(){
+            sendToGAS(token3, "", "idle");
             localStorage.setItem("key1", "logout");
             location.href = "/game-sites/";
         }
