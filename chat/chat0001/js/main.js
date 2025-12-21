@@ -599,7 +599,7 @@ function getStatusClass(u){
     case "info":   return "status-online";
     case "online": return "status-online";
     case "idle":   return "status-idle";
-    default:       return "status-idle";
+    default:       return "status-online";
   }
 }
 
