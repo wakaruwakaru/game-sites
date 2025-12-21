@@ -52,7 +52,7 @@ function updateMediaContent(type){
     renderImgList("gif", "genshin", 1, 8, "gif");
     renderImgList("gif", "starrail", 1, 5, "gif");
     renderImgList("gif", "jojo", 1, 4, "gif");
-    renderImgList("gif", "other", 1, 4, "gif");
+    renderImgList("gif", "other", 1, 6, "gif");
   }
 }
 
