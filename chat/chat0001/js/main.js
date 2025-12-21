@@ -47,7 +47,7 @@ function updateMediaContent(type){
     renderEmojiList();
   }else if(type == "stamp"){
     renderImgList("stamp", "genshin", 1, 9, "png");
-    renderImgList("stamp", "other", 1, 11, "png");
+    renderImgList("stamp", "other", 1, 17, "png");
   }else if(type == "gif"){
     renderImgList("gif", "genshin", 1, 8, "gif");
     renderImgList("gif", "starrail", 1, 5, "gif");
