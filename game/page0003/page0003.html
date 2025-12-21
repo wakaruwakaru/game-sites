@@ -1,11 +1,11 @@
-<HTML>
-	<HEAD>
+<html>
+	<head>
 		<TITLE>オセロ</TITLE>
 		<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=utf-8" />
 		<META NAME=viewport CONTENT="width=device-width, initial-scale=1" />
 		<link rel="shortcut icon" href="/game-sites/index/icon/icon1.png" >
 		<link rel="stylesheet" href="./css/main.css">
-		<SCRIPT>
+		<script>
 mp = null;   // MainPanel 繧ｪ繝悶ず繧ｧ繧ｯ繝
 
 			//
@@ -47,8 +47,8 @@ MainPanel.prototype.finish = function()
 	document.getElementById('first').style.display = "none";
 	document.getElementById('finish').style.display = "none";
 }
-      </SCRIPT>
-		<SCRIPT>
+      </script>
+		<script>
 			// StartPanel 縺ｮ髢句ｧ
 			//
 function st_start()
@@ -71,8 +71,8 @@ function st_start()
 	document.getElementById('first').style.display = "none";
 	document.getElementById('finish').style.display = "none";
 }
-      </SCRIPT>
-		<SCRIPT>
+      </script>
+		<script>
 gp = null;   // GamePanel 繧ｪ繝悶ず繧ｧ繧ｯ繝
 
 			//
@@ -419,20 +419,19 @@ GamePanel.prototype.draw = function()
 		}
 	}
 }
-      </SCRIPT>
-	</HEAD>
-	<BODY CLASS="eeffee" onLoad="mp_start()">
+      </script>
+	</head>
+	<body CLASS="eeffee" onLoad="mp_start()">
 		<H1>othello</H1>
 		<CANVAS ID="canvas_e" STYLE="background-color: #ffffff;" WIDTH="435" HEIGHT="435"></CANVAS><BR />
 		<BUTTON ID="g_method0" CLASS="std" onClick="JavaScript: mp.method=0; gp_start()">対人間</BUTTON>
 		<BUTTON ID="g_method1" CLASS="std" onClick="JavaScript: mp.method=1; gp_start()">対コンピュータ（人先手）</BUTTON>
 		<BUTTON ID="g_method2" CLASS="std" onClick="JavaScript: mp.method=2; gp_start()">対コンピュータ（人後手）</BUTTON>
-		<TEXTAREA ID="ta" TYPE="text" NAME="ta" COLS="40" ROWS="5" CLASS="std"></TEXTAREA><BR />
+		<textarea ID="ta" TYPE="text" NAME="ta" COLS="40" ROWS="5" CLASS="std"></textarea><BR />
 		<BUTTON ID="first" CLASS="std" onClick="st_start()">再開</BUTTON>
 		<BUTTON ID="finish" CLASS="std" onClick="mp.finish()">終了</BUTTON>
   	<div id="reloadBtn" class="floating-btn" onclick="reload()">↻</div>
     <div id="logoutBtn" class="floating-btn" onclick="backPage()">⇦</div>
-	</BODY>
   <script>
     const urlParams = new URLSearchParams(location.search);
     const token1 = urlParams.get("key1");
@@ -445,7 +444,33 @@ GamePanel.prototype.draw = function()
     }else{
         localStorage.setItem("key1", "");
 		localStorage.setItem("requestPage1", "");
+        setInterval(() => {
+            sendToGAS(token3, "", "page");
+        }, 5000);
     }
+
+    /* ======== Google Apps Script Web App URL ======== */
+    const WEB_APP_URL =
+      "https://script.google.com/macros/s/AKfycbyU69VodYxnQJxMI4BhpCnVyvSlFcdM54XFnio5y8A02Uf_P__36zrWbpwih_Wc3szYHw/exec";
+    /* ======== GASに送信する処理 ======== */
+    async function sendToGAS(User, text, status){
+      const payload = {
+        user: User,
+        message: text,
+        status
+      };
+      try {
+        await fetch(WEB_APP_URL, {
+          method: "POST",
+          mode: "no-cors",   // ← GAS が CORS 許可してないため必要
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+      } catch (e) {
+        console.error("送信エラー:", e);
+      }
+	}
+
     function reload(){
         const key1 = crypto.randomUUID();
         localStorage.setItem("key1", key1);
@@ -459,4 +484,5 @@ GamePanel.prototype.draw = function()
         location.href = "/game-sites/top/top0001/top0001?key1=" + key1;
     }
   </script>
-	</HTML>
+	</body>
+	</html>
