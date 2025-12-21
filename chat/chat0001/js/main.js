@@ -581,6 +581,8 @@ function renderPresencePanel(){
     icon.className = "presence-user";
     icon.style.backgroundImage =
       `url('${userIcons[u.name]}')`;
+    icon.dataset.user = u.name;
+    icon.addEventListener("click", onUserIconClick);
     const status = document.createElement("div");
     status.className = "presence-status " + getStatusClass(u);
     icon.appendChild(status);
@@ -629,6 +631,38 @@ function getSortedPresenceArray(){
     return b.lastSeen - a.lastSeen;
   });
 }
+
+
+//プロフィールクリックイベント
+function onUserIconClick(e){
+  e.stopPropagation(); // パネル外クリックと競合させない
+  const username = e.currentTarget.dataset.user;
+  const userData = userPresenceMap[username];
+  if(!userData) return;
+  openProfileModal(username, userData);
+}
+
+const profileModal = document.getElementById("profileModal");
+function openProfileModal(username, u){
+  document.getElementById("profileIcon").style.backgroundImage =
+    `url('${userIcons[username] || userIcons.default}')`;
+  document.getElementById("profileName").textContent = username;
+  document.getElementById("profileStatus").textContent =
+    u.isOnline ? u.status : "offline";
+  document.getElementById("profileLastSeen").textContent =
+    "Last seen: " + new Date(u.lastSeen).toLocaleString();
+  profileModal.classList.add("show");
+}
+
+function closeProfileModal(){
+  profileModal.classList.remove("show");
+}
+
+profileModal.addEventListener("click", e => {
+  if(e.target === profileModal){
+    closeProfileModal();
+  }
+});
 
 
   const urlParams = new URLSearchParams(location.search);
