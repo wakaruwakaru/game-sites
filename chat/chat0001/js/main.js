@@ -50,7 +50,7 @@ function updateMediaContent(type){
     renderImgList("stamp", "other", 1, 11, "png");
   }else if(type == "gif"){
     renderImgList("gif", "genshin", 1, 4, "gif");
-    renderImgList("gif", "starrail", 1, 1, "gif");
+    renderImgList("gif", "starrail", 1, 5, "gif");
     renderImgList("gif", "jojo", 1, 4, "gif");
     renderImgList("gif", "other", 1, 4, "gif");
   }
