@@ -617,7 +617,7 @@ profileModal.addEventListener("click", e => {
   if((token1 !== localStorage.getItem("key1")) || (token3 == null)){
     localStorage.setItem("key1", "unauthorized");
     localStorage.setItem("requestPage1", "chat/chat0001/chat0001");
-  //location.href = "/game-sites/";
+    location.href = "/game-sites/";
   }else{
     localStorage.setItem("key1", "");
     localStorage.setItem("requestPage1", "");
