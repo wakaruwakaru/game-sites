@@ -1,0 +1,128 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>バグ修正のお知らせ</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="shortcut icon" href="/game-sites/index/icon/icon1.png" >
+    <link rel="stylesheet" href="/game-sites/topic/css/main.css" />
+  </head>
+  <body>
+    <h1>トピック</h1>
+    <hr />
+    <div id="articleArea">
+      <!-- 記事の画像や本文  -->
+
+      <div class="article-container">
+        <div class="article-title">チャットのバグ修正</div>
+        <img class="article-image" src="./picture0001.jpg" alt="記事画像" />
+        <div class="article-body">
+          <p>度々発生していたチャットでのアカウント認証バグが修正　が…</p>
+          <h2>■ 修正内容</h2>
+          <p>　近日実装されたチャットについて、認証の不具合により自身のアカウントが照合されずに匿名ユーザーとしてログインした状態になってしまうバグが修正されました。</p>
+          <p>　しかし公式は、完全な原因究明には至っていない可能性があると発表しています。今後もこのようなバグが発生する可能性はゼロではないため、不具合に遭遇した場合は再ログインするのがおすすめです。</p>
+          <div class="side-set"><button id="copyBtn" class="neonButton">📥</button></div>
+          <p style="margin-top: 30px; opacity: 0.7;">Ⓒgame-sites　　2025.12.14</p>
+        </div>
+      </div>
+
+      <!-- 記録される記事の最後 -->
+    </div>
+    <hr />
+    <div id="reloadBtn" class="floating-btn" onclick="reload()">↻</div>
+    <div id="logoutBtn" class="floating-btn" onclick="backPage()">⇦</div>
+    <div id="toast" class="toast">記事をコピーしました</div>
+    <script>
+      const urlParams = new URLSearchParams(location.search);
+      const token1 = urlParams.get("key1");
+      const token3 = localStorage.getItem("account1");
+      localStorage.setItem("account1", "");
+      if((token1 !== localStorage.getItem("key1")) || (token3 == "") || (token3 == null)){
+        localStorage.setItem("key1", "unauthorized");
+        localStorage.setItem("requestPage1", "topic/topic0009/topic0009");
+        location.href = "/game-sites/";
+      }else{
+        localStorage.setItem("key1", "");
+        localStorage.setItem("requestPage1", "");
+        setInterval(() => {
+          sendToGAS(token3, "", "topic");
+        }, 5000);
+      }
+
+      /* ======== Google Apps Script Web App URL ======== */
+      const WEB_APP_URL =
+        "https://script.google.com/macros/s/AKfycbyU69VodYxnQJxMI4BhpCnVyvSlFcdM54XFnio5y8A02Uf_P__36zrWbpwih_Wc3szYHw/exec";
+      /* ======== GASに送信する処理 ======== */
+      async function sendToGAS(User, text, status){
+        const payload = {
+          user: User,
+          message: text,
+          status
+        };
+        try {
+          await fetch(WEB_APP_URL, {
+            method: "POST",
+            mode: "no-cors",   // ← GAS が CORS 許可してないため必要
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+        } catch (e) {
+          console.error("送信エラー:", e);
+        }
+      }
+
+      function reload(){
+        const key1 = crypto.randomUUID();
+        localStorage.setItem("key1", key1);
+        localStorage.setItem("account1", token3);
+        location.href = "/game-sites/topic/topic0009/topic0009?key1=" + key1;
+      }
+      function backPage(){
+        const key1 = crypto.randomUUID();
+        localStorage.setItem("key1", key1);
+        localStorage.setItem("account1", token3);
+        location.href = "/game-sites/topic/top-topic0001?key1=" + key1;
+      }
+    </script>
+    <script src="/game-sites/index/dist/html2canvas.js"></script>
+    <script>
+      document.getElementById("copyBtn").addEventListener("click", async () => {
+        try{
+          const target = document.getElementById("articleArea"); // 🎚️ 高画質スケール倍率（2～5で調整可能）
+            const scale = 3; // 📸 高解像度スクショ生成
+            const canvas = await html2canvas(target, {
+            scale: scale,
+            useCORS: true,          // 外部画像対策
+            imageSmoothingEnabled: true,
+            imageSmoothingQuality: "high",
+            backgroundColor: null   // 背景透過（必要なければ削ってOK）
+          });
+          // 🔄 PNG Blob に変換
+          const blob = await new Promise(resolve =>
+            canvas.toBlob(resolve, "image/png")
+          );
+          // 📋 高画質画像をクリップボードにコピー
+          await navigator.clipboard.write([
+          new ClipboardItem({
+            "image/png": blob
+          })
+        ]);
+        /*alert("スクショ画像をコピーしました！\nクリップボードからペーストできます");*/
+          showToast("記事をコピーしました");
+        }catch (err){
+          console.error(err);
+          /*alert("コピーに失敗しました\n対応していないブラウザの可能性があります");*/
+          showToast("記事のコピーができませんでした");
+        }
+      });
+
+      function showToast(msg = "コピーしました！"){
+        const toast = document.getElementById("toast");
+        toast.textContent = msg;
+        toast.classList.add("show");
+        setTimeout(() => {
+          toast.classList.remove("show");
+        }, 2500); // 2.5秒で消える
+      }
+    </script>
+  </body>
+</html>
