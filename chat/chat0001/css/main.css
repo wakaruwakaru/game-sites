@@ -379,17 +379,21 @@
   border: 2px solid #000;
 }
 /* ===== 状態別色 ===== */
-.status-online{
-  color: #00ff9c;
-  background: #00ff9c;
-}
 .status-chat{
   color: #00c8ff;
   background: #00c8ff;
 }
-.status-idle{
+.status-play{
+  color: #00ff9c;
+  background: #00ff9c;
+}
+.status-online{
   color: #ffd500;
   background: #ffd500;
+}
+.status-idle{
+  color: #ff3c00;
+  background: #ff3c00;
 }
 .status-offline{
   color: #666;
