@@ -33,7 +33,6 @@
 <div id="reloadBtn" class="floating-btn" onclick="reload()">↻</div>
 <div id="logoutBtn" class="floating-btn" onclick="backPage()">⇦</div>
 <div id="toast" class="toast">記事をコピーしました</div>
-</body>
     <script>
         const urlParams = new URLSearchParams(location.search);
         const token1 = urlParams.get("key1");
@@ -46,7 +45,32 @@
         }else{
             localStorage.setItem("key1", "");
             localStorage.setItem("requestPage1", "");
+            setInterval(() => {
+                sendToGAS(token3, "", "topic");
+            }, 5000);
         }
+
+    /* ======== Google Apps Script Web App URL ======== */
+    const WEB_APP_URL =
+      "https://script.google.com/macros/s/AKfycbyU69VodYxnQJxMI4BhpCnVyvSlFcdM54XFnio5y8A02Uf_P__36zrWbpwih_Wc3szYHw/exec";
+    /* ======== GASに送信する処理 ======== */
+    async function sendToGAS(User, text, status){
+      const payload = {
+        user: User,
+        message: text,
+        status
+      };
+      try {
+        await fetch(WEB_APP_URL, {
+          method: "POST",
+          mode: "no-cors",   // ← GAS が CORS 許可してないため必要
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+      } catch (e) {
+        console.error("送信エラー:", e);
+      }
+    }
 
         function jumpLink1(){
         //  const key1 = crypto.randomUUID();
@@ -110,4 +134,5 @@
         }, 2500); // 2.5秒で消える
       }
     </script>
+  </body>
 </html>
