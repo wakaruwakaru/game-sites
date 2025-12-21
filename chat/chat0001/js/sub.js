@@ -42,13 +42,18 @@ mediaContent.addEventListener("click", (e) => {
 });
 
 function updateMediaContent(type){
-  mediaContent.innerHTML = "";
+  mediaContent.innerHTML = ""; //初期化
   if(type == "emoji"){
     renderEmojiList();
   }else if(type == "stamp"){
-    renderStampList();
+    renderImgList("stamp", "genshin", 0, 7, "png");
+    renderImgList("stamp", "other", 0, 11, "png");
   }else if(type == "gif"){
-    renderGifList();
+    //renderGifList();
+    renderImgList("gif", "genshin", 0, 4, "gif");
+    renderImgList("gif", "starrail", 0, 1, "gif");
+    renderImgList("gif", "jojo", 0, 4, "gif");
+    renderImgList("gif", "other", 0, 4, "gif");
   }
 }
 
@@ -70,7 +75,7 @@ const emoji_list = [...segmenter.segment(
 )].map(s => s.segment);
 
 function renderEmojiList(){
-  mediaContent.innerHTML = ""; // 初期化
+//mediaContent.innerHTML = "";
   for(let i = 0; i < emoji_list.length; i++){
     const item = document.createElement("div");
     item.className = "media-item";
@@ -82,32 +87,17 @@ function renderEmojiList(){
 }
 renderEmojiList();
 
-function renderStampList(){
-  mediaContent.innerHTML = "";
-
-  for(let i = 0; i < 7; i++){ //原神スタンプ描画
+function renderImgList(type, genre, min, max, file){ //スタンプ描画
+//mediaContent.innerHTML = "";
+  for(let i = min; i < max; i++){
     const item = document.createElement("div");
     item.className = "media-item";
-    item.dataset.type = "stamp";
-    item.dataset.id = "genshin/" + String(i + 1);
+    item.dataset.type = type;
+    item.dataset.id = genre + "/" + String(i + 1);
     const img = document.createElement("img");
-    img.src = `/game-sites/chat/stamp/genshin/${i + 1}.png`;
+    img.src = `/game-sites/chat/${type}/${genre}/${i + 1}.${file}`;
     img.loading = "lazy";      // パフォーマンス向上
-    img.alt = `genshin-stamp-${i + 1}`;
-
-    item.appendChild(img);
-    mediaContent.appendChild(item);
-  }
-
-  for(let i = 0; i < 11; i++){ //他スタンプ描画
-    const item = document.createElement("div");
-    item.className = "media-item";
-    item.dataset.type = "stamp";
-    item.dataset.id = "other/" + String(i + 1);
-    const img = document.createElement("img");
-    img.src = `/game-sites/chat/stamp/other/${i + 1}.png`;
-    img.loading = "lazy";      // パフォーマンス向上
-    img.alt = `other-stamp-${i + 1}`;
+    img.alt = `${type}-${genre}-${i + 1}`;
 
     item.appendChild(img);
     mediaContent.appendChild(item);
@@ -583,3 +573,136 @@ console.log(  //test log
 function getPresenceArray(){
   return Object.values(userPresenceMap);
 }
+
+const presencePanel = document.getElementById("presencePanel");
+function renderPresencePanel(){
+  presencePanel.innerHTML = "";
+  const users = getSortedPresenceArray();
+  for (const u of users) {
+    // アイコン未定義のユーザーは描画しない
+    if (!userIcons[u.name]) continue;
+    const icon = document.createElement("div");
+    icon.className = "presence-user";
+    icon.style.backgroundImage =
+      `url('${userIcons[u.name]}')`;
+    icon.dataset.user = u.name;
+    icon.addEventListener("click", onUserIconClick);
+    const status = document.createElement("div");
+    status.className = "presence-status " + getStatusClass(u);
+    icon.appendChild(status);
+    presencePanel.appendChild(icon);
+  }
+}
+
+
+function getStatusClass(u){
+  if(!u.isOnline) return "status-offline";
+  switch(u.status){
+    case "chat":   return "status-chat";
+    case "page":   return "status-play";
+    case "topic":  return "status-online";
+    case "top":    return "status-online";
+    case "info":   return "status-online";
+    case "online": return "status-online";
+    case "idle":   return "status-idle";
+    default:       return "status-online";
+  }
+}
+
+function getSortedPresenceArray(){
+  return Object.values(userPresenceMap).sort((a, b) => {
+    // ① オンライン優先
+    if (a.isOnline !== b.isOnline) {
+      return b.isOnline - a.isOnline;
+    }
+    // ② status 優先度
+    const statusPriority = {
+      chat: 5,
+      page: 4,
+      topic: 3,
+      top: 3,
+      info: 3,
+      online: 2,
+      idle: 1,
+      offline: 0
+    };
+    const sa = statusPriority[a.status] ?? 0;
+    const sb = statusPriority[b.status] ?? 0;
+    if (sa !== sb) {
+      return sb - sa;
+    }
+    // ③ 最終アクティブが新しい順
+    return b.lastSeen - a.lastSeen;
+  });
+}
+
+
+const statusMessageMap = {
+  chat:    "チャット中",
+  page:    "ゲーム中",
+  topic:   "オンライン",
+  top:     "オンライン",
+  info:    "オンライン",
+  online:  "オンライン",
+  idle:    "離席中",
+  offline: "オフライン"
+};
+//プロフィールクリックイベント
+function onUserIconClick(e){
+  e.stopPropagation(); // パネル外クリックと競合させない
+  const username = e.currentTarget.dataset.user;
+  const userData = userPresenceMap[username];
+  if(!userData) return;
+  openProfileModal(username, userData);
+}
+
+const profileModal = document.getElementById("profileModal");
+function openProfileModal(username, u){
+  document.getElementById("profileIcon").style.backgroundImage =
+    `url('${userIcons[username] || userIcons.default}')`;
+  document.getElementById("profileName").textContent = username;
+  const statusKey = u.isOnline ? u.status : "offline";
+  document.getElementById("profileStatus").textContent =
+  statusMessageMap[statusKey] || "不明な状態";
+  document.getElementById("profileLastSeen").textContent =
+    "Last seen: " + new Date(u.lastSeen).toLocaleString();
+  profileModal.classList.add("show");
+}
+
+function closeProfileModal(){
+  profileModal.classList.remove("show");
+}
+
+profileModal.addEventListener("click", e => {
+  if(e.target === profileModal){
+    closeProfileModal();
+  }
+});
+
+
+  const urlParams = new URLSearchParams(location.search);
+  const token1 = urlParams.get("key1");
+  const token3 = localStorage.getItem("account1");
+  localStorage.setItem("account1", "");
+  if((token1 !== localStorage.getItem("key1")) || (token3 == null)){
+    localStorage.setItem("key1", "unauthorized");
+    localStorage.setItem("requestPage1", "chat/chat0001/chat0001");
+    location.href = "/game-sites/";
+  }else{
+    localStorage.setItem("key1", "");
+    localStorage.setItem("requestPage1", "");
+    send_login();
+  }
+
+  function reload(){
+    const key1 = crypto.randomUUID();
+    localStorage.setItem("key1", key1);
+    localStorage.setItem("account1", token3);
+    location.href = "/game-sites/chat/chat0001/chat0001?key1=" + key1;
+  }
+  function backPage(){
+    const key1 = crypto.randomUUID();
+    localStorage.setItem("key1", key1);
+    localStorage.setItem("account1", token3);
+    location.href = "/game-sites/top/top0001/top0001?key1=" + key1;
+  }
