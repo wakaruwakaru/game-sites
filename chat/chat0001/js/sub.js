@@ -46,14 +46,13 @@ function updateMediaContent(type){
   if(type == "emoji"){
     renderEmojiList();
   }else if(type == "stamp"){
-    renderImgList("stamp", "genshin", 0, 7, "png");
-    renderImgList("stamp", "other", 0, 11, "png");
+    renderImgList("stamp", "genshin", 1, 7, "png");
+    renderImgList("stamp", "other", 1, 11, "png");
   }else if(type == "gif"){
-    //renderGifList();
-    renderImgList("gif", "genshin", 0, 4, "gif");
-    renderImgList("gif", "starrail", 0, 1, "gif");
-    renderImgList("gif", "jojo", 0, 4, "gif");
-    renderImgList("gif", "other", 0, 4, "gif");
+    renderImgList("gif", "genshin", 1, 4, "gif");
+    renderImgList("gif", "starrail", 1, 1, "gif");
+    renderImgList("gif", "jojo", 1, 4, "gif");
+    renderImgList("gif", "other", 1, 4, "gif");
   }
 }
 
@@ -87,9 +86,9 @@ function renderEmojiList(){
 }
 renderEmojiList();
 
-function renderImgList(type, genre, min, max, file){ //スタンプ描画
+function renderImgList(type, genre, min, max, file){ //画像系描画
 //mediaContent.innerHTML = "";
-  for(let i = min; i < max; i++){
+  for(let i = (min - 1); i < max; i++){
     const item = document.createElement("div");
     item.className = "media-item";
     item.dataset.type = type;
@@ -98,66 +97,6 @@ function renderImgList(type, genre, min, max, file){ //スタンプ描画
     img.src = `/game-sites/chat/${type}/${genre}/${i + 1}.${file}`;
     img.loading = "lazy";      // パフォーマンス向上
     img.alt = `${type}-${genre}-${i + 1}`;
-
-    item.appendChild(img);
-    mediaContent.appendChild(item);
-  }
-}
-
-function renderGifList(){
-  mediaContent.innerHTML = "";
-
-  for(let i = 0; i < 4; i++){ //原神GIF描画
-    const item = document.createElement("div");
-    item.className = "media-item";
-    item.dataset.type = "gif";
-    item.dataset.id = "genshin/" + String(i + 1);
-    const img = document.createElement("img");
-    img.src = `/game-sites/chat/gif/genshin/${i + 1}.gif`;
-    img.loading = "lazy";      // パフォーマンス向上
-    img.alt = `genshin-gif-${i + 1}`;
-
-    item.appendChild(img);
-    mediaContent.appendChild(item);
-  }
-
-  for(let i = 0; i < 1; i++){ //スタレGIF描画
-    const item = document.createElement("div");
-    item.className = "media-item";
-    item.dataset.type = "gif";
-    item.dataset.id = "starrail/" + String(i + 1);
-    const img = document.createElement("img");
-    img.src = `/game-sites/chat/gif/starrail/${i + 1}.gif`;
-    img.loading = "lazy";      // パフォーマンス向上
-    img.alt = `starrail-gif-${i + 1}`;
-
-    item.appendChild(img);
-    mediaContent.appendChild(item);
-  }
-
-  for(let i = 0; i < 4; i++){ //ジョジョGIF描画
-    const item = document.createElement("div");
-    item.className = "media-item";
-    item.dataset.type = "gif";
-    item.dataset.id = "jojo/" + String(i + 1);
-    const img = document.createElement("img");
-    img.src = `/game-sites/chat/gif/jojo/${i + 1}.gif`;
-    img.loading = "lazy";      // パフォーマンス向上
-    img.alt = `other-gif-${i + 1}`;
-
-    item.appendChild(img);
-    mediaContent.appendChild(item);
-  }
-
-  for(let i = 0; i < 4; i++){ //他GIF描画
-    const item = document.createElement("div");
-    item.className = "media-item";
-    item.dataset.type = "gif";
-    item.dataset.id = "other/" + String(i + 1);
-    const img = document.createElement("img");
-    img.src = `/game-sites/chat/gif/other/${i + 1}.gif`;
-    img.loading = "lazy";      // パフォーマンス向上
-    img.alt = `other-gif-${i + 1}`;
 
     item.appendChild(img);
     mediaContent.appendChild(item);
