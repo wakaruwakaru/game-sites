@@ -1,0 +1,585 @@
+const panel = document.getElementById("mediaPanel");
+function toggleMediaPanel(){
+  panel.classList.toggle("show");
+}
+
+// パネル外クリックで閉じる（最小侵襲）
+document.addEventListener("click", (e) => {
+  // パネルが閉じているなら何もしない
+  if (!panel.classList.contains("show")) return;
+  // パネル内クリックなら無視
+  if (panel.contains(e.target)) return;
+  // ＋ボタン自身なら無視
+  if (e.target.closest(".icon-left")) return;
+  // それ以外 → 閉じる
+  panel.classList.remove("show");
+});
+
+
+const tabs = document.querySelectorAll(".media-header .tab");
+const mediaContent = document.getElementById("mediaContent");
+tabs.forEach(tab => {
+  tab.addEventListener("click", () => {
+    const target = tab.dataset.target; // gif / stamp / emoji
+    // ① タブの active 切り替え
+    tabs.forEach(t => t.classList.remove("active"));
+    tab.classList.add("active");
+    // ② mediaContent のモード切り替え
+    mediaContent.dataset.mode = target;
+    // ③ 表示内容切り替え（仮）
+    updateMediaContent(target);
+  });
+});
+mediaContent.addEventListener("click", (e) => {
+  const item = e.target.closest(".media-item");
+  if (!item) return;
+  const type = item.dataset.type;
+  const id = item.dataset.id;
+
+  const text2 = text_trim(id, type);
+  sendToGAS(token3, text2, "chat");
+  panel.classList.remove("show");
+});
+
+function updateMediaContent(type){
+  mediaContent.innerHTML = "";
+  if(type == "emoji"){
+    renderEmojiList();
+  }else if(type == "stamp"){
+    renderStampList();
+  }else if(type == "gif"){
+    renderGifList();
+  }
+}
+
+const segmenter = new Intl.Segmenter("ja", { granularity: "grapheme" });
+const emoji_list = [...segmenter.segment(
+  "😀😃😄😁😆😅🤣😂🙂🙃😉😉😊😇🥰😍🤩😘😗😚😙🥲😋😛😜🤪😝🤑🤗🤭🫢🫣🤫🤔🫡" +
+  "🤐🤨😐😑😶🫥😶‍🌫️😶‍🌫️😏😒🙄😬😮‍💨🤥🫨🙂‍↔️🙂‍↕️😌😔😪🤤😴🫩😷🤒🤕🤢🤮🤧🥵🥶🥴😵🤯" +
+  "😕🫤😟🙁😮😯😲😳🥺🥹😦😧😨😰😥😢😭😱😖😣😞😓😩😫🥱" +
+  "🤠🥳🥸😎🤓🧐😤😡😠🤬😈👿💀🤡👹👺👻👽👾🤖" +
+  "💌💘💝💖💗💓💞💕💟💔❤️‍🔥❤️‍🩹💯💢💥💫💦💨🕳️💣💬👁‍🗨🗨️🗯️💭💤" +
+  "👥🫂👤🗣️👣🫆🧠🫀🫁🩸🦠🦷🦴👀👁️👄🫦👅👃👂🦻🦶🦵🦿🦾💪👏👍👎🫶🙌👐🤲🤜🤛✊👊🫳🫴🫱🫲🫸🫷👋🤚🖐️✋🖖🤟🤘✌️🤞🫰🤙🤌🤏👌🫵👉👈💅🙏🤳✍️🖕👇👆☝️🤝" +
+  "🙇🙋💁🙆🙅🤷🤦🙍🙎🧏💆💇🧖🛀🛌🧘🧍🤸🧎🧑‍🦼🧑‍🦽🧑‍🦯🚶🏃⛹️🤾🚴🚵🧗🏋️🤼🤹🏌️🏇🤺⛷️🏂🪂🏄🚣🏊🤽🧜🧚🧞🧝🧙🧛🧟🧌🦸🦹🥷🧑‍🎄👼💂🫅🤵👰🧑‍🚀👷👮🕵️🧑‍✈️🧑‍🔬🧑‍⚕️🧑‍🔧🧑‍🏭🧑‍🚒🧑‍🌾🧑‍🏫🧑‍🎓🧑‍💼🧑‍⚖️🧑‍💻🧑‍🎤🧑‍🎨🧑‍🍳👳🧕👲👶🧒🧑🧓🧑‍🦳🧑‍🦰👱🧑‍🦱🧑‍🦲🧔🕴️💃🕺👯🧑‍🤝‍🧑👭👬👫💑👩‍❤️‍👨👨‍❤️‍👨👩‍❤️‍👩🫄🤱🧑‍🍼" +
+  "💐🌹🥀🌺🌷🪷🌸💮🏵️🪻🌻🌼🍂🍁🍄🌾🌱🌿🍃☘️🍀🪴🌵🌴🪾🌳🌲🪵🪹🪺🪨⛰️🏔️❄️☃️⛄🌡️🔥🌋🏜️🏞️🌅🌄🏝️🏖️🌈🫧🌊🌬️🌀🌪️⚡☔💧☁️🌨️🌧️🌩️⛈️🌦️🌥️⛅🌤️☀️🌞🌝🌚🌜🌛🌙⭐🌟✨🕳️🪐🌍🌎🌏🌫️🌠🌌☄️🌑🌒🌓🌔🌕🌖🌗🌘🦁🐯😺😸😹😻😼😽🙀😿😾🐵🙈🙉🙊🐱🐶🐺🐻🐻‍❄️🐨🐼🐹🐭🐰🦊🦝🐮🐷🐽🐗🦓🦄🐴🫎🐲🦎🐉🦖🦕🐢🐊🐍🐸🐇🐁🐀🐈🐈‍⬛🐩🐕🦮🐕‍🦺🐖🐎🫏🐄🐂🐃🦬🐏🐑🐐🦌🦙🦥🦘🐘🦣🦏🦛🦒🐆🐅🐒🦍🦧🐪🐫🐿️🦫🦨🦡🦔🦦🦇🪽🪶🐦🐦‍⬛🐓🐔🐣🐤🐥🦅🦉🦜🕊️🦤🦢🦆🪿🦩🦚🐦‍🔥🦃🐧🦭🦈🐬🐋🐳🐟🐠🐡🦐🦞🦀🦑🐙🪼🦪🪸🦂🕷️🕸️🐚🐌🐜🦗🪲🦟🪳🪰🐝🐞🦋🐛🪱🐾" +
+  "🍓🍒🍎🍅🌶️🍉🍑🍊🥕🥭🍍🍌🌽🍋🍋‍🟩🍈🍐🫛🥬🫑🍏🥝🥑🫒🥦🥒🫐🍇🍆🍠🫜🥥🥔🍄‍🟫🧅🫚🧄🫘🌰🥜🍞🫓🥐🥖🥯🧇🥞🍳🥚🧀🥓🥩🍗🍖🍔🌭🥪🥨🍟🍕🫔🌮🌯🥙🧆🥘🍝🥫🫕🥣🥗🍲🍛🍜🦪🦞🍣🍤🥡🍚🍱🥟🍢🍙🍘🍥🍡🥠🥮🍧🍨🍦🥧🍰🍮🎂🧁🍭🍬🍫🍩🍪🍯🧂🧈🍿🧊🫙🥤🧋🧃🥛🍼🍵☕🫖🧉🍺🍻🥂🍾🍷🥃🫗🍸🍹🍶🥢🍴🥄🔪🍽️" +
+  "🚧🚨⛽🛢️🧭🛞🛟⚓🚏🚇🚥🚦🛴🦽🦼🩼🚲🛵🏍️🚙🚗🛻🚐🚚🚛🚜🏎️🚒🚑🚓🚕🛺🚌🚈🚝🚅🚄🚂🚃🚋🚎🚞🚊🚉🚍🚔🚘🚖🚆🚢🛳️🛥️🚤⛴️⛵🛶🚟🚠🚡🚁🛸🚀✈️🛫🛬🛩️🛝🎢🎡🎠🎪🗼🗽🗿🗻🏛️💈⛲⛩️🕍🕌🕋🛕⛪💒🏩🏯🏰🏗️🏢🏭🏬🏪🏟️🏦🏫🏨🏣🏤🏥🏚️🏠🏡🏘️🛖⛺🏕️⛱️🏙️🌆🌇🌃🌉🌁🛤️🛣️🗾🗺️💺🧳" +
+  "🎉🎊🎈🎂🎀🎁🎇🎆🧨🧧🪔🪅🪩🎐🎏🎎🎑🎍🎋🎄🎃🎗️🥇🥈🥉🏅🎖️🏆📢⚽⚾🥎🏀🏐🏈🏉🥅🎾🏸🥍🏏🏑🏒🥌🛷🎿⛸️🛼🩰🛹⛳🎯🏹🥏🪃🪁🎣🤿🩱🎽🥋🥊🎱🏓🎳♟️🪀🧩🎮🕹️👾🔫🎲🎰🎴🀄🃏🪄🎩📷📸🖼️🎨🫟🖌️🖍️🪡🧵🧶🎹🎷🎺🎸🪕🎻🪉🪘🥁🪇🪈🪗🎤🎧🎚️🎛️🎙️📻📺📼📹📽️🎥🎞️🎬🎭🎫🎟️" +
+  "📱☎️📞📟📠🔌🔋🪫🖲️💽💾💿📀🖥️💻⌨️🖨️🖱️🪙💸💵💴💶💷💳💰💎🧾🧮⚖️🛒🛍️🕯️💡🔦🏮🧱🪟🪞🚪🪑🛏️🛋️🚿🛁🚽🧻🪠🧸🪆🧷🪢🧹🧴🧽🧼🪥🪒🪮🧺🧦🧤🧣👖👕🎽👚👔👗👘🥻🩱👙🩳🩲🧥🥼🦺⛑️🪖🎓🎩👒🧢👑💍💄🪭🎒👝👛👜💼🧳☂️🌂🥾👢🩴👠👟👞🥿👡🦯🕶️👓🥽⚗️🧫🧪🌡️💉💊🩹🩺🩻🧬🔭🔬📡🛰️🧯🪓🪜🪣🪝🧲🧰🗜️🔩🪛🪚🔧🔨🛠️⚒️⛏️🪏⚙️⛓️‍💥🔗⛓️📎🖇️✂️📏📐🖌️🖍️🖊️🖋️✒️✏️📝🗒️📄📃📑📋🗃️🗄️📒📔📕📓📗📘📙📚📖🔖📂📁🗂️📊📈📉📇🪪📌📍🗑️📰🗞️🏷️📦📤📥📨📩✉️💌📧📫📪📬📭📮🗳️⌚🕰️⌛⏳⏲️⏰⏱️🕛🕧🕐🕜🕑🕝🕒🕞🕓🕟🕔🕠🕕🕡🕖🕢🕗🕣🕘🕤🕙🕥🕚🕦📅📆🗓️🪧🛎️🔔📯📢📣🔈🔉🔊🔍🔎🔮🧿🪬📿🏺⚱️⚰️🪦🚬💣🪤📜⚔️🗡️🛡️🗝️🔑🔐🔏🔒🔓" +
+  "🔴🟠🟡🟢🔵🟣🟤⚫⚪🟥🟧🟨🟩🟦🟪🟫⬛⬜❤️🧡💛💚💙💜🤎🖤🤍🩷🩵🩶♥️♦️♣️♠️♈♉♊♋♌♍♎♏♐♑♒♓⛎♀️♂️⚧️💭🗯️💬🗨️❕❔❗❓⁉️‼️⭕❌🚫🚳🚭🚯🚱🚷📵🔞🔕🔇🅰️🆎🅱️🅾️🆑🆘🛑⛔📛♨️🔻🔺🉐㊙️㊗️🈴🈵🈹🈲🉑🈶🈚🈸🈺🈷️✴️🔶🔸🔆🔅🆚🎦📶🔁🔂🔀▶️⏩⏭️⏯️◀️⏪⏮️🔼⏫🔽⏬⏸️⏹️⏺️⏏️📴🛜📳📲☢️☣️⚠️🚸⚜️🔱〽️🔰✳️❇️♻️💱💲💹🈯❎✅✔️☑️⬆️↗️➡️↘️⬇️↙️⬅️↖️↕️↔️↩️↪️⤴️⤵️🔃🔄🔙🔛🔝🔚🔜🆕🆓🆙🆗🆒🆖ℹ️🅿️🈁🈂️🈳🔣🔤🔠🔡🔢#️⃣*️⃣0️⃣1️⃣2️⃣3️⃣4️⃣5️⃣6️⃣7️⃣8️⃣9️⃣🔟🌐💠🔷🔹🏧Ⓜ️🚾🚻🚹🚺♿🚼🛗🚮🚰🛂🛃🛄🛅💟⚛️🛐🕉️☸️☮️☯️☪️🪯✝️☦️✡️🔯🕎♾️🆔🧑‍🧑‍🧒🧑‍🧑‍🧒‍🧒🧑‍🧒🧑‍🧒‍🧒⚕️🎼🎵🎶✖️➕➖➗🟰➰➿〰️©️®️™️🔘🔳◼️◾▪️🔲◻️◽▫️👁️‍🗨️"
+)].map(s => s.segment);
+
+function renderEmojiList(){
+  mediaContent.innerHTML = ""; // 初期化
+  for(let i = 0; i < emoji_list.length; i++){
+    const item = document.createElement("div");
+    item.className = "media-item";
+    item.dataset.type = "emoji";
+    item.dataset.id = String(i + 1); // idは1始まり
+    item.textContent = emoji_list[i];
+    mediaContent.appendChild(item);
+  }
+}
+renderEmojiList();
+
+function renderStampList(){
+  mediaContent.innerHTML = "";
+
+  for(let i = 0; i < 7; i++){ //原神スタンプ描画
+    const item = document.createElement("div");
+    item.className = "media-item";
+    item.dataset.type = "stamp";
+    item.dataset.id = "genshin/" + String(i + 1);
+    const img = document.createElement("img");
+    img.src = `/game-sites/chat/stamp/genshin/${i + 1}.png`;
+    img.loading = "lazy";      // パフォーマンス向上
+    img.alt = `genshin-stamp-${i + 1}`;
+
+    item.appendChild(img);
+    mediaContent.appendChild(item);
+  }
+
+  for(let i = 0; i < 11; i++){ //他スタンプ描画
+    const item = document.createElement("div");
+    item.className = "media-item";
+    item.dataset.type = "stamp";
+    item.dataset.id = "other/" + String(i + 1);
+    const img = document.createElement("img");
+    img.src = `/game-sites/chat/stamp/other/${i + 1}.png`;
+    img.loading = "lazy";      // パフォーマンス向上
+    img.alt = `other-stamp-${i + 1}`;
+
+    item.appendChild(img);
+    mediaContent.appendChild(item);
+  }
+}
+
+function renderGifList(){
+  mediaContent.innerHTML = "";
+
+  for(let i = 0; i < 4; i++){ //原神GIF描画
+    const item = document.createElement("div");
+    item.className = "media-item";
+    item.dataset.type = "gif";
+    item.dataset.id = "genshin/" + String(i + 1);
+    const img = document.createElement("img");
+    img.src = `/game-sites/chat/gif/genshin/${i + 1}.gif`;
+    img.loading = "lazy";      // パフォーマンス向上
+    img.alt = `genshin-gif-${i + 1}`;
+
+    item.appendChild(img);
+    mediaContent.appendChild(item);
+  }
+
+  for(let i = 0; i < 1; i++){ //スタレGIF描画
+    const item = document.createElement("div");
+    item.className = "media-item";
+    item.dataset.type = "gif";
+    item.dataset.id = "starrail/" + String(i + 1);
+    const img = document.createElement("img");
+    img.src = `/game-sites/chat/gif/starrail/${i + 1}.gif`;
+    img.loading = "lazy";      // パフォーマンス向上
+    img.alt = `starrail-gif-${i + 1}`;
+
+    item.appendChild(img);
+    mediaContent.appendChild(item);
+  }
+
+  for(let i = 0; i < 4; i++){ //ジョジョGIF描画
+    const item = document.createElement("div");
+    item.className = "media-item";
+    item.dataset.type = "gif";
+    item.dataset.id = "jojo/" + String(i + 1);
+    const img = document.createElement("img");
+    img.src = `/game-sites/chat/gif/jojo/${i + 1}.gif`;
+    img.loading = "lazy";      // パフォーマンス向上
+    img.alt = `other-gif-${i + 1}`;
+
+    item.appendChild(img);
+    mediaContent.appendChild(item);
+  }
+
+  for(let i = 0; i < 4; i++){ //他GIF描画
+    const item = document.createElement("div");
+    item.className = "media-item";
+    item.dataset.type = "gif";
+    item.dataset.id = "other/" + String(i + 1);
+    const img = document.createElement("img");
+    img.src = `/game-sites/chat/gif/other/${i + 1}.gif`;
+    img.loading = "lazy";      // パフォーマンス向上
+    img.alt = `other-gif-${i + 1}`;
+
+    item.appendChild(img);
+    mediaContent.appendChild(item);
+  }
+}
+
+
+    /* ======== Google Apps Script Web App URL ======== */
+    const WEB_APP_URL =
+      "https://script.google.com/macros/s/AKfycbyU69VodYxnQJxMI4BhpCnVyvSlFcdM54XFnio5y8A02Uf_P__36zrWbpwih_Wc3szYHw/exec";
+
+    // アカウントID → アイコンURL
+    const userIcons = {
+      default:      "/game-sites/chat/chatIcons/default-0001.png",
+      wakaruwakaru: "/game-sites/chat/chatIcons/wakaruwakaru-0001.png",
+      dabada:       "/game-sites/chat/chatIcons/dabada-0001.png",
+      173:          "/game-sites/chat/chatIcons/173-0001.png",
+      RTX5090rairai:"/game-sites/chat/chatIcons/rairai-0001.png"
+    };
+
+    /* ======== メッセージ送信 ======== */
+    async function send() {
+      const box = document.getElementById("textBox1");
+      const text = box.value.trim();
+      if (!text) return;
+      
+      scrollToBottom();
+      // 入力欄リセット
+      box.value = "";
+      box.focus();
+
+      const text2 = text_trim(text, "message");
+      sendToGAS(token3, text2, "chat"); // GAS へ送信
+    }
+
+    /* ============チャットログインログ=========== */
+    async function send_login() {
+      const text2 = text_trim("", "login");
+      sendToGAS(token3, text2, "chat"); // GAS へ送信
+    }
+    
+    /* ======== GASに送信する処理 ======== */
+    async function sendToGAS(User, text, status){
+      const payload = {
+        user: User,
+        message: text,
+        status
+      };
+
+      try {
+        await fetch(WEB_APP_URL, {
+          method: "POST",
+          mode: "no-cors",   // ← GAS が CORS 許可してないため必要
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        // no-cors のためレスポンスは読めない（仕様）
+      } catch (e) {
+        console.error("送信エラー:", e);
+      }
+    }
+
+
+/* ======== メッセージ追加（受信側） ======== */
+function addMessage_received(user, type, time, value){
+  const iconURL = userIcons[user] || userIcons["default"];
+  const msg = document.createElement("div");
+  msg.className = "message received";
+
+  // --- アイコン ---
+  const icon = document.createElement("div");
+  icon.className = "user-icon";
+  icon.style.backgroundImage = `url('${iconURL}')`;
+  // --- 本体 ---
+  const content = document.createElement("div");
+  content.className = "message-content";
+  // --- 中身 ---
+  const body = createMessageBody(type, value);
+  if(body) content.appendChild(body);
+  // --- 時刻 ---
+  const ts = document.createElement("span");
+  ts.className = "timestamp";
+  ts.textContent = time;
+
+  content.appendChild(ts);
+  msg.append(icon, content);
+  document.getElementById("message1").appendChild(msg);
+}
+
+/* ======== メッセージ追加（送信側） ======== */
+function addMessage_sent(type, time, value){
+  const msg = document.createElement("div");
+  msg.className = "message sent";
+
+  // --- 本体 ---
+  const content = document.createElement("div");
+  content.className = "message-content";
+  // --- 中身 ---
+  const body = createMessageBody(type, value);
+  if(body) content.appendChild(body);
+  // --- 時刻 ---
+  const ts = document.createElement("span");
+  ts.className = "timestamp";
+  ts.textContent = time;
+
+  content.appendChild(ts);
+  msg.appendChild(content);
+  document.getElementById("message1").appendChild(msg);
+}
+
+
+function createMessageBody(type, value){
+  switch(type){
+    case "message":{
+      const p = document.createElement("p");
+      p.textContent = value;
+      return p;
+    }
+    case "emoji":{
+      const p = document.createElement("p");
+      p.textContent = emoji_list[Number(value) - 1];
+      p.className = "emoji";
+      return p;
+    }
+    case "stamp":{
+      const img = document.createElement("img");
+      img.src = "/game-sites/chat/stamp/" + value + ".png";
+      img.loading = "lazy";
+    //img.className = "media-img";
+      return img;
+    }
+    case "gif":{
+      const img = document.createElement("img");
+      img.src = "/game-sites/chat/gif/" + value + ".gif";
+      img.loading = "lazy";
+    //img.className = "media-img";
+      return img;
+    }
+
+    default:
+      console.warn("未知のメッセージタイプ:", type);
+      return null;
+  }
+}
+
+
+/*=============時間ピル追加==============*/
+function addDatePill(text){
+  // ラッパー（中央寄せ）
+  const wrapper = document.createElement("div");
+  wrapper.className = "center-set";
+  // ピル本体（見た目）
+  const pill = document.createElement("div");
+  pill.className = "chat-date-pill";
+  pill.textContent = text;
+  // wrapper の中に pill を入れる
+  wrapper.appendChild(pill);
+  // message1 に挿入
+  document.getElementById("message1").appendChild(wrapper);
+}
+
+    /* ======== 自動スクロール ======== */
+    function scrollToBottom(){
+      window.scrollTo({
+        top: document.body.scrollHeight,
+        behavior: "smooth"
+      });
+    }
+
+    /* ======== エンター送信 ======== */
+    function enterSend(e){
+      if(e.isComposing) return;
+      if(e.key === "Enter") send();
+    }
+    
+    function text_trim(text1, text2){
+      return `<type[${text2}]acco[${token3}]time[${new Date()}]val1[${text1}]>`;
+    }
+
+const box = document.getElementById("textBox1");
+box.addEventListener("keydown", (e) => {  // キー入力をブロック
+  if(["<", ">", "[", "]"].includes(e.key)){
+    e.preventDefault();
+  }
+});
+box.addEventListener("input", () => {  // まとめて除去
+  box.value = box.value.replace(/[<>\[\]]/g, "");
+});
+
+
+function splitLogs(text){
+  return text.match(/<[^>]*>/g) || [];
+}
+
+function parseLog(log){
+  const result = {};
+  const inside = log.slice(1, -1);
+  const parts = inside.split("]");
+
+  for (let i = 0; i < parts.length; i++) {
+    const part = parts[i].trim();
+    if (part === "") continue;
+
+    const keyValue = part.split("[");
+    const key = keyValue[0];
+    const value = keyValue[1];
+
+    result[key] = value;
+  }
+  return result;
+}
+
+function toHHMM(timeString) {
+  const d = new Date(timeString); // 文字列 → Date に変換
+  const hh = String(d.getHours()).padStart(2, "0");
+  const mm = String(d.getMinutes()).padStart(2, "0");
+  return `${hh}:${mm}`;
+}
+function toYYYYMMDD(dateString) {
+  const d = new Date(dateString);
+  const year  = d.getFullYear();
+  const month = String(d.getMonth() + 1).padStart(2, "0");
+  const day   = String(d.getDate()).padStart(2, "0");
+  return `${year}年${month}月${day}日`;
+}
+
+function getScrollPercentage(){
+    const currentScroll = window.scrollY;                      // A. 現在のスクロール位置（上端からの距離）
+    const fullHeight = document.documentElement.scrollHeight;  // B. ページのコンテンツ全体の高さ
+    const viewportHeight = window.innerHeight;                 // C. ブラウザのビューポート（表示領域）の高さ
+    // ----------------------------------------------------
+    // 2. スクロール可能な最大の距離を計算   ページ全長から表示領域の分を引く
+    const maxScrollDistance = fullHeight - viewportHeight;
+    // 最大距離が0の場合は、スクロールできない（ページが短い）ため0%を返す
+    if (maxScrollDistance === 0) {
+        return 0;
+    }
+    // ----------------------------------------------------
+    // 3. 相対値（%）を計算し、小数点以下を丸める
+    const scrollPercentage = (currentScroll / maxScrollDistance) * 100;
+    // 0〜100の間に収まるように調整（念のため）
+    return Math.min(100, Math.max(0, scrollPercentage));
+}
+    
+function autoScrollValue(){
+    const currentScroll = window.scrollY;
+    const fullHeight = document.documentElement.scrollHeight;
+    const viewportHeight = window.innerHeight;
+    const ScrollDistance = (fullHeight - viewportHeight) - currentScroll;
+    if(100 < ScrollDistance){
+      return 0;
+    }else{
+      return 1;
+    }
+}
+
+const msg1 = document.getElementById("new-msg");
+function new_msg(text){
+  msg1.textContent = text;
+  msg1.classList.add("show");
+  /* 1.5秒後にフェードアウト
+  setTimeout(() => {
+    msg1.classList.remove("show");
+  }, 1500);
+  */
+}
+
+function diffSeconds(get_old_date) {
+  const oldTime = new Date(get_old_date).getTime();  // 過去の時刻（ミリ秒）
+  const nowTime = Date.now();                    // 現在の時刻（ミリ秒）
+  const diffMs = nowTime - oldTime;              // ミリ秒差
+  return Math.floor(diffMs / 1000);              // 秒に変換
+}
+    
+var old_content = 0;
+var new_content = 0;
+var old_mess_date = "";
+var new_mess_date = "";
+var new_message = 0;
+var renew_time = 0;
+async function page_update(){
+  const res = await fetch(WEB_APP_URL);
+  const data = await res.json();
+  const text1 = data.content;
+
+  // ① 文字列をログごとに配列へ
+  const logs = splitLogs(text1);
+
+  // ② それぞれのログをパース → 多次元配列へ
+  const message2 = logs.map(log => {
+    const p = parseLog(log);
+    return [ p.type, p.acco, p.time, p.val1 ];
+  });
+
+  // ③ 出力
+  renew_time = new Date();
+  old_content = new_content;
+  new_content = message2.length;
+  if(old_content != new_content){
+    const auto_scroll = autoScrollValue();
+    for(let i = old_content; i < message2.length; i++){
+      if((message2[i][0] == "message") || (message2[i][0] == "emoji") || (message2[i][0] == "stamp") || (message2[i][0] == "gif")){
+        old_mess_date = new_mess_date;
+        new_mess_date = toYYYYMMDD(message2[i][2]);
+        if(old_mess_date != new_mess_date){
+          addDatePill(new_mess_date);
+        }
+        if(message2[i][1] == token3){
+          addMessage_sent(message2[i][0], toHHMM(message2[i][2]), message2[i][3]); //type time value
+        }else{
+          addMessage_received(message2[i][1], message2[i][0], toHHMM(message2[i][2]), message2[i][3]); //user type time value
+          if((!auto_scroll) && (!new_message)){
+            new_message = 1;
+            new_msg("新規メッセージ");
+          }
+        }
+      }
+    }
+    if(auto_scroll){
+      scrollToBottom();
+    }
+  }
+
+}
+
+let ticking = false;
+window.addEventListener("scroll", () => {
+  if(!ticking){
+    window.requestAnimationFrame(() => {
+      if((autoScrollValue()) && (new_message)){
+        msg1.classList.remove("show");
+        new_message = 0;
+      }
+      ticking = false;
+    });
+    ticking = true;
+  }
+});
+
+    
+var timer1 = null;
+var update_rate = 1000;
+function event1() {
+  page_update();
+}
+timer1 = setInterval(event1, update_rate);
+function rate_change(){
+  if(update_rate === 1000) {
+    document.querySelector(".icon-right").style.backgroundColor = "#7dd6ff";
+    update_rate = 5000;
+  }else{
+    document.querySelector(".icon-right").style.backgroundColor = "#000000";
+    update_rate = 1000;
+  }
+  clearInterval(timer1);
+  timer1 = setInterval(event1, update_rate);
+}
+
+var timer2 = null;
+function event2(){
+  if(renew_time != 0){
+    if(diffSeconds(renew_time) < 60){
+      document.getElementById("last-change-time").innerHTML = "最終更新: " + diffSeconds(renew_time) + "秒前";
+    }else{
+      document.getElementById("last-change-time").innerHTML = "最終更新: " + toHHMM(renew_time);
+    }
+  }
+}timer2 = setInterval(event2, 200);
+
+setInterval(() => {
+  sendToGAS(token3, "", "chat");
+  fetchLastLoginData();
+}, 5000);
+
+// ユーザーごとの状態を保持する多次元構造
+let userPresenceMap = {};
+async function fetchLastLoginData(){
+  try{
+    const res = await fetch(WEB_APP_URL);
+    const data = await res.json();
+    if(data.status !== "ok") return;
+    parsePresenceData(data.users);
+  }catch(err){
+    console.error("fetch error", err);
+  }
+}
+
+function parsePresenceData(users){
+  const now = Date.now();
+  userPresenceMap = {}; // 毎回作り直す（ズレ防止）
+  for(const username in users){
+    const u = users[username];
+    const diff = now - u.lastSeen;
+    userPresenceMap[username] = {
+      name: username,
+      status: u.status,       // chat / online / idle
+      lastSeen: u.lastSeen,   // 生の timestamp
+      diff: diff,             // 今から何ms前か
+      isOnline: diff < 30000  // 30秒以内ならオンライン扱い
+    };
+/*
+console.log(  //test log
+  username,
+  u.lastSeen,
+  typeof u.lastSeen,
+  now - u.lastSeen
+);
+*/
+  }
+//const list = getPresenceArray();
+  renderPresencePanel();
+}
+function getPresenceArray(){
+  return Object.values(userPresenceMap);
+}
