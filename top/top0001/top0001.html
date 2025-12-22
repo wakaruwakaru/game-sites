@@ -10,21 +10,21 @@
 
     <h1 id="title1">Welcome!</h1>
     <hr />
-    <div class="link-list">
-      <div class="neon-btn" onclick="jumpLink1()">バブルゲーム</div>
-      <div class="neon-btn" onclick="jumpLink2()">将棋</div>
-      <div class="neon-btn" onclick="jumpLink3()">オセロ</div>
-      <div class="neon-btn" onclick="jumpLink4()">パズル</div>
-      <div class="neon-btn" onclick="jumpLink5()">音ゲー</div>
-      <div class="neon-btn" onclick="jumpLink6()">マインスイーパー</div>
-      <div class="neon-btn" onclick="jumpLink7()">3Dゲーム</div>
-      <div class="neon-btn" onclick="jumpLink8()">スロット</div>
-      <div class="neon-btn" onclick="jumpLink9()">ブロック崩し</div>
-      <div class="neon-btn" onclick="jumpLink10()">スネークゲーム</div>
-      <div class="neon-btn" onclick="jumpLink11()">テトリス</div>
-      <div class="neon-btn" onclick="jumpChat1()">チャット</div>
-      <div class="neon-btn" onclick="jumpTopic1()">トピック</div>
-      <div class="neon-btn" onclick="jumpInfo1()">インフォメーション</div>
+    <div class="link-list" id="linkList">
+      <div class="neon-btn link-item" data-link="game/page0001/page0001">バブルゲーム</div>
+      <div class="neon-btn link-item" data-link="game/page0002/page0002">将棋</div>
+      <div class="neon-btn link-item" data-link="game/page0003/page0003">オセロ</div>
+      <div class="neon-btn link-item" data-link="game/page0004/page0004">パズル</div>
+      <div class="neon-btn link-item" data-link="top/top0002/top0002">音ゲー</div>
+      <div class="neon-btn link-item" data-link="game/page0006/page0006">マインスイーパー</div>
+      <div class="neon-btn link-item" data-link="top/top0003/top0003">3Dゲーム</div>
+      <div class="neon-btn link-item" data-link="game/page0008/page0008">スロット</div>
+      <div class="neon-btn link-item" data-link="game/page0009/page0009">ブロック崩し</div>
+      <div class="neon-btn link-item" data-link="game/page0010/page0010">スネークゲーム</div>
+      <div class="neon-btn link-item" data-link="game/page0011/page0011">テトリス</div>
+      <div class="neon-btn link-item" data-link="chat/chat0001/chat0001">チャット</div>
+      <div class="neon-btn link-item" data-link="topic/top-topic0001">トピック</div>
+      <div class="neon-btn link-item" data-link="top-information0001">インフォメーション</div>
     </div>
     <hr />
     <div id="reloadBtn" class="floating-btn" onclick="reload()">↻</div>
@@ -67,104 +67,29 @@
       }
     }
 
-        function jumpLink1(){
-            const key1 = crypto.randomUUID();
-            localStorage.setItem("key1", key1);
-            localStorage.setItem("account1", token3);
-            location.href = "/game-sites/game/page0001/page0001?key1=" + key1;
-        }
-        function jumpLink2(){
-            const key1 = crypto.randomUUID();
-            localStorage.setItem("key1", key1);
-            localStorage.setItem("account1", token3);
-            location.href = "/game-sites/game/page0002/page0002?key1=" + key1;
-        }
-        function jumpLink3(){
-            const key1 = crypto.randomUUID();
-            localStorage.setItem("key1", key1);
-            localStorage.setItem("account1", token3);
-            location.href = "/game-sites/game/page0003/page0003?key1=" + key1;
-        }
-        function jumpLink4(){
-            const key1 = crypto.randomUUID();
-            localStorage.setItem("key1", key1);
-            localStorage.setItem("account1", token3);
-            location.href = "/game-sites/game/page0004/page0004?key1=" + key1;
-        }
-        function jumpLink5(){
-            const key1 = crypto.randomUUID();
-            localStorage.setItem("key1", key1);
-            localStorage.setItem("account1", token3);
-            location.href = "/game-sites/top/top0002/top0002?key1=" + key1;
-        }
-        function jumpLink6(){
-            const key1 = crypto.randomUUID();
-            localStorage.setItem("key1", key1);
-            localStorage.setItem("account1", token3);
-            location.href = "/game-sites/game/page0006/page0006?key1=" + key1;
-        }
-        function jumpLink7(){
-            const key1 = crypto.randomUUID();
-            localStorage.setItem("key1", key1);
-            localStorage.setItem("account1", token3);
-            location.href = "/game-sites/top/top0003/top0003?key1=" + key1;
-        }
-        function jumpLink8(){
-            const key1 = crypto.randomUUID();
-            localStorage.setItem("key1", key1);
-            localStorage.setItem("account1", token3);
-            location.href = "/game-sites/game/page0008/page0008?key1=" + key1;
-        }
-        function jumpLink9(){
-            const key1 = crypto.randomUUID();
-            localStorage.setItem("key1", key1);
-            localStorage.setItem("account1", token3);
-            location.href = "/game-sites/game/page0009/page0009?key1=" + key1;
-        }
-        function jumpLink10(){
-            const key1 = crypto.randomUUID();
-            localStorage.setItem("key1", key1);
-            localStorage.setItem("account1", token3);
-            location.href = "/game-sites/game/page0010/page0010?key1=" + key1;
-        }
-        function jumpLink11(){
-            const key1 = crypto.randomUUID();
-            localStorage.setItem("key1", key1);
-            localStorage.setItem("account1", token3);
-            location.href = "/game-sites/game/page0011/page0011?key1=" + key1;
-        }
-        function jumpChat1(){
-            const key1 = crypto.randomUUID();
-            localStorage.setItem("key1", key1);
-            localStorage.setItem("account1", token3);
-            location.href = "/game-sites/chat/chat0001/chat0001?key1=" + key1;
-        }
-        function jumpTopic1(){
-            const key1 = crypto.randomUUID();
-            localStorage.setItem("key1", key1);
-            localStorage.setItem("account1", token3);
-            location.href = "/game-sites/topic/top-topic0001?key1=" + key1;
-        }
-        function jumpInfo1(){
-            const key1 = crypto.randomUUID();
-            localStorage.setItem("key1", key1);
-            localStorage.setItem("account1", token3);
-            location.href = "/game-sites/top-information0001?key1=" + key1;
-        }
-        function jumpLink100(){
-            alert("ごめんなさい(_ _;)  現在実装中");
-        }
-        function reload(){
-            const key1 = crypto.randomUUID();
-            localStorage.setItem("key1", key1);
-            localStorage.setItem("account1", token3);
-            location.href = "/game-sites/top/top0001/top0001?key1=" + key1;
-        }
-        function logout(){
-            sendToGAS(token3, "", "idle");
-            localStorage.setItem("key1", "logout");
-            location.href = "/game-sites/";
-        }
+    const linkList = document.getElementById("linkList");
+    linkList.addEventListener("click", (e) => {
+      const item = e.target.closest(".link-item");
+      if (!item) return;
+      const link = item.dataset.link;
+      const key1 = crypto.randomUUID(); // 共通処理
+      localStorage.setItem("key1", key1);
+      localStorage.setItem("account1", token3);
+      location.href = `/game-sites/${link}?key1=${key1}`;
+    });
+
+
+      function reload(){
+        const key1 = crypto.randomUUID();
+        localStorage.setItem("key1", key1);
+        localStorage.setItem("account1", token3);
+        location.href = "/game-sites/top/top0001/top0001?key1=" + key1;
+      }
+      function logout(){
+        sendToGAS(token3, "", "idle");
+        localStorage.setItem("key1", "logout");
+        location.href = "/game-sites/";
+      }
 
 
     var timer1 = null;
