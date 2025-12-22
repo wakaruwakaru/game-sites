@@ -50,10 +50,14 @@
 
         function jumpPage(link){
             const key1 = crypto.randomUUID();
-            localStorage.setItem("key1", key1);
-            localStorage.setItem("account1", token3);
             if(link == ''){
                 sendToGAS(token3, "", "idle");
+                localStorage.setItem("key1", "logout");
+                localStorage.setItem("account1", "");
+                location.href = "/game-sites/";
+            }else{
+                localStorage.setItem("key1", key1);
+                localStorage.setItem("account1", token3);
+                location.href = "/game-sites/" + link + "?key1=" + key1;
             }
-            location.href = "/game-sites/" + link + "?key1=" + key1;
         }
