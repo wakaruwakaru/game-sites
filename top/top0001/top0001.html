@@ -1,35 +1,34 @@
 <html>
-<head>
-<meta charset="utf-8">
-<title>ホーム</title>
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<link rel="shortcut icon" href="/game-sites/index/icon/icon1.png" >
-<link rel="stylesheet" href="/game-sites/top/css/main.css" />
-</style>
-</head>
-<body>
+  <head>
+    <meta charset="utf-8">
+    <title>ホーム</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="shortcut icon" href="/game-sites/index/icon/icon1.png" >
+    <link rel="stylesheet" href="/game-sites/top/css/main.css" />
+  </head>
+  <body>
 
-<h1 id="title1">Welcome!</h1>
-<hr />
-<div class="link-list">
-  <div class="neon-btn" onclick="jumpLink1()">バブルゲーム</div>
-  <div class="neon-btn" onclick="jumpLink2()">将棋</div>
-  <div class="neon-btn" onclick="jumpLink3()">オセロ</div>
-  <div class="neon-btn" onclick="jumpLink4()">パズル</div>
-  <div class="neon-btn" onclick="jumpLink5()">音ゲー</div>
-  <div class="neon-btn" onclick="jumpLink6()">マインスイーパー</div>
-  <div class="neon-btn" onclick="jumpLink7()">3Dゲーム</div>
-  <div class="neon-btn" onclick="jumpLink8()">スロット</div>
-  <div class="neon-btn" onclick="jumpLink9()">ブロック崩し</div>
-  <div class="neon-btn" onclick="jumpLink10()">スネークゲーム</div>
-  <div class="neon-btn" onclick="jumpLink11()">テトリス</div>
-  <div class="neon-btn" onclick="jumpChat1()">チャット</div>
-  <div class="neon-btn" onclick="jumpTopic1()">トピック</div>
-  <div class="neon-btn" onclick="jumpInfo1()">インフォメーション</div>
-</div>
-<hr />
-<div id="reloadBtn" class="floating-btn" onclick="reload()">↻</div>
-<div id="logoutBtn" class="floating-btn" onclick="logout()">✕</div>
+    <h1 id="title1">Welcome!</h1>
+    <hr />
+    <div class="link-list">
+      <div class="neon-btn" onclick="jumpLink1()">バブルゲーム</div>
+      <div class="neon-btn" onclick="jumpLink2()">将棋</div>
+      <div class="neon-btn" onclick="jumpLink3()">オセロ</div>
+      <div class="neon-btn" onclick="jumpLink4()">パズル</div>
+      <div class="neon-btn" onclick="jumpLink5()">音ゲー</div>
+      <div class="neon-btn" onclick="jumpLink6()">マインスイーパー</div>
+      <div class="neon-btn" onclick="jumpLink7()">3Dゲーム</div>
+      <div class="neon-btn" onclick="jumpLink8()">スロット</div>
+      <div class="neon-btn" onclick="jumpLink9()">ブロック崩し</div>
+      <div class="neon-btn" onclick="jumpLink10()">スネークゲーム</div>
+      <div class="neon-btn" onclick="jumpLink11()">テトリス</div>
+      <div class="neon-btn" onclick="jumpChat1()">チャット</div>
+      <div class="neon-btn" onclick="jumpTopic1()">トピック</div>
+      <div class="neon-btn" onclick="jumpInfo1()">インフォメーション</div>
+    </div>
+    <hr />
+    <div id="reloadBtn" class="floating-btn" onclick="reload()">↻</div>
+    <div id="logoutBtn" class="floating-btn" onclick="logout()">✕</div>
     <script>
         const urlParams = new URLSearchParams(location.search);
         const token1 = urlParams.get("key1");
