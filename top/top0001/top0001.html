@@ -27,74 +27,12 @@
       <div class="neon-btn link-item" data-link="top-information0001">インフォメーション</div>
     </div>
     <hr />
-    <div id="reloadBtn" class="floating-btn" onclick="reload()">↻</div>
-    <div id="logoutBtn" class="floating-btn" onclick="logout()">✕</div>
+    <div id="reloadBtn" class="floating-btn" onclick="jumpLink('top/top0001/top0001')">↻</div>
+    <div id="logoutBtn" class="floating-btn" onclick="jumpLink('')">✕</div>
+    <script src="/game-sites/top/js/main.js"></script>
     <script>
-        const urlParams = new URLSearchParams(location.search);
-        const token1 = urlParams.get("key1");
-        localStorage.setItem("requestPage1", "");
-        const token3 = localStorage.getItem("account1");
-        localStorage.setItem("account1", "");
-        if((token1 !== localStorage.getItem("key1")) || (token3 == "") || (token3 == null)){
-            localStorage.setItem("key1", "unauthorized");
-            location.href = "/game-sites/";
-        }else{
-            localStorage.setItem("key1", "");
-            setInterval(() => {
-                sendToGAS(token3, "", "top");
-            }, 5000);
-        }
-
-    /* ======== Google Apps Script Web App URL ======== */
-    const WEB_APP_URL =
-      "https://script.google.com/macros/s/AKfycbyU69VodYxnQJxMI4BhpCnVyvSlFcdM54XFnio5y8A02Uf_P__36zrWbpwih_Wc3szYHw/exec";
-    /* ======== GASに送信する処理 ======== */
-    async function sendToGAS(User, text, status){
-      const payload = {
-        user: User,
-        message: text,
-        status
-      };
-      try {
-        await fetch(WEB_APP_URL, {
-          method: "POST",
-          mode: "no-cors",   // ← GAS が CORS 許可してないため必要
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(payload)
-        });
-      } catch (e) {
-        console.error("送信エラー:", e);
-      }
-    }
-
-  
-    const linkList = document.getElementById("linkList");
-    linkList.addEventListener("click", (e) => {
-      const item = e.target.closest(".link-item");
-      if (!item) return;
-      const link = item.dataset.link;
-      const key1 = crypto.randomUUID(); // 共通処理
-      localStorage.setItem("key1", key1);
-      localStorage.setItem("account1", token3);
-      location.href = `/game-sites/${link}?key1=${key1}`;
-    });
-
-  
-      function reload(){
-        const key1 = crypto.randomUUID();
-        localStorage.setItem("key1", key1);
-        localStorage.setItem("account1", token3);
-        location.href = "/game-sites/top/top0001/top0001?key1=" + key1;
-      }
-      function logout(){
-        sendToGAS(token3, "", "idle");
-        localStorage.setItem("key1", "logout");
-        location.href = "/game-sites/";
-      }
-
-
-    var timer1 = null;
-    var date1, year1, month1, week1, day1, week_1, hour1, minute1, second1, millisecond1;
+    let timer1 = null;
+    let date1, year1, month1, week1, day1, week_1, hour1, minute1, second1, millisecond1;
     function event1(){
       date1 = new Date();
       year1 = date1.getFullYear();
