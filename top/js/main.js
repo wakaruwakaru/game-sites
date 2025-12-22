@@ -52,5 +52,8 @@
             const key1 = crypto.randomUUID();
             localStorage.setItem("key1", key1);
             localStorage.setItem("account1", token3);
+            if(link == ''){
+                sendToGAS(token3, "", "idle");
+            }
             location.href = "/game-sites/" + link + "?key1=" + key1;
         }
