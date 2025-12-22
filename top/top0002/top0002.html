@@ -15,8 +15,8 @@
       <div class="neon-btn link-item" data-link="game/page0005/page0005-2">タッチタイプ</div>
     </div>
     <hr />
-    <div id="reloadBtn" class="floating-btn" onclick="reload()">↻</div>
-    <div id="logoutBtn" class="floating-btn" onclick="backPage()">⇦</div>
+    <div id="reloadBtn" class="floating-btn" onclick="jumpPage('top/top0002/top0002')">↻</div>
+    <div id="logoutBtn" class="floating-btn" onclick="jumpPage('top/top0001/top0001')">⇦</div>
     <script>
         const urlParams = new URLSearchParams(location.search);
         const token1 = urlParams.get("key1");
@@ -68,17 +68,11 @@
     });
 
 
-        function reload(){
+        function jumpPage(link){
             const key1 = crypto.randomUUID();
             localStorage.setItem("key1", key1);
             localStorage.setItem("account1", token3);
-            location.href = "/game-sites/top/top0002/top0002?key1=" + key1;
-        }
-        function backPage(){
-            const key1 = crypto.randomUUID();
-            localStorage.setItem("key1", key1);
-            localStorage.setItem("account1", token3);
-            location.href = "/game-sites/top/top0001/top0001?key1=" + key1;
+            location.href = "/game-sites/${link}?key1=" + key1;
         }
     </script>
   </body>
