@@ -1,22 +1,22 @@
 <html>
-<head>
-<meta charset="utf-8">
-<title>ホーム</title>
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<link rel="shortcut icon" href="/game-sites/index/icon/icon1.png" >
-<link rel="stylesheet" href="/game-sites/top/css/main.css" />
-</head>
-<body>
+  <head>
+    <meta charset="utf-8">
+    <title>ホーム</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="shortcut icon" href="/game-sites/index/icon/icon1.png" >
+    <link rel="stylesheet" href="/game-sites/top/css/main.css" />
+  </head>
+  <body>
 
-<h1>3Dゲーム > 迷路</h1>
-<hr />
-<div class="link-list">
-  <div class="neon-btn" onclick="jumpLink1()">NORMAL</div>
-  <div class="neon-btn" onclick="jumpLink2()">HARD</div>
-</div>
-<hr />
-<div id="reloadBtn" class="floating-btn" onclick="reload()">↻</div>
-<div id="logoutBtn" class="floating-btn" onclick="backPage()">⇦</div>
+    <h1>3Dゲーム > 迷路</h1>
+    <hr />
+    <div class="link-list">
+      <div class="neon-btn" onclick="jumpLink1()">NORMAL</div>
+      <div class="neon-btn" onclick="jumpLink2()">HARD</div>
+    </div>
+    <hr />
+    <div id="reloadBtn" class="floating-btn" onclick="reload()">↻</div>
+    <div id="logoutBtn" class="floating-btn" onclick="backPage()">⇦</div>
     <script>
         const urlParams = new URLSearchParams(location.search);
         const token1 = urlParams.get("key1");
