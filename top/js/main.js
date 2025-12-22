@@ -1,7 +1,7 @@
         const urlParams = new URLSearchParams(location.search);
         const token1 = urlParams.get("key1");
         localStorage.setItem("requestPage1", "");
-        const token3 = localStorage.getItem("account1");
+        var token3 = localStorage.getItem("account1");
         localStorage.setItem("account1", "");
         if((token1 !== localStorage.getItem("key1")) || (token3 == "") || (token3 == null)){
             localStorage.setItem("key1", "unauthorized");
