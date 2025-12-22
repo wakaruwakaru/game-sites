@@ -67,6 +67,7 @@
       }
     }
 
+  
     const linkList = document.getElementById("linkList");
     linkList.addEventListener("click", (e) => {
       const item = e.target.closest(".link-item");
@@ -78,7 +79,7 @@
       location.href = `/game-sites/${link}?key1=${key1}`;
     });
 
-
+  
       function reload(){
         const key1 = crypto.randomUUID();
         localStorage.setItem("key1", key1);
