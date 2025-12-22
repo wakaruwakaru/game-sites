@@ -10,8 +10,8 @@
 
     <h1>3Dゲーム</h1>
     <hr />
-    <div class="link-list">
-      <div class="neon-btn" onclick="jumpLink1()">迷路</div>
+    <div class="link-list" id="linkList">
+      <div class="neon-btn link-item" data-link="top/top0004/top0004">迷路</div>
     </div>
     <hr />
     <div id="reloadBtn" class="floating-btn" onclick="reload()">↻</div>
@@ -54,12 +54,19 @@
       }
     }
 
-        function jumpLink1(){
-            const key1 = crypto.randomUUID();
-            localStorage.setItem("key1", key1);
-            localStorage.setItem("account1", token3);
-            location.href = "/game-sites/top/top0004/top0004?key1=" + key1;
-        }
+
+    const linkList = document.getElementById("linkList");
+    linkList.addEventListener("click", (e) => {
+      const item = e.target.closest(".link-item");
+      if (!item) return;
+      const link = item.dataset.link;
+      const key1 = crypto.randomUUID(); // 共通処理
+      localStorage.setItem("key1", key1);
+      localStorage.setItem("account1", token3);
+      location.href = `/game-sites/${link}?key1=${key1}`;
+    });
+
+
         function reload(){
             const key1 = crypto.randomUUID();
             localStorage.setItem("key1", key1);
