@@ -501,7 +501,7 @@ function parsePresenceData(users){
   }
 //const list = getPresenceArray();
   renderPresencePanel();
-  testturn1();
+//testturn1();
 }
 function getPresenceArray(){
   return Object.values(userPresenceMap);
