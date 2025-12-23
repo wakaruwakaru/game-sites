@@ -420,9 +420,9 @@ async function page_update(){
       scrollToBottom();
     }
   }
-
 }
 
+const bottomBtn = document.getElementById("bottomBtn");
 let ticking = false;
 window.addEventListener("scroll", () => {
   if(!ticking){
@@ -430,6 +430,11 @@ window.addEventListener("scroll", () => {
       if((autoScrollValue()) && (new_message)){
         msg1.classList.remove("show");
         new_message = 0;
+      }
+      if(autoScrollValue()){
+        bottomBtn.classList.add("hide"); // 隠す
+      }else{
+        bottomBtn.classList.remove("hide"); // 表示
       }
       ticking = false;
     });
