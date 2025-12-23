@@ -207,6 +207,7 @@
     cursor: pointer;
     transition: 0.25s;
     box-shadow: 0 0 10px #3d8cff88;
+    opacity: 1;
 }
 /* ホバー時に光る */
 .floating-btn:hover{
@@ -216,6 +217,10 @@
 /* クリック時に縮む */
 .floating-btn:active{
     transform: scale(0.9);
+}
+/* スクロールbtnを隠す */
+.floating-btn .hide{
+    opacity: 0;
 }
 /* ボタン位置調整 */
 #reloadBtn{
