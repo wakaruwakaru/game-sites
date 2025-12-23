@@ -107,7 +107,7 @@ function renderImgList(type, genre, start, end, file){
 
     /* ======== Google Apps Script Web App URL ======== */
     const WEB_APP_URL =
-      "https://script.google.com/macros/s/AKfycbxzyrgvalRn0lOL0jF-OL39xFCn_1tga9l1TVt283uKUftgx7E4nPn4zpvwOBRObpiMLA/exec";
+      "https://script.google.com/macros/s/AKfycbxzPIpMXRgQ5QuKM_hwIQ815at4Ml6Vvqhx_zabeDNGupPwsTvWWP3jpOXLnxbeGSIMDQ/exec";
 
     // アカウントID → アイコンURL
     const userIcons = {
