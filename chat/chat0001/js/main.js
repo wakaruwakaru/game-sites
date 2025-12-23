@@ -501,6 +501,7 @@ function parsePresenceData(users){
   }
 //const list = getPresenceArray();
   renderPresencePanel();
+  testturn1();
 }
 function getPresenceArray(){
   return Object.values(userPresenceMap);
@@ -608,6 +609,22 @@ profileModal.addEventListener("click", e => {
     closeProfileModal();
   }
 });
+
+
+function testturn1(){
+  for (const username in data.users) {
+    const u = data.users[username];
+    const map = u.lastSeenByStatus;
+
+    for (const status in map) {
+      console.log(
+        username,
+        status,
+        new Date(map[status]).toLocaleTimeString()
+      );
+    }
+  }
+}
 
 
   const urlParams = new URLSearchParams(location.search);
