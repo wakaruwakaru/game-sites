@@ -208,6 +208,7 @@
     transition: 0.25s;
     box-shadow: 0 0 10px #3d8cff88;
     opacity: 1;
+    transition: opacity 0.3s ease, transform 0.3s ease;
 }
 /* ホバー時に光る */
 .floating-btn:hover{
