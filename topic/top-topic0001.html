@@ -186,9 +186,9 @@ h1{
 <body>
 <h1>トピック</h1>
 <hr />
-<div class="news-list">
+<div class="news-list" id="linkList">
 
-    <div class="news-item" onclick="jumpLink11()">
+    <div class="news-item link-item" data-link="topic/topic0011/topic0011">
         <div class="news-thumb">
             <img src="/game-sites/topic/topic0011/picture0001.png" alt="">
         </div>
@@ -204,7 +204,7 @@ h1{
         </div>
     </div>
 
-    <div class="news-item" onclick="jumpLink10()">
+    <div class="news-item link-item" data-link="game/page0011/page0011">
         <div class="news-thumb">
             <img src="/game-sites/topic/topic0010/picture0001.jpg" alt="">
         </div>
@@ -220,7 +220,7 @@ h1{
         </div>
     </div>
   
-    <div class="news-item" onclick="jumpLink9()">
+    <div class="news-item link-item" data-link="topic/topic0009/topic0009">
         <div class="news-thumb">
             <img src="/game-sites/topic/topic0009/picture0001.jpg" alt="">
         </div>
@@ -236,7 +236,7 @@ h1{
         </div>
     </div>
   
-    <div class="news-item" onclick="jumpLink8()">
+    <div class="news-item link-item" data-link="topic/topic0008/topic0008">
         <div class="news-thumb">
             <img src="/game-sites/topic/topic0008/picture0001.jpg" alt="">
         </div>
@@ -252,7 +252,7 @@ h1{
         </div>
     </div>
   
-    <div class="news-item" onclick="jumpLink7()">
+    <div class="news-item link-item" data-link="game/page0010/page0010">
         <div class="news-thumb">
             <img src="/game-sites/topic/topic0007/picture0001.png" alt="">
         </div>
@@ -268,7 +268,7 @@ h1{
         </div>
     </div>
   
-    <div class="news-item" onclick="jumpLink6()">
+    <div class="news-item link-item" data-link="topic/topic0006/topic0006">
         <div class="news-thumb">
             <img src="/game-sites/topic/topic0006/picture0001.png" alt="">
         </div>
@@ -284,7 +284,7 @@ h1{
         </div>
     </div>
   
-    <div class="news-item" onclick="jumpLink5()">
+    <div class="news-item link-item" data-link="topic/topic0005/topic0005">
         <div class="news-thumb">
             <img src="/game-sites/topic/topic0005/picture0001.jpg" alt="">
         </div>
@@ -300,7 +300,7 @@ h1{
         </div>
     </div>
   
-    <div class="news-item" onclick="jumpLink4()">
+    <div class="news-item link-item" data-link="game/page0009/page0009">
         <div class="news-thumb">
             <img src="/game-sites/topic/topic0004/picture0001.png" alt="">
         </div>
@@ -316,7 +316,7 @@ h1{
         </div>
     </div>
   
-    <div class="news-item" onclick="jumpLink3()">
+    <div class="news-item link-item" data-link="topic/topic0003/topic0003">
         <div class="news-thumb">
             <img src="/game-sites/topic/topic0003/picture0001.jpg" alt="">
         </div>
@@ -332,7 +332,7 @@ h1{
         </div>
     </div>
 
-    <div class="news-item" onclick="jumpLink2()">
+    <div class="news-item link-item" data-link="topic/topic0002/topic0002">
         <div class="news-thumb">
             <img src="/game-sites/topic/topic0002/picture0001.png" alt="">
         </div>
@@ -372,7 +372,7 @@ h1{
         const urlParams = new URLSearchParams(location.search);
         const token1 = urlParams.get("key1");
         localStorage.setItem("requestPage1", "");
-        const token3 = localStorage.getItem("account1");
+        var token3 = localStorage.getItem("account1");
         localStorage.setItem("account1", "");
         if((token1 !== localStorage.getItem("key1")) || (token3 == "") || (token3 == null)){
             localStorage.setItem("key1", "unauthorized");
@@ -405,70 +405,38 @@ h1{
         console.error("送信エラー:", e);
       }
     }
+
+
+    const linkList = document.getElementById("linkList");
+    linkList.addEventListener("click", (e) => {
+      const item = e.target.closest(".link-item");
+      if (!item) return;
+      const link = item.dataset.link;
+      const key1 = crypto.randomUUID(); // 共通処理
+      localStorage.setItem("key1", key1);
+      localStorage.setItem("account1", token3);
+      location.href = `/game-sites/${link}?key1=${key1}`;
+    });
+
+
+        function jumpPage(link){
+            const key1 = crypto.randomUUID();
+            if(link == ''){
+                sendToGAS(token3, "", "idle");
+                localStorage.setItem("key1", "logout");
+                localStorage.setItem("account1", "");
+                location.href = "/game-sites/";
+            }else{
+                localStorage.setItem("key1", key1);
+                localStorage.setItem("account1", token3);
+                location.href = "/game-sites/" + link + "?key1=" + key1;
+            }
+        }
   
         function jumpLink1(){
             location.href = "https://sites.google.com/view/bo-ttoikitennzyane-yo/infomation";
         }
-        function jumpLink2(){
-            const key1 = crypto.randomUUID();
-            localStorage.setItem("key1", key1);
-            localStorage.setItem("account1", token3);
-            location.href = "/game-sites/topic/topic0002/topic0002?key1=" + key1;
-        }
-        function jumpLink3(){
-            const key1 = crypto.randomUUID();
-            localStorage.setItem("key1", key1);
-            localStorage.setItem("account1", token3);
-            location.href = "/game-sites/topic/topic0003/topic0003?key1=" + key1;
-        }
-        function jumpLink4(){
-            const key1 = crypto.randomUUID();
-            localStorage.setItem("key1", key1);
-            localStorage.setItem("account1", token3);
-            location.href = "/game-sites/game/page0009/page0009?key1=" + key1;
-        }
-        function jumpLink5(){
-            const key1 = crypto.randomUUID();
-            localStorage.setItem("key1", key1);
-            localStorage.setItem("account1", token3);
-            location.href = "/game-sites/topic/topic0005/topic0005?key1=" + key1;
-        }
-        function jumpLink6(){
-            const key1 = crypto.randomUUID();
-            localStorage.setItem("key1", key1);
-            localStorage.setItem("account1", token3);
-            location.href = "/game-sites/topic/topic0006/topic0006?key1=" + key1;
-        }
-        function jumpLink7(){
-            const key1 = crypto.randomUUID();
-            localStorage.setItem("key1", key1);
-            localStorage.setItem("account1", token3);
-            location.href = "/game-sites/game/page0010/page0010?key1=" + key1;
-        }
-        function jumpLink8(){
-            const key1 = crypto.randomUUID();
-            localStorage.setItem("key1", key1);
-            localStorage.setItem("account1", token3);
-            location.href = "/game-sites/topic/topic0008/topic0008?key1=" + key1;
-        }
-        function jumpLink9(){
-            const key1 = crypto.randomUUID();
-            localStorage.setItem("key1", key1);
-            localStorage.setItem("account1", token3);
-            location.href = "/game-sites/topic/topic0009/topic0009?key1=" + key1;
-        }
-        function jumpLink10(){
-            const key1 = crypto.randomUUID();
-            localStorage.setItem("key1", key1);
-            localStorage.setItem("account1", token3);
-            location.href = "/game-sites/game/page0011/page0011?key1=" + key1;
-        }
-        function jumpLink11(){
-            const key1 = crypto.randomUUID();
-            localStorage.setItem("key1", key1);
-            localStorage.setItem("account1", token3);
-            location.href = "/game-sites/topic/topic0011/topic0011?key1=" + key1;
-        }
+
         function reload(){
             const key1 = crypto.randomUUID();
             localStorage.setItem("key1", key1);
