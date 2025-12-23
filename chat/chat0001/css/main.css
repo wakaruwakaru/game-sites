@@ -219,8 +219,9 @@
     transform: scale(0.9);
 }
 /* スクロールbtnを隠す */
-.floating-btn .hide{
-    opacity: 0;
+.floating-btn.hide{
+  opacity: 0;
+  pointer-events: none; /* クリック無効 */
 }
 /* ボタン位置調整 */
 #reloadBtn{
