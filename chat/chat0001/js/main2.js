@@ -209,7 +209,7 @@ function addMessage_sent(type, time, value, rawTime){
   read.className = "read-status";
   read.textContent = "既読 0";
 
-  content.appendChild(p);
+  content.appendChild(body);
   content.appendChild(ts);
   content.appendChild(read);
   msg.appendChild(content);
@@ -664,7 +664,7 @@ function getReadCountExcludingMe(msgTime){
   localStorage.setItem("account1", "");
   if((token1 !== localStorage.getItem("key1")) || (token3 == null)){
     localStorage.setItem("key1", "unauthorized");
-    localStorage.setItem("requestPage1", "chat/chat0001/chat0001-2");
+    localStorage.setItem("requestPage1", "chat/chat0001/chat0001-3");
     location.href = "/game-sites/";
   }else{
     localStorage.setItem("key1", "");
@@ -676,7 +676,7 @@ function getReadCountExcludingMe(msgTime){
     const key1 = crypto.randomUUID();
     localStorage.setItem("key1", key1);
     localStorage.setItem("account1", token3);
-    location.href = "/game-sites/chat/chat0001/chat0001-2?key1=" + key1;
+    location.href = "/game-sites/chat/chat0001/chat0001-3?key1=" + key1;
   }
   function backPage(){
     const key1 = crypto.randomUUID();
