@@ -649,7 +649,7 @@ function getReadCountExcludingMe(msgTime){
   localStorage.setItem("account1", "");
   if((token1 !== localStorage.getItem("key1")) || (token3 == null)){
     localStorage.setItem("key1", "unauthorized");
-    localStorage.setItem("requestPage1", "chat/chat0001/chat0001");
+    localStorage.setItem("requestPage1", "chat/chat0001/chat0001-2");
     location.href = "/game-sites/";
   }else{
     localStorage.setItem("key1", "");
@@ -661,7 +661,7 @@ function getReadCountExcludingMe(msgTime){
     const key1 = crypto.randomUUID();
     localStorage.setItem("key1", key1);
     localStorage.setItem("account1", token3);
-    location.href = "/game-sites/chat/chat0001/chat0001?key1=" + key1;
+    location.href = "/game-sites/chat/chat0001/chat0001-2?key1=" + key1;
   }
   function backPage(){
     const key1 = crypto.randomUUID();
