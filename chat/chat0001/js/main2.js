@@ -406,6 +406,16 @@ async function page_update(){
           addDatePill(new_mess_date);
         }
         if(message2[i][1] == token3){
+
+
+
+const msgTime = new Date(message2[i][2]).getTime();
+const readCount = getReadCountExcludingMe(msgTime);
+console.log("既読", readCount, "人");
+
+
+
+
           addMessage_sent(message2[i][0], toHHMM(message2[i][2]), message2[i][3]); //type time value
         }else{
           addMessage_received(message2[i][1], message2[i][0], toHHMM(message2[i][2]), message2[i][3]); //user type time value
@@ -492,22 +502,21 @@ async function fetchLastLoginData(){
 
 function parsePresenceData(users){
   const now = Date.now();
-  userPresenceMap = {}; // 毎回作り直す（ズレ防止）
+  userPresenceMap = {};
   for(const username in users){
     const u = users[username];
-    const diff = now - u.lastSeen;
+    const chatSeen = u.lastSeenByStatus?.chat || 0;
     userPresenceMap[username] = {
       name: username,
-      status: u.status,       // chat / online / idle
-      lastSeen: u.lastSeen,   // 生の timestamp
-      diff: diff,             // 今から何ms前か
-      isOnline: diff < 30000  // 30秒以内ならオンライン扱い
+      status: u.status,
+      lastSeen: u.lastSeen,
+      chatSeen: chatSeen,       // ← 追加（既読用）
+      isOnline: (now - u.lastSeen) < 30000
     };
   }
-//const list = getPresenceArray();
   renderPresencePanel();
-//testturn1();
 }
+
 function getPresenceArray(){
   return Object.values(userPresenceMap);
 }
@@ -615,20 +624,22 @@ profileModal.addEventListener("click", e => {
   }
 });
 
-
-function testturn1(){
-  for (const username in data.users) {
-    const u = data.users[username];
-    const map = u.lastSeenByStatus;
-
-    for (const status in map) {
-      console.log(
-        username,
-        status,
-        new Date(map[status]).toLocaleTimeString()
-      );
+function getReadUsersForMessage(msgTime){
+  const readers = [];
+  for(const username in userPresenceMap){
+    const u = userPresenceMap[username];
+    if(!u.chatSeen) continue; // 一度もchatを開いてない
+    if(msgTime <= u.chatSeen){
+      readers.push(username);
     }
   }
+  return readers;
+}
+
+
+function getReadCountExcludingMe(msgTime){
+  const readers = getReadUsersForMessage(msgTime);
+  return readers.filter(u => u !== token3).length;
 }
 
 
