@@ -54,8 +54,8 @@
 /* フローティングボタンの共通デザイン */
 .floating-btn{
     position: fixed;
-    right: 20px;
-    bottom: 20px;
+    right: 10px;
+    bottom: 10px;
     width: 48px;
     height: 48px;
     border-radius: 50%;
