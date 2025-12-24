@@ -160,6 +160,17 @@
     text-align:center;
 }
 
+.read-status{
+  font-size: 11px;
+  color: #00ffff;
+  white-space: nowrap;
+  margin-right: 6px;
+  text-shadow: 0 0 6px #00ffff;
+}
+/* sent の時だけ表示（受信メッセージには出さない） */
+.received .read-status{
+  display: none;
+}
 
 .new-msg {
   position: fixed;
