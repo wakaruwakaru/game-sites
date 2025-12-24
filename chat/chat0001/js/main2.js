@@ -194,17 +194,17 @@ function addMessage_sent(type, time, value, rawTime){
 
   // メッセージの時刻を保持（既読判定用）
   msg.dataset.time = rawTime;
-
+  // --- 本体 ---
   const content = document.createElement("div");
   content.className = "message-content";
-
-  const p = document.createElement("p");
-  p.textContent = value;
-
+  // --- 中身 ---
+  const body = createMessageBody(type, value);
+  if(body) content.appendChild(body);
+  // --- 時間 ---
   const ts = document.createElement("span");
   ts.className = "timestamp";
   ts.textContent = time;
-
+  // --- 既読 ---
   const read = document.createElement("span");
   read.className = "read-status";
   read.textContent = "既読 0";
@@ -414,16 +414,11 @@ async function page_update(){
           addDatePill(new_mess_date);
         }
         if(message2[i][1] == token3){
-
-
-/*
-const msgTime = new Date(message2[i][2]).getTime();
-const readCount = getReadCountExcludingMe(msgTime);
-console.log("既読", readCount, "人");
-*/
-
-
-
+          /*
+          const msgTime = new Date(message2[i][2]).getTime();
+          const readCount = getReadCountExcludingMe(msgTime);
+          console.log("既読", readCount, "人");
+          */
           addMessage_sent(message2[i][0], toHHMM(message2[i][2]), message2[i][3], message2[i][2]); //type time value rawTime
         }else{
           addMessage_received(message2[i][1], message2[i][0], toHHMM(message2[i][2]), message2[i][3]); //user type time value
