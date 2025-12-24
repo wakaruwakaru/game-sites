@@ -188,26 +188,34 @@ function addMessage_received(user, type, time, value){
 }
 
 /* ======== メッセージ追加（送信側） ======== */
-function addMessage_sent(type, time, value){
+function addMessage_sent(type, time, value, rawTime){
   const msg = document.createElement("div");
   msg.className = "message sent";
 
-  // --- 本体 ---
+  // メッセージの時刻を保持（既読判定用）
+  msg.dataset.time = rawTime;
+
   const content = document.createElement("div");
   content.className = "message-content";
-  // --- 中身 ---
-  const body = createMessageBody(type, value);
-  if(body) content.appendChild(body);
-  // --- 時刻 ---
+
+  const p = document.createElement("p");
+  p.textContent = value;
+
   const ts = document.createElement("span");
   ts.className = "timestamp";
   ts.textContent = time;
 
-  content.appendChild(ts);
-  msg.appendChild(content);
-  document.getElementById("message1").appendChild(msg);
-}
+  const read = document.createElement("span");
+  read.className = "read-status";
+  read.textContent = "既読 0";
 
+  content.appendChild(p);
+  content.appendChild(ts);
+  content.appendChild(read);
+  msg.appendChild(content);
+
+  message1.appendChild(msg);
+}
 
 function createMessageBody(type, value){
   switch(type){
@@ -408,15 +416,15 @@ async function page_update(){
         if(message2[i][1] == token3){
 
 
-
+/*
 const msgTime = new Date(message2[i][2]).getTime();
 const readCount = getReadCountExcludingMe(msgTime);
 console.log("既読", readCount, "人");
+*/
 
 
 
-
-          addMessage_sent(message2[i][0], toHHMM(message2[i][2]), message2[i][3]); //type time value
+          addMessage_sent(message2[i][0], toHHMM(message2[i][2]), message2[i][3], message2[i][2]); //type time value rawTime
         }else{
           addMessage_received(message2[i][1], message2[i][0], toHHMM(message2[i][2]), message2[i][3]); //user type time value
           if((!auto_scroll) && (!new_message)){
@@ -430,6 +438,18 @@ console.log("既読", readCount, "人");
       scrollToBottom();
     }
   }
+document.querySelectorAll(".message.sent").forEach(msg => {
+  const raw = msg.dataset.time;
+  if(!raw) return;
+
+  const msgTime = new Date(raw).getTime();
+  const count = getReadCountExcludingMe(msgTime);
+
+  const badge = msg.querySelector(".read-status");
+  if(badge){
+    badge.textContent = count > 0 ? `既読 ${count}` : "";
+  }
+});
 }
 
 const bottomBtn = document.getElementById("bottomBtn");
