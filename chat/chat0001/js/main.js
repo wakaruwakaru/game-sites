@@ -433,18 +433,18 @@ async function page_update(){
       scrollToBottom();
     }
   }
-document.querySelectorAll(".message.sent").forEach(msg => {
-  const raw = msg.dataset.time;
-  if(!raw) return;
 
-  const msgTime = new Date(raw).getTime();
-  const count = getReadCountExcludingMe(msgTime);
+  document.querySelectorAll(".message.sent").forEach(msg => { //既読ステータス更新用関数
+    const raw = msg.dataset.time;
+    if(!raw) return;
+    const msgTime = new Date(raw).getTime();
+    const count = getReadCountExcludingMe(msgTime);
+    const badge = msg.querySelector(".read-status");
+    if(badge){
+      badge.textContent = count > 0 ? `既読 ${count}` : "";
+    }
+  });
 
-  const badge = msg.querySelector(".read-status");
-  if(badge){
-    badge.textContent = count > 0 ? `既読 ${count}` : "";
-  }
-});
 }
 
 const bottomBtn = document.getElementById("bottomBtn");
