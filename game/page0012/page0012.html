@@ -1,19 +1,21 @@
 <html>
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<link rel="stylesheet" href="./css/main.css">
-<title>マージ2048</title>
-</head>
-<body>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="shortcut icon" href="/game-sites/index/icon/icon1.png" />
+    <link rel="stylesheet" href="./css/main.css" />
+    <title>マージ2048</title>
+  </head>
+  <body>
 
-<div class="game">
-  <div class="grid" id="grid"></div>
-</div>
+    <div class="game">
+      <div class="grid" id="grid"></div>
+    </div>
 
-<div id="reloadBtn" class="floating-btn" onclick="reload()">↻</div>
-<div id="logoutBtn" class="floating-btn" onclick="backPage()">⇦</div>
-<script>
+    <div id="reloadBtn" class="floating-btn" onclick="reload()">↻</div>
+    <div id="logoutBtn" class="floating-btn" onclick="backPage()">⇦</div>
+
+    <script>
 const grid = document.getElementById("grid");
 let board = Array(4).fill().map(()=>Array(4).fill(0));
 
@@ -114,7 +116,7 @@ grid.addEventListener("touchend",e=>{
     if(dy<-30) move("up");
   }
 });
-</script>
+    </script>
     <script>
         const urlParams = new URLSearchParams(location.search);
         const token1 = urlParams.get("key1");
@@ -167,5 +169,5 @@ grid.addEventListener("touchend",e=>{
             location.href = "/game-sites/top/top0001/top0001?key1=" + key1;
         }
     </script>
-</body>
+  </body>
 </html>
