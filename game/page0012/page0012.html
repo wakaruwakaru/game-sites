@@ -12,6 +12,7 @@ body{
   align-items:center;
   height:100vh;
   font-family:system-ui;
+  user-select:none;
 }
 .game{
   background:#111;
@@ -50,6 +51,42 @@ body{
 .v512{background:#ff0;color:#000}
 .v1024{background:#f0f}
 .v2048{background:#0ff;box-shadow:0 0 20px #0ff}
+
+/* フローティングボタンの共通デザイン */
+.floating-btn{
+    position: fixed;
+    right: 10px;
+    bottom: 10px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #111;
+    border: 2px solid #4da6ff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 26px;
+    color: #bcdfff;
+    cursor: pointer;
+    transition: 0.25s;
+    box-shadow: 0 0 10px #3d8cff88;
+}
+/* ホバー時に光る */
+.floating-btn:hover{
+    background: #4da6ff33;
+    box-shadow: 0 0 16px #4da6ffcc;
+}
+/* クリック時に縮む */
+.floating-btn:active{
+    transform: scale(0.9);
+}
+/* ボタン位置調整 */
+#reloadBtn{
+    bottom: 75px; /* logout の上に配置 */
+}
+#logoutBtn{
+    bottom: 20px;
+}
 </style>
 </head>
 <body>
@@ -58,6 +95,8 @@ body{
   <div class="grid" id="grid"></div>
 </div>
 
+<div id="reloadBtn" class="floating-btn" onclick="reload()">↻</div>
+<div id="logoutBtn" class="floating-btn" onclick="backPage()">⇦</div>
 <script>
 const grid = document.getElementById("grid");
 let board = Array(4).fill().map(()=>Array(4).fill(0));
@@ -160,6 +199,57 @@ grid.addEventListener("touchend",e=>{
   }
 });
 </script>
+    <script>
+        const urlParams = new URLSearchParams(location.search);
+        const token1 = urlParams.get("key1");
+        const token3 = localStorage.getItem("account1");
+        localStorage.setItem("account1", "");
+        if((token1 !== localStorage.getItem("key1")) || (token3 == "") || (token3 == null)){
+            localStorage.setItem("key1", "unauthorized");
+            localStorage.setItem("requestPage1", "game/page0012/page0012");
+            location.href = "/game-sites/";
+        }else{
+            localStorage.setItem("requestPage1", "");
+            localStorage.setItem("key1", "");
+            setInterval(() => {
+                sendToGAS(token3, "", "page");
+            }, 5000);
+        }
 
+    /* ======== Google Apps Script Web App URL ======== */
+    const WEB_APP_URL =
+      "https://script.google.com/macros/s/AKfycbxzPIpMXRgQ5QuKM_hwIQ815at4Ml6Vvqhx_zabeDNGupPwsTvWWP3jpOXLnxbeGSIMDQ/exec";
+    /* ======== GASに送信する処理 ======== */
+    async function sendToGAS(User, text, status){
+      const payload = {
+        user: User,
+        message: text,
+        status
+      };
+      try {
+        await fetch(WEB_APP_URL, {
+          method: "POST",
+          mode: "no-cors",   // ← GAS が CORS 許可してないため必要
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+      } catch (e) {
+        console.error("送信エラー:", e);
+      }
+    }
+
+        function reload(){
+            const key1 = crypto.randomUUID();
+            localStorage.setItem("key1", key1);
+            localStorage.setItem("account1", token3);
+            location.href = "/game-sites/game/page0012/page0012?key1=" + key1;
+        }
+        function backPage(){
+            const key1 = crypto.randomUUID();
+            localStorage.setItem("key1", key1);
+            localStorage.setItem("account1", token3);
+            location.href = "/game-sites/top/top0001/top0001?key1=" + key1;
+        }
+    </script>
 </body>
 </html>
