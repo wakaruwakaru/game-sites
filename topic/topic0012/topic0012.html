@@ -1,0 +1,107 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>チャットに新機能が実装</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="shortcut icon" href="/game-sites/index/icon/icon1.png" >
+    <link rel="stylesheet" href="/game-sites/topic/css/main.css" />
+  </head>
+  <body>
+    <h1>トピック</h1>
+    <hr />
+    <div id="articleArea">
+      <!-- 記事の画像や本文  -->
+
+      <div class="article-container">
+        <div class="article-title">チャットに新機能が追加!!</div>
+        <img class="article-image" src="./picture0001.png" alt="記事画像" />
+        <div class="article-body">
+          <p>最近実装したチャットに新たな機能が追加!! より幅広いコミュニケーションやリアクションが可能に</p>
+          <h2>■ 新機能</h2>
+        </div>
+        <img class="article-image2" src="./picture0002.png" alt="記事画像" />
+        <div class="article-body">
+          <p>　絵文字やスタンプ、GIF画像によるリアクションが追加されました。メッセージ入力欄左の＋ボタンをクリックするとスタンプなどを選ぶためのパネルがポップアップされます。そのパネル内のアイテムをタップすると、該当するリアクションがすぐに送信されます。なお、この機能が実装されたことにより＋ボタンを押してもメッセージを送信することができなくなりました。加えて、絵文字は媒体の環境依存が強いため、デバイスによっては描画されないものがあると公式は言及しています。</p>
+        </div>
+        <img class="article-image2" src="./picture0003.png" alt="記事画像" />
+        <div class="article-body">
+          <p>　他ユーザーのオンライン/オフラインステータスの確認機能が追加されました。画面右上に他ユーザーのアイコンとそのユーザーのアクティブ状態が表示されます。アクティブ状態のステータスは以下のようになっています。</p>
+          <ol>
+            <li>🔵:チャットを閲覧中</li>
+            <li>🟢:ゲームをプレイ中</li>
+            <li>🟡:待機中(オンライン)</li>
+            <li>🔴:退席中(ログアウト時)</li>
+            <li>⚫:オフライン</li>
+          </ol>
+        </div>
+        <img class="article-image2" src="./picture0004.png" alt="記事画像" />
+        <div class="article-body">
+          <p>　またユーザーアイコンをクリックすることで、そのユーザーのプロフィールとアクティブ状態を詳しく確認することもできます。</p>
+          <p>　メッセージの既読確認機能が追加されました。自身が送信したメッセージを相手が閲覧した際に既読ステータスが表示されます。この機能はまだ試験的運用段階にあるとされるため、今後不具合が発生する可能性が考えられます。</p>
+          <div class="side-set"><button id="copyBtn" class="neonButton">📥</button></div>
+          <p style="margin-top: 30px; opacity: 0.7;">Ⓒgame-sites　　2025.12.25</p>
+        </div>
+      </div>
+
+      <!-- 記録される記事の最後 -->
+    </div>
+    <hr />
+    <div id="reloadBtn" class="floating-btn" onclick="reload()">↻</div>
+    <div id="logoutBtn" class="floating-btn" onclick="backPage()">⇦</div>
+    <div id="toast" class="toast">記事をコピーしました</div>
+    <script>
+      const urlParams = new URLSearchParams(location.search);
+      const token1 = urlParams.get("key1");
+      const token3 = localStorage.getItem("account1");
+      localStorage.setItem("account1", "");
+      if((token1 !== localStorage.getItem("key1")) || (token3 == "") || (token3 == null)){
+        localStorage.setItem("key1", "unauthorized");
+        localStorage.setItem("requestPage1", "topic/topic0011/topic0011");
+        location.href = "/game-sites/";
+      }else{
+        localStorage.setItem("key1", "");
+        localStorage.setItem("requestPage1", "");
+        setInterval(() => {
+          sendToGAS(token3, "", "topic");
+        }, 5000);
+      }
+
+      /* ======== Google Apps Script Web App URL ======== */
+      const WEB_APP_URL =
+        "https://script.google.com/macros/s/AKfycbxzPIpMXRgQ5QuKM_hwIQ815at4Ml6Vvqhx_zabeDNGupPwsTvWWP3jpOXLnxbeGSIMDQ/exec";
+      /* ======== GASに送信する処理 ======== */
+      async function sendToGAS(User, text, status){
+        const payload = {
+          user: User,
+          message: text,
+          status
+        };
+        try {
+          await fetch(WEB_APP_URL, {
+            method: "POST",
+            mode: "no-cors",   // ← GAS が CORS 許可してないため必要
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+        } catch (e) {
+          console.error("送信エラー:", e);
+        }
+      }
+
+      function reload(){
+        const key1 = crypto.randomUUID();
+        localStorage.setItem("key1", key1);
+        localStorage.setItem("account1", token3);
+        location.href = "/game-sites/topic/topic0011/topic0011?key1=" + key1;
+      }
+      function backPage(){
+        const key1 = crypto.randomUUID();
+        localStorage.setItem("key1", key1);
+        localStorage.setItem("account1", token3);
+        location.href = "/game-sites/topic/top-topic0001?key1=" + key1;
+      }
+    </script>
+    <script src="/game-sites/index/dist/html2canvas.js"></script>
+    <script src="/game-sites/topic/js/copy.js"></script>
+  </body>
+</html>
