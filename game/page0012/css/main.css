@@ -45,6 +45,23 @@ body{
 .v512{background:#ff0;color:#000}
 .v1024{background:#f0f}
 .v2048{background:#0ff;box-shadow:0 0 20px #0ff}
+@keyframes pop {
+  0%   {transform:scale(0); opacity:0;}
+  80%  {transform:scale(1.1);}
+  100% {transform:scale(1); opacity:1;}
+}
+@keyframes merge {
+  0% {transform:scale(1);}
+  50% {transform:scale(1.25);}
+  100% {transform:scale(1);}
+}
+.cell.new {
+  animation: pop 0.25s ease-out;
+}
+.cell.merged {
+  animation: merge 0.2s ease-out;
+}
+
 
 /* フローティングボタンの共通デザイン */
 .floating-btn{
