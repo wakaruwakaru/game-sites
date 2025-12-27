@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>π generator</title>
+<style>
+body{
+  font-family: monospace;
+  background:black;
+  color:#0f0;
+}
+</style>
+</head>
+<body>
+
+<pre id="out">3.</pre>
+
+<script>
+const out = document.getElementById("out");// 表示場所
+const BASE = 100000;// 1ブロック = 5桁
+const arr = [];// 内部でπの級数を保持する配列
+let carry = 0;// 繰り上がり
+let index = 0;// 現在どこまで計算したか
+
+
+// πの次の5桁を計算する関数
+function generatePiBlock(){
+  let sum = 0;
+
+  // ===== Step1: 級数を拡張 =====
+  // πの級数を17項分まとめて更新する
+  for(let j = index + 17; j > index; j--){
+    sum = (20 * BASE + sum) * j;
+    arr[j] = sum % (2*j + 1);
+    sum = Math.floor(sum / (2*j + 1));
+  }
+
+  // ===== Step2: 余りを伝播させる =====
+  for(let j = index; j > 0; j -= 17){
+    arr[j] += sum * j;
+    sum = 0;
+    for(let k = j; k > j - 17; k--){
+      const denom = 2*k + 1;
+      // 商の部分
+      const q =
+        Math.floor(arr[k] / denom) * BASE +
+        Math.floor(sum / denom) * k;
+      sum = (sum % denom) * k + (arr[k] % denom) * BASE; // 余りの部分
+      arr[k] = sum % denom;
+      sum = q + Math.floor(sum / denom);
+    }
+  }
+
+  // ===== Step3: πの次の5桁を確定 =====
+  carry = carry * BASE + sum;
+  const block = ("00000" + carry).slice(-10, -5);
+  carry %= BASE * 10;
+  index += 17;
+  // 表示
+  if(index > 0){             // ← 最初のゴミを捨てる
+    out.textContent += block;
+  }
+  if(index % (17 * 10) === 0) out.textContent += "\n"; // 見やすく改行
+  setTimeout(generatePiBlock, 0); // 次のブロックへ
+}
+generatePiBlock();// スタート
+</script>
+
+</body>
+</html>
