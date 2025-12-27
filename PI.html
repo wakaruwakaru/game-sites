@@ -32,7 +32,7 @@ const BASE = 100000;// 1ブロック = 5桁
 const arr = [];// 内部でπの級数を保持する配列
 let carry = 0;// 繰り上がり
 let index = 0;// 現在どこまで計算したか
-let counter1 = 0;
+let counter1 = 1;
 
 // πの次の5桁を計算する関数
 function generatePiBlock(){
@@ -72,7 +72,8 @@ function generatePiBlock(){
     out.textContent += block;
   }
   if(index % (17 * 10) === 0) out.textContent += "\n"; // 見やすく改行
-  document.getElementById("log").innerHTML = "現在: " + index + "桁";
+  counter1 += 5;
+  document.getElementById("log").innerHTML = "現在: " + counter1 + "桁";
   setTimeout(generatePiBlock, 0); // 次のブロックへ
 }
 generatePiBlock();// スタート
