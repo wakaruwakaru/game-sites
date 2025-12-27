@@ -59,6 +59,7 @@ function generatePiBlock(){
   // 表示
   if(index > 0){             // ← 最初のゴミを捨てる
     out.textContent += block;
+    console.log(index, "/", block);
   }
   if(index % (17 * 10) === 0) out.textContent += "\n"; // 見やすく改行
   setTimeout(generatePiBlock, 0); // 次のブロックへ
