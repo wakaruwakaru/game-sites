@@ -6,6 +6,7 @@
 body{
   font-family: monospace;
   background:black;
+  user-select:none;
 }
 .out{
   color:#0f0;
@@ -16,7 +17,10 @@ body{
   right: 20px;
   top: 20px;
   font-size: 20px;
+  z-index: 9999;
   color: #4da6ff;
+  background: rgba(10,12,18,0);
+  margin: 10px; 
 }
 .log1{
   position: fixed;
@@ -38,6 +42,7 @@ body{
   position: fixed;
   right: 20px;
   bottom: 20px;
+  cursor: pointer;
 }
 </style>
 </head>
