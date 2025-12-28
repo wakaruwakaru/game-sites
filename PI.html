@@ -102,8 +102,8 @@ generatePiBlock();// スタート
 var timer1 = null;
 function event1(){
   document.getElementById("log2").innerHTML = "計算速度: " + counter2 + "桁/秒";
-  document.getElementById("log3").innerHTML = "前回比較: " + counter3;
-  counter3 = counter2 - counter3;
+  document.getElementById("log3").innerHTML = "前回比較: " + (counter3 - counter2);
+  counter3 = counter2;
   counter2 = 0;
 }timer1 = setInterval(event1,1000);
 </script>
