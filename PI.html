@@ -23,7 +23,11 @@ body{
 <body>
 
 <pre id="out" class="out">3.1</pre>
-<div class="log" id="log"></div>
+<div class="log" id="log">
+  <div class="log1" id="log1"></div>
+  <div class="log2" id="log2"></div>
+  <div class="log3" id="log3"></div>
+</div>
 
 <script>
 const out = document.getElementById("out");// 表示場所
@@ -31,7 +35,9 @@ const BASE = 100000;// 1ブロック = 5桁
 const arr = [];// 内部でπの級数を保持する配列
 let carry = 0;// 繰り上がり
 let index = 0;// 現在どこまで計算したか
-let counter1 = 1;
+let counter1 = 1;//桁数の合計用
+let counter2 = 0;//計算速度記録用
+let counter3 = 0;//計算速度比較用
 
 // πの次の5桁を計算する関数
 function generatePiBlock(){
@@ -70,12 +76,21 @@ function generatePiBlock(){
   if(index > 17){             // ← 最初のゴミを捨てる
     out.textContent += block;
     counter1 += 5;
+    counter2 += 5;
   }
   if(index % (17 * 10) === 0) out.textContent += "\n"; // 見やすく改行
-  document.getElementById("log").innerHTML = "現在: " + counter1 + "桁";
+  document.getElementById("log1").innerHTML = "現在: " + counter1 + "桁";
   setTimeout(generatePiBlock, 0); // 次のブロックへ
 }
 generatePiBlock();// スタート
+
+var timer1 = null;
+function event1(){
+  document.getElementById("log2").innerHTML = "計算速度: " + counter2 + "桁/秒";
+  document.getElementById("log2").innerHTML = "前回比較: " + counter3 + "桁/秒";
+  counter3 = counter2 - counter3;
+  counter2 = 0;
+}timer1 = setInterval(event1,1000);
 </script>
 
 </body>
