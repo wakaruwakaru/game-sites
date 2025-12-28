@@ -33,6 +33,12 @@ body{
   right: 20px;
   top: 80px;
 }
+
+.log255{
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+}
 </style>
 </head>
 <body>
@@ -42,17 +48,20 @@ body{
   <div class="log1" id="log1"></div>
   <div class="log2" id="log2"></div>
   <div class="log3" id="log3"></div>
+
+  <div class="log255" id="log255" onclick="chamge1()">Auto Scroll OFF</div>
 </div>
 
 <script>
 const out = document.getElementById("out");// 表示場所
-const BASE = 100000;// 1ブロック = 5桁
-const arr = [];// 内部でπの級数を保持する配列
-let carry = 0;// 繰り上がり
-let index = 0;// 現在どこまで計算したか
-let counter1 = 1;//桁数の合計用
-let counter2 = 0;//計算速度記録用
-let counter3 = 0;//計算速度比較用
+const BASE = 100000;    // 1ブロック = 5桁
+const arr = [];         // 内部でπの級数を保持する配列
+let carry = 0;          // 繰り上がり
+let index = 0;          // 現在どこまで計算したか
+let auto_scroll = 0;// 自動スクロール用パラメータ
+let counter1 = 1;       // 桁数の合計用
+let counter2 = 0;       // 計算速度記録用
+let counter3 = 0;       // 計算速度比較用
 
 // πの次の5桁を計算する関数
 function generatePiBlock(){
@@ -93,13 +102,18 @@ function generatePiBlock(){
     counter1 += 5;
     counter2 += 5;
   }
-  if(index % (17 * 10) === 0) out.textContent += "\n"; // 見やすく改行
+  if(index % (17 * 10) === 0){
+    out.textContent += "\n"; // 見やすく改行
+    if(auto_scroll){
+      scrollToBottom();
+    }
+  }
   document.getElementById("log1").innerHTML = "現在: " + counter1 + "桁";
   setTimeout(generatePiBlock, 0); // 次のブロックへ
 }
 generatePiBlock();// スタート
 
-var timer1 = null;
+let timer1 = null;
 function event1(){
   document.getElementById("log2").innerHTML = "計算速度: " + counter2 + "桁/秒";
   if((counter2 - counter3) > 0){
@@ -112,6 +126,23 @@ function event1(){
   counter3 = counter2;
   counter2 = 0;
 }timer1 = setInterval(event1,1000);
+
+function chamge1(){
+  auto_scroll = 1 - auto_scroll;
+  if(auto_scroll){
+    document.getElementById("log255").innerHTML = "Auto Scroll ON";
+  }else{
+    document.getElementById("log255").innerHTML = "Auto Scroll OFF";
+  }
+}
+
+/* ======== 自動スクロール ======== */
+function scrollToBottom(){
+  window.scrollTo({
+    top: document.body.scrollHeight,
+    behavior: "smooth"
+  });
+}
 </script>
 
 </body>
