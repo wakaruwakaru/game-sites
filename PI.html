@@ -102,7 +102,13 @@ generatePiBlock();// スタート
 var timer1 = null;
 function event1(){
   document.getElementById("log2").innerHTML = "計算速度: " + counter2 + "桁/秒";
-  document.getElementById("log3").innerHTML = "前回比較: " + (counter2 - counter3) + "桁";
+  if((counter2 - counter3) > 0){
+    document.getElementById("log3").innerHTML = "前回比較: +" + (counter2 - counter3) + "桁";
+  }else if((counter2 - counter3) == 0){
+    document.getElementById("log3").innerHTML = "前回比較: ±0桁";
+  }else{
+    document.getElementById("log3").innerHTML = "前回比較: " + (counter2 - counter3) + "桁";
+  }
   counter3 = counter2;
   counter2 = 0;
 }timer1 = setInterval(event1,1000);
