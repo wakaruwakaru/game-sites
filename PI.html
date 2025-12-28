@@ -14,9 +14,17 @@ body{
 .log{
   position: fixed;
   right: 20px;
-  top: 20px;
   font-size: 20px;
   color: #4da6ff;
+}
+.log1{
+  top: 20px;
+}
+.log2{
+  top: 50px;
+}
+.log3{
+  top: 80px;
 }
 </style>
 </head>
@@ -87,7 +95,7 @@ generatePiBlock();// スタート
 var timer1 = null;
 function event1(){
   document.getElementById("log2").innerHTML = "計算速度: " + counter2 + "桁/秒";
-  document.getElementById("log2").innerHTML = "前回比較: " + counter3 + "桁/秒";
+  document.getElementById("log2").innerHTML = "前回比較: " + counter3;
   counter3 = counter2 - counter3;
   counter2 = 0;
 }timer1 = setInterval(event1,1000);
