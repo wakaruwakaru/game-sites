@@ -468,8 +468,8 @@ window.addEventListener("scroll", () => {
 });
 
     
-var timer1 = null;
-var update_rate = 1000;
+let timer1 = null;
+let update_rate = 1000;
 function event1() {
   page_update();
 }
@@ -486,7 +486,7 @@ function rate_change(){
   timer1 = setInterval(event1, update_rate);
 }
 
-var timer2 = null;
+let timer2 = null;
 function event2(){
   if(renew_time != 0){
     if(diffSeconds(renew_time) < 60){
@@ -584,6 +584,7 @@ function getSortedPresenceArray(){
       topic: 3,
       top: 3,
       info: 3,
+      tool: 3,
       online: 2,
       idle: 1,
       offline: 0
@@ -603,6 +604,7 @@ const statusMessageMap = {
   chat:    "チャット中",
   page:    "ゲーム中",
   topic:   "オンライン",
+  tool:    "オンライン",
   top:     "オンライン",
   info:    "オンライン",
   online:  "オンライン",
