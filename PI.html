@@ -138,12 +138,8 @@ function chamge1(){
 
 /* ======== 自動スクロール ======== */
 function scrollToBottom(){
-  window.scrollTo({
-    top: document.body.scrollHeight,
-    behavior: "smooth"
-  });
+  window.scrollTo(0, document.body.scrollHeight); // アニメーションなしで瞬間移動
 }
 </script>
-
 </body>
 </html>
