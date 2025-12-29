@@ -154,15 +154,15 @@ function getColor(c){
   }[c];
 }
 
-document.getElementById("check").onclick = ()=>{
-  if(guess.includes(null)) return alert("4色選んでください");
-
 slots.forEach((slot,i)=>{
   slot.onclick = ()=>{
     cursor = i;
     highlightCursor();
   };
 });
+
+document.getElementById("check").onclick = ()=>{
+  if(guess.includes(null)) return alert("4色選んでください");
 
 let hit = 0;
 let blow = 0;
