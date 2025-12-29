@@ -147,13 +147,28 @@ function getColor(c){
 document.getElementById("check").onclick = ()=>{
   if(guess.length < 4) return alert("4色選んでください");
 
-  let hit = 0;
-  let blow = 0;
+let hit = 0;
+let blow = 0;
+let secretLeft = [];
+let guessLeft = [];
 
-  guess.forEach((c,i)=>{
-    if(c === secret[i]) hit++;
-    else if(secret.includes(c)) blow++;
-  });
+// ① Hitを処理
+for(let i=0;i<4;i++){
+  if(guess[i] === secret[i]){
+    hit++;
+  }else{
+    secretLeft.push(secret[i]);
+    guessLeft.push(guess[i]);
+  }
+}
+// ② Blowを処理（重複対策）
+guessLeft.forEach(c=>{
+  const idx = secretLeft.indexOf(c);
+  if(idx !== -1){
+    blow++;
+    secretLeft.splice(idx,1); // 使った色を消す
+  }
+});
 
 history.unshift({
   guess: [...guess],
