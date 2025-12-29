@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>カラーヒット＆ブロー</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+body{
+  margin:0;
+  background:#0b0f1a;
+  color:#fff;
+  font-family:system-ui;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  min-height:100vh;
+}
+.app{
+  width:360px;
+  background:#111;
+  border-radius:16px;
+  padding:16px;
+  box-shadow:0 0 30px #00ffff55;
+}
+h1{
+  text-align:center;
+  margin:5px 0 10px;
+}
+.secret, .guess{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  margin:10px 0;
+}
+.slot{
+  width:50px;
+  height:50px;
+  border-radius:50%;
+  background:#333;
+  border:2px solid #555;
+}
+.palette{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  margin:15px 0;
+}
+.color{
+  width:60px;
+  height:60px;
+  border-radius:50%;
+  cursor:pointer;
+  border:3px solid transparent;
+}
+.color:active{
+  transform:scale(0.9);
+}
+.red{background:#f00;}
+.blue{background:#00f;}
+.green{background:#0f0;}
+.yellow{background:#ff0;}
+.purple{background:#a0f;}
+.cyan{background:#0ff;}
+
+button{
+  width:100%;
+  padding:10px;
+  border:none;
+  border-radius:10px;
+  background:#0ff;
+  color:#000;
+  font-size:16px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.log{
+  margin-top:10px;
+  max-height:200px;
+  overflow:auto;
+  font-size:14px;
+}
+.entry{
+  margin-bottom:5px;
+}
+</style>
+</head>
+<body>
+<div class="app">
+<h1>🎨 カラーヒット＆ブロー</h1>
+
+<div class="guess" id="guess">
+  <div class="slot"></div>
+  <div class="slot"></div>
+  <div class="slot"></div>
+  <div class="slot"></div>
+</div>
+
+<div class="palette">
+  <div class="color red" data-color="red"></div>
+  <div class="color blue" data-color="blue"></div>
+  <div class="color green" data-color="green"></div>
+  <div class="color yellow" data-color="yellow"></div>
+  <div class="color purple" data-color="purple"></div>
+  <div class="color cyan" data-color="cyan"></div>
+</div>
+
+<button id="check">判定</button>
+
+<div class="log" id="log"></div>
+</div>
+
+<script>
+const colors = ["red","blue","green","yellow","purple","cyan"];
+let secret = [];
+let guess = [];
+
+// 秘密の色を作る（重複なし）
+function generate(){
+  secret = [];
+  while(secret.length < 4){
+    const c = colors[Math.floor(Math.random()*6)];
+    if(!secret.includes(c)) secret.push(c);
+  }
+  console.log("答え", secret);
+}
+generate();
+
+const slots = document.querySelectorAll(".slot");
+document.querySelectorAll(".color").forEach(btn=>{
+  btn.onclick = ()=>{
+    if(guess.length >= 4) return;
+    const c = btn.dataset.color;
+    guess.push(c);
+    slots[guess.length-1].style.background = getColor(c);
+  };
+});
+
+function getColor(c){
+  return {
+    red:"#f00",blue:"#00f",green:"#0f0",
+    yellow:"#ff0",purple:"#a0f",cyan:"#0ff"
+  }[c];
+}
+
+document.getElementById("check").onclick = ()=>{
+  if(guess.length < 4) return alert("4色選んでください");
+
+  let hit = 0;
+  let blow = 0;
+
+  guess.forEach((c,i)=>{
+    if(c === secret[i]) hit++;
+    else if(secret.includes(c)) blow++;
+  });
+
+  const log = document.getElementById("log");
+  const div = document.createElement("div");
+  div.className="entry";
+  div.textContent = `${guess.join(", ")} → ${hit} Hit / ${blow} Blow`;
+  log.prepend(div);
+
+  if(hit===4){
+    alert("🎉 正解！！");
+    location.reload();
+  }
+
+  // リセット
+  guess=[];
+  slots.forEach(s=>s.style.background="#333");
+};
+</script>
+</body>
+</html>
