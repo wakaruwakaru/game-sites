@@ -112,7 +112,8 @@ button{
 <script>
 const colors = ["red","blue","green","yellow","purple","cyan"];
 let secret = [];
-let guess = [];
+let guess = [null,null,null,null];
+let cursor = 0; // 今選択中のスロット
 let history = [];
 
 // 秘密の色を作る（重複なし）
@@ -129,10 +130,12 @@ generate();
 const slots = document.querySelectorAll(".slot");
 document.querySelectorAll(".color").forEach(btn=>{
   btn.onclick = ()=>{
-    if(guess.length >= 4) return;
-    const c = btn.dataset.color;
-    guess.push(c);
-    slots[guess.length-1].style.background = getColor(c);
+  const c = btn.dataset.color;
+  guess[cursor] = c;
+  slots[cursor].style.background = getColor(c);
+  // 次のスロットへ
+  if(cursor < 3) cursor++;
+    highlightCursor();
   };
 });
 
@@ -144,7 +147,21 @@ function getColor(c){
 }
 
 document.getElementById("check").onclick = ()=>{
-  if(guess.length < 4) return alert("4色選んでください");
+  if(guess.includes(null)) return alert("4色選んでください");
+
+slots.forEach((slot,i)=>{
+  slot.onclick = ()=>{
+    cursor = i;
+    highlightCursor();
+  };
+});
+
+function highlightCursor(){
+  slots.forEach((s,i)=>{
+    s.style.outline = (i===cursor) ? "3px solid #0ff" : "none";
+  });
+}
+highlightCursor();
 
 let hit = 0;
 let blow = 0;
@@ -182,8 +199,10 @@ renderLog();
   }
 
   // リセット
-  guess=[];
+  guess = [null,null,null,null];
+  cursor = 0;
   slots.forEach(s=>s.style.background="#333");
+  highlightCursor();
 };
 
 function renderLog(){
