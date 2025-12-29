@@ -139,6 +139,13 @@ document.querySelectorAll(".color").forEach(btn=>{
   };
 });
 
+function highlightCursor(){
+  slots.forEach((s,i)=>{
+    s.style.outline = (i===cursor) ? "3px solid #0ff" : "none";
+  });
+}
+highlightCursor();
+
 function getColor(c){
   return {
     red:"#f00",blue:"#00f",green:"#0f0",
@@ -155,13 +162,6 @@ slots.forEach((slot,i)=>{
     highlightCursor();
   };
 });
-
-function highlightCursor(){
-  slots.forEach((s,i)=>{
-    s.style.outline = (i===cursor) ? "3px solid #0ff" : "none";
-  });
-}
-highlightCursor();
 
 let hit = 0;
 let blow = 0;
