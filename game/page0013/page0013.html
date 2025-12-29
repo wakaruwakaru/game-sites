@@ -114,6 +114,7 @@ button{
 const colors = ["red","blue","green","yellow","purple","cyan"];
 let secret = [];
 let guess = [];
+let history = [];
 
 // 秘密の色を作る（重複なし）
 function generate(){
@@ -154,11 +155,12 @@ document.getElementById("check").onclick = ()=>{
     else if(secret.includes(c)) blow++;
   });
 
-  const log = document.getElementById("log");
-  const div = document.createElement("div");
-  div.className="entry";
-  div.textContent = `${guess.join(", ")} → ${hit} Hit / ${blow} Blow`;
-  log.prepend(div);
+history.unshift({
+  guess: [...guess],
+  hit: hit,
+  blow: blow
+});
+renderLog();
 
   if(hit===4){
     alert("🎉 正解！！");
@@ -169,6 +171,41 @@ document.getElementById("check").onclick = ()=>{
   guess=[];
   slots.forEach(s=>s.style.background="#333");
 };
+
+function renderLog(){
+  const log = document.getElementById("log");
+  log.innerHTML = "";
+
+  history.forEach(entry=>{
+    const row = document.createElement("div");
+    row.className = "entry";
+    row.style.display = "flex";
+    row.style.alignItems = "center";
+    row.style.gap = "10px";
+
+    // 色の並び
+    const colors = document.createElement("div");
+    colors.style.display = "flex";
+    colors.style.gap = "6px";
+
+    entry.guess.forEach(c=>{
+      const dot = document.createElement("div");
+      dot.style.width = "20px";
+      dot.style.height = "20px";
+      dot.style.borderRadius = "50%";
+      dot.style.background = getColor(c);
+      colors.appendChild(dot);
+    });
+
+    // Hit / Blow
+    const text = document.createElement("div");
+    text.textContent = `${entry.hit} Hit / ${entry.blow} Blow`;
+
+    row.appendChild(colors);
+    row.appendChild(text);
+    log.appendChild(row);
+  });
+}
 </script>
 </body>
 </html>
