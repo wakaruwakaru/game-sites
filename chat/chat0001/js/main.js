@@ -48,6 +48,7 @@ function updateMediaContent(type){
   }else if(type == "stamp"){
     renderImgList("stamp", "genshin", 1, 9, "png");
     renderImgList("stamp", "koizumi", 1, 14, "png");
+    renderImgList("stamp", "starrail", 1, 214, "png");
     renderImgList("stamp", "other", 1, 17, "png");
   }else if(type == "gif"){
     renderImgList("gif", "genshin", 1, 8, "gif");
