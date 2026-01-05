@@ -278,11 +278,20 @@ function addDatePill(text){
     }
 
     /* ======== エンター送信 ======== */
-    function enterSend(e){
-      if(e.isComposing) return;
-      if(e.key === "Enter") send();
+function enterSend(e){
+  if(e.isComposing) return;
+  if(e.key === "Enter"){
+    if(e.shiftKey){
+      // Shift+Enter → 改行（何もしない）
+      return;
+    }else{
+      // Enter → 送信
+      e.preventDefault();   // 改行を抑止
+      sendMessage();        // あなたの送信関数
     }
-    
+  }
+}
+
     function text_trim(text1, text2){
       return `<type[${text2}]acco[${token3}]time[${new Date()}]val1[${text1}]>`;
     }
