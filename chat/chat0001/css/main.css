@@ -106,6 +106,16 @@
       border: 2px solid #4da6ff;
       padding:5px 10px;
     }
+    .input-wrapper textarea {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-size: 16px;
+      background-color:#000000;
+      color:#4da6ff;
+      border: 2px solid #4da6ff;
+      padding:5px 10px;
+    }
     /* フォーカス時：さらに強く光る */
     .input-wrapper input:focus {
       box-shadow:
