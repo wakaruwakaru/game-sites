@@ -223,7 +223,13 @@ function createMessageBody(type, value){
   switch(type){
     case "message":{
       const p = document.createElement("p");
-      p.textContent = value;
+      const lines = value.split("\n");
+      lines.forEach((line, i) => {
+        p.appendChild(document.createTextNode(line));
+        if (i < lines.length - 1) {
+          p.appendChild(document.createElement("br"));
+        }
+      });
       return p;
     }
     case "emoji":{
