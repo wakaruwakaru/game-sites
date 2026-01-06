@@ -140,7 +140,19 @@
     .input-wrapper textarea::placeholder {
       color: #8bbcff;
       opacity: 0.7;
-    }  
+    }
+    /* textarea用ネオンスクロールバー */
+    .input-wrapper textarea::-webkit-scrollbar{
+      width: 6px;
+    }
+    .input-wrapper textarea::-webkit-scrollbar-thumb{
+      background: #4da6ff88;
+      border-radius: 3px;
+    }
+    .input-wrapper textarea::-webkit-scrollbar-track{
+      background: transparent;
+    }
+
     .icon-right {
       width: 36px;
       height: 36px;
