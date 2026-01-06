@@ -116,7 +116,7 @@
       border: 2px solid #4da6ff;
       padding:5px 10px;
       resize: none;
-      max-height: 120px;
+      max-height: 38px;
     }
     /* フォーカス時：さらに強く光る */
     .input-wrapper input:focus {
