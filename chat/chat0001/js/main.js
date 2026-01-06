@@ -297,7 +297,7 @@ function enterSend(e){
     return;
   }
   e.preventDefault();
-  sendMessage();
+  send();
 }
 
 
