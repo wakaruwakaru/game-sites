@@ -97,6 +97,9 @@
       color:#4da6ff;
       cursor: pointer;
     }
+    .icon-left .left-icon{
+      padding: 0px 6px 0px 0px; 
+    }
     .input-wrapper input {
       flex: 1;
       border: none;
