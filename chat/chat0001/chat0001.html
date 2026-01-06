@@ -12,8 +12,11 @@
 
   <!-- 入力欄 -->
   <div class="input-wrapper">
-    <div class="icon-left" onclick="toggleMediaPanel()">+</div>
-    <input type="text" placeholder="メッセージを送信" id="textBox1" onkeyup="enterSend(event)">
+    <div class="icon-left">
+      <div class="left-icon" onclick="send()">▲</div>
+      <div onclick="toggleMediaPanel()">+</div>
+    </div>
+    <textarea id="textBox1" placeholder="メッセージを送信" onkeydown="enterSend(event)"></textarea>
     <div class="icon-right" onclick="rate_change()"></div>
   </div>
   <!-- 新規メッセージログ -->
