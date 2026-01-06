@@ -284,19 +284,22 @@ function addDatePill(text){
     }
 
     /* ======== エンター送信 ======== */
-function enterSend(e){
-  if(e.isComposing) return;
-  if(e.key === "Enter"){
-    if(e.shiftKey){
-      // Shift+Enter → 改行（何もしない）
-      return;
-    }else{
-      // Enter → 送信
-      e.preventDefault();   // 改行を抑止
-      send();
-    }
-  }
+function isMobile(){
+  return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 }
+function enterSend(e){
+  if(e.isComposing) return;   // IME変換中は無視
+  if(e.key !== "Enter") return;
+  if(isMobile()){
+    return;
+  }
+  if(e.shiftKey){
+    return;
+  }
+  e.preventDefault();
+  sendMessage();
+}
+
 
     function text_trim(text1, text2){
       return `<type[${text2}]acco[${token3}]time[${new Date()}]val1[${text1}]>`;
