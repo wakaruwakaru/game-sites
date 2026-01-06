@@ -90,6 +90,7 @@
       z-index: 9999;
     }
     .icon-left {
+      display: flex;
       font-size: 20px;
       font-weight: bold;
       padding: 6px;
