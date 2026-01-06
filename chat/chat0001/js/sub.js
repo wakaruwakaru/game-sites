@@ -287,7 +287,7 @@ function enterSend(e){
     }else{
       // Enter → 送信
       e.preventDefault();   // 改行を抑止
-      sendMessage();        // あなたの送信関数
+      send();
     }
   }
 }
