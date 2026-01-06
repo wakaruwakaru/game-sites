@@ -223,7 +223,7 @@ function createMessageBody(type, value){
   switch(type){
     case "message":{
       const p = document.createElement("p");
-      const lines = value.split("\n");
+      const lines = value.split("\r");
       lines.forEach((line, i) => {
         p.appendChild(document.createTextNode(line));
         if (i < lines.length - 1) {
