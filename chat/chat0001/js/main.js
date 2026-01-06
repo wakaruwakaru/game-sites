@@ -223,7 +223,13 @@ function createMessageBody(type, value){
   switch(type){
     case "message":{
       const p = document.createElement("p");
-      p.textContent = value;
+      const lines = value.split("\r");
+      lines.forEach((line, i) => {
+        p.appendChild(document.createTextNode(line));
+        if (i < lines.length - 1) {
+          p.appendChild(document.createElement("br"));
+        }
+      });
       return p;
     }
     case "emoji":{
@@ -278,11 +284,23 @@ function addDatePill(text){
     }
 
     /* ======== エンター送信 ======== */
-    function enterSend(e){
-      if(e.isComposing) return;
-      if(e.key === "Enter") send();
-    }
-    
+function isMobile(){
+  return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+}
+function enterSend(e){
+  if(e.isComposing) return;   // IME変換中は無視
+  if(e.key !== "Enter") return;
+  if(isMobile()){
+    return;
+  }
+  if(e.shiftKey){
+    return;
+  }
+  e.preventDefault();
+  sendMessage();
+}
+
+
     function text_trim(text1, text2){
       return `<type[${text2}]acco[${token3}]time[${new Date()}]val1[${text1}]>`;
     }
@@ -666,7 +684,7 @@ function getReadCountExcludingMe(msgTime){
   const token1 = urlParams.get("key1");
   const token3 = localStorage.getItem("account1");
   localStorage.setItem("account1", "");
-  if((token1 !== localStorage.getItem("key1")) || (token3 == null)){
+  if((token1 !== localStorage.getItem("key1")) || (token3 == null) || (token3 == "") || (token3 == "token3")){
     localStorage.setItem("key1", "unauthorized");
     localStorage.setItem("requestPage1", "chat/chat0001/chat0001");
     location.href = "/game-sites/";
