@@ -115,6 +115,8 @@
       color:#4da6ff;
       border: 2px solid #4da6ff;
       padding:5px 10px;
+      resize: none;
+      max-height: 120px;
     }
     /* フォーカス時：さらに強く光る */
     .input-wrapper input:focus {
@@ -124,7 +126,18 @@
         0 0 15px #3d8fff;
       border-color: #82c0ff; /* ちょっと明るい色に */
     }
+    .input-wrapper textarea:focus {
+      box-shadow:
+        0 0 5px #4da6ff,
+        0 0 10px #3d8cff,
+        0 0 15px #3d8fff;
+      border-color: #82c0ff; /* ちょっと明るい色に */
+    }
     .input-wrapper input::placeholder {
+      color: #8bbcff;
+      opacity: 0.7;
+    }
+    .input-wrapper textarea::placeholder {
       color: #8bbcff;
       opacity: 0.7;
     }  
