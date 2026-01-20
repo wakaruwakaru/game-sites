@@ -600,6 +600,7 @@
                 for (var l = 0; l < 3; l++)
                     for (var s = 0; s < 2; s++)
                         i.push([r - Math.floor(1) + t, l - Math.floor(1) + a, s]);
+            console.log("emptyKeys size", ce.size);
             i.forEach((function(e) {
                 ge = e.toString(),
                 ce.has(ge) || ye.includes(ge) || (ye.push(ge),
