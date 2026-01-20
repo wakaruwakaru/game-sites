@@ -1,3 +1,7 @@
+const terrainWorker = new Worker(
+  './terrain.worker.js',
+  { type: 'module' }
+)
 (this.webpackJsonp = this.webpackJsonp || []).push([[0], Array(38).concat([function(e, n, t) {
     e.exports = t.p + "jpg/Rock_2.jpg"
 }
