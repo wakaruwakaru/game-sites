@@ -2699,8 +2699,13 @@
 ]), [[77, 1, 2]]]);
 //# sourceMappingURL=main.8c04f6b9.chunk.js.map
 
-const testGeo = new THREE.BoxGeometry(50, 10, 50);
-const testMat = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: true });
-const testMesh = new THREE.Mesh(testGeo, testMat);
-testMesh.position.y = -5;
-scene.add(testMesh);
+const geo = new THREE.PlaneGeometry(500, 500, 64, 64);
+geo.rotateX(-Math.PI / 2);
+
+const mat = new THREE.MeshStandardMaterial({
+  color: 0x228833,
+  wireframe: false
+});
+
+const terrain = new THREE.Mesh(geo, mat);
+scene.add(terrain);
