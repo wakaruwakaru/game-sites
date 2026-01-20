@@ -106,11 +106,6 @@
     }
     )),
     t.d(n, "BufferGeometry", (function() {
-
-// ★ デバッグ用
-mesh.material.wireframe = true;
-mesh.visible = true;
-
         return o.o
     }
     )),
