@@ -640,7 +640,7 @@
     ;
     var be = t(15)
       , Ae = [Y, xe]
-      , Ce = 1;
+      , Ce = 0;
     be.a.bind("t", (function(e) {
         console.log("switch terrain"),
         Ae[Ce].clean(),
