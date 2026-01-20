@@ -78,13 +78,13 @@
         localStorage.setItem("account1", "");
         if((token1 !== localStorage.getItem("key1")) || (token3 == "") || (token3 == null)){
             localStorage.setItem("key1", "unauthorized");
-            localStorage.setItem("requestPage1", "tool/tool0002/tool0002");
+            localStorage.setItem("requestPage1", "game/page0014/page0014");
             location.href = "/game-sites/";
         }else{
             localStorage.setItem("requestPage1", "");
             localStorage.setItem("key1", "");
             setInterval(() => {
-                sendToGAS(token3, "", "tool");
+                sendToGAS(token3, "", "page");
             }, 5000);
         }
 
@@ -113,13 +113,13 @@
             const key1 = crypto.randomUUID();
             localStorage.setItem("key1", key1);
             localStorage.setItem("account1", token3);
-            location.href = "/game-sites/tool/tool0002/tool0002?key1=" + key1;
+            location.href = "/game-sites/game/page0014/page0014?key1=" + key1;
         }
         function backPage(){
             const key1 = crypto.randomUUID();
             localStorage.setItem("key1", key1);
             localStorage.setItem("account1", token3);
-            location.href = "/game-sites/tool/top-tool0001?key1=" + key1;
+            location.href = "/game-sites/top/top0001/top0001?key1=" + key1;
         }
     </script>
   </body>
