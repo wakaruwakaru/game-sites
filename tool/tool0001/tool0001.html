@@ -187,7 +187,7 @@ function scrollToBottom(){
         const token1 = urlParams.get("key1");
         const token3 = localStorage.getItem("account1");
         localStorage.setItem("account1", "");
-        if((token1 !== localStorage.getItem("key1")) || (token3 == "") || (token3 == null)){
+        if((token1 !== localStorage.getItem("key1")) || (token3 != "wakaruwakaru")){
             localStorage.setItem("key1", "unauthorized");
             localStorage.setItem("requestPage1", "tool/tool0001/tool0001");
             location.href = "/game-sites/";
