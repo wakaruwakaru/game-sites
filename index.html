@@ -111,6 +111,10 @@ updateWidget('ww_e81726654fd56',0);
     document.getElementById("com1").innerHTML = "再ログイン";
   }else if(token1 == "unauthorized"){
     document.getElementById("no1").innerHTML = "不正アクセスを検出";
+  }else if(token1 == "AccessPrivileges"){
+    document.getElementById("no1").innerHTML = "アクセス権がありません";
+  }else if(token1 == "InvalidAccount"){
+    document.getElementById("no1").innerHTML = "無効なアカウント";
   }
 
   async function gate(){
@@ -321,6 +325,7 @@ updateWidget('ww_e81726654fd56',0);
   </script>
 </body>
 </html>
+
 
 
 
