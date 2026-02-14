@@ -20,7 +20,7 @@ const tabs = document.querySelectorAll(".media-header .tab");
 const mediaContent = document.getElementById("mediaContent");
 tabs.forEach(tab => {
   tab.addEventListener("click", () => {
-    const target = tab.dataset.target; // gif / stamp / emoji
+    const target = tab.dataset.target; // gif / stamp / emoji などなど
     // ① タブの active 切り替え
     tabs.forEach(t => t.classList.remove("active"));
     tab.classList.add("active");
@@ -41,7 +41,7 @@ mediaContent.addEventListener("click", (e) => {
   panel.classList.remove("show");
 });
 
-function updateMediaContent(type){
+function updateMediaContent(type){  //メディアコンテンツ描画処理
   mediaContent.innerHTML = ""; //初期化
   if(type == "emoji"){
     renderEmojiList();
@@ -220,7 +220,7 @@ function addMessage_sent(type, time, value, rawTime){
   message1.appendChild(msg);
 }
 
-function createMessageBody(type, value){
+function createMessageBody(type, value){  //メッセージのコンテンツ作成
   switch(type){
     case "message":{
       const p = document.createElement("p");
@@ -261,7 +261,7 @@ function createMessageBody(type, value){
 }
 
 
-/*=============時間ピル追加==============*/
+//時間ピル追加
 function addDatePill(text){
   // ラッパー（中央寄せ）
   const wrapper = document.createElement("div");
@@ -276,15 +276,15 @@ function addDatePill(text){
   document.getElementById("message1").appendChild(wrapper);
 }
 
-    /* ======== 自動スクロール ======== */
-    function scrollToBottom(){
-      window.scrollTo({
-        top: document.body.scrollHeight,
-        behavior: "smooth"
-      });
-    }
+//自動スクロール
+function scrollToBottom(){
+  window.scrollTo({
+    top: document.body.scrollHeight,
+    behavior: "smooth"
+  });
+}
 
-    /* ======== エンター送信 ======== */
+//エンター送信処理
 function isMobile(){
   return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
 }
@@ -302,9 +302,9 @@ function enterSend(e){
 }
 
 
-    function text_trim(text1, text2){
-      return `<type[${text2}]acco[${token3}]time[${new Date()}]val1[${text1}]>`;
-    }
+function text_trim(text1, text2){
+  return `<type[${text2}]acco[${token3}]time[${new Date()}]val1[${text1}]>`;
+}
 
 const box = document.getElementById("textBox1");
 box.addEventListener("keydown", (e) => {  // キー入力をブロック
@@ -407,70 +407,75 @@ var old_mess_date = "";
 var new_mess_date = "";
 var new_message = 0;
 var renew_time = 0;
+let isUpdating = false;
 async function page_update(){
-  const res = await fetch(WEB_APP_URL);
-  const data = await res.json();
-  const text1 = data.content;
+  if(isUpdating) return;   //fetchの重複読み込み防止用
+  isUpdating = true;
+  try{
 
-  // ① 文字列をログごとに配列へ
-  const logs = splitLogs(text1);
-
-  // ② それぞれのログをパース → 多次元配列へ
-  const message2 = logs.map(log => {
-    const p = parseLog(log);
-    return [ p.type, p.acco, p.time, p.val1 ];
-  });
-
-  // ③ 出力
-  renew_time = new Date();
-  old_content = new_content;
-  new_content = message2.length;
-  if(old_content != new_content){
-    const auto_scroll = autoScrollValue();
-    for(let i = old_content; i < message2.length; i++){
-      if((message2[i][0] == "message") || (message2[i][0] == "emoji") || (message2[i][0] == "stamp") || (message2[i][0] == "gif")){
-        old_mess_date = new_mess_date;
-        new_mess_date = toYYYYMMDD(message2[i][2]);
-        if(old_mess_date != new_mess_date){
-          addDatePill(new_mess_date);
-        }
-        if(message2[i][1] == token3){
-          /*
-          const msgTime = new Date(message2[i][2]).getTime();
-          const readCount = getReadCountExcludingMe(msgTime);
-          console.log("既読", readCount, "人");
-          */
-          addMessage_sent(message2[i][0], toHHMM(message2[i][2]), message2[i][3], message2[i][2]); //type time value rawTime
-        }else{
-          addMessage_received(message2[i][1], message2[i][0], toHHMM(message2[i][2]), message2[i][3]); //user type time value
-          if((!auto_scroll) && (!new_message)){
-            new_message = 1;
-            new_msg("新規メッセージ");
+    const res = await fetch(WEB_APP_URL);  //データ取得
+    const data = await res.json();
+    const text1 = data.content;
+    // ① 文字列をログごとに配列へ
+    const logs = splitLogs(text1);
+    // ② それぞれのログをパース → 多次元配列へ
+    const message2 = logs.map(log => {
+      const p = parseLog(log);
+      return [ p.type, p.acco, p.time, p.val1 ];
+    });
+    // ③ 出力
+    renew_time = new Date();
+    old_content = new_content;
+    new_content = message2.length;
+    if(old_content != new_content){
+      const auto_scroll = autoScrollValue();
+      for(let i = old_content; i < message2.length; i++){
+        if((message2[i][0] == "message") || (message2[i][0] == "emoji") || (message2[i][0] == "stamp") || (message2[i][0] == "gif")){
+          old_mess_date = new_mess_date;
+          new_mess_date = toYYYYMMDD(message2[i][2]);
+          if(old_mess_date != new_mess_date){
+            addDatePill(new_mess_date);  //日付ピル追加
+          }
+          if(message2[i][1] == token3){
+            /*
+            const msgTime = new Date(message2[i][2]).getTime();
+            const readCount = getReadCountExcludingMe(msgTime);
+            console.log("既読", readCount, "人");  //でバック用既読数カウンター
+            */
+            addMessage_sent(message2[i][0], toHHMM(message2[i][2]), message2[i][3], message2[i][2]); //type time value rawTime
+          }else{
+            addMessage_received(message2[i][1], message2[i][0], toHHMM(message2[i][2]), message2[i][3]); //user type time value
+            if((!auto_scroll) && (!new_message)){
+              new_message = 1;
+              new_msg("新規メッセージ");  //画面にお知らせを表示
+            }
           }
         }
       }
+      if(auto_scroll){
+        scrollToBottom();  //新規メッセージの到着時の自動スクロール処理
+      }
     }
-    if(auto_scroll){
-      scrollToBottom();
-    }
+
+    document.querySelectorAll(".message.sent").forEach(msg => { //既読ステータス更新用関数
+      const raw = msg.dataset.time;
+      if(!raw) return;
+      const msgTime = new Date(raw).getTime();
+      const count = getReadCountExcludingMe(msgTime);
+      const badge = msg.querySelector(".read-status");
+      if(badge){
+        badge.textContent = count > 0 ? `既読 ${count}` : "";
+      }
+    });
+
+  }finally{
+    isUpdating = false;   //fetchの重複読み込み防止用
   }
-
-  document.querySelectorAll(".message.sent").forEach(msg => { //既読ステータス更新用関数
-    const raw = msg.dataset.time;
-    if(!raw) return;
-    const msgTime = new Date(raw).getTime();
-    const count = getReadCountExcludingMe(msgTime);
-    const badge = msg.querySelector(".read-status");
-    if(badge){
-      badge.textContent = count > 0 ? `既読 ${count}` : "";
-    }
-  });
-
 }
 
 const bottomBtn = document.getElementById("bottomBtn");
 let ticking = false;
-window.addEventListener("scroll", () => {
+window.addEventListener("scroll", () => {  //スクロールボタンの表示/非表示切り替え
   if(!ticking){
     window.requestAnimationFrame(() => {
       if((autoScrollValue()) && (new_message)){
@@ -495,7 +500,7 @@ function event1() {
   page_update();
 }
 timer1 = setInterval(event1, update_rate);
-function rate_change(){
+function rate_change(){  //メッセージ更新頻度手動設定ボタン処理
   if(update_rate === 1000) {
     document.querySelector(".icon-right").style.backgroundColor = "#7dd6ff";
     update_rate = 5000;
@@ -508,7 +513,7 @@ function rate_change(){
 }
 
 let timer2 = null;
-function event2(){
+function event2(){  //チャット最終更新時間表示処理
   if(renew_time != 0){
     if(diffSeconds(renew_time) < 60){
       document.getElementById("last-change-time").innerHTML = "最終更新: " + diffSeconds(renew_time) + "秒前";
@@ -516,11 +521,11 @@ function event2(){
       document.getElementById("last-change-time").innerHTML = "最終更新: " + toHHMM(renew_time);
     }
   }
-}timer2 = setInterval(event2, 200);
+}timer2 = setInterval(event2, 100);
 
 setInterval(() => {
-  sendToGAS(token3, "", "chat");
-  fetchLastLoginData();
+  sendToGAS(token3, "", "chat");  //ログインステータス送信
+  fetchLastLoginData();           //各ユーザーログインステータス更新
 }, 5000);
 
 // ユーザーごとの状態を保持する多次元構造
@@ -536,6 +541,7 @@ async function fetchLastLoginData(){
   }
 }
 
+//各ユーザーのデータをパース
 function parsePresenceData(users){
   const now = Date.now();
   userPresenceMap = {};
@@ -620,7 +626,7 @@ function getSortedPresenceArray(){
   });
 }
 
-
+//各ステータスごとの表示メッセージ
 const statusMessageMap = {
   chat:    "チャット中",
   page:    "ゲーム中",
