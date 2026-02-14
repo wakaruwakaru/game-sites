@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>画像アップロード</title>
+<style>
+body{
+  background:#111;
+  color:white;
+  font-family:sans-serif;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+
+.upload-box{
+  background:#1e1e1e;
+  padding:30px;
+  border-radius:12px;
+  text-align:center;
+  box-shadow:0 0 20px #000;
+}
+
+button{
+  margin-top:15px;
+  padding:8px 16px;
+  background:#4da6ff;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+button:hover{
+  background:#3399ff;
+}
+
+#status{
+  margin-top:15px;
+  font-size:14px;
+  color:#aaa;
+}
+
+</style>
+</head>
+<body>
+
+<div class="upload-box">
+  <input type="file" id="imageInput" accept="image/*">
+  <button onclick="uploadImage()">アップロード</button>
+  <div id="status"></div>
+</div>
+
+<script>
+const GAS_URL = "ここに新しいGASのURLを貼る";
+
+async function uploadImage(){
+
+  const file = document.getElementById("imageInput").files[0];
+  if(!file){
+    alert("画像を選択してください");
+    return;
+  }
+
+  if(file.size > 2 * 1024 * 1024){
+    alert("2MB以下にしてください");
+    return;
+  }
+
+  const reader = new FileReader();
+
+  reader.onload = async function(){
+    const base64 = reader.result.split(",")[1];
+
+    document.getElementById("status").textContent = "送信中...";
+
+    const res = await fetch(GAS_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: file.name,
+        mime: file.type,
+        data: base64
+      })
+    });
+
+    const result = await res.json();
+
+    document.getElementById("status").textContent =
+      "保存完了！ FileID: " + result.fileId;
+  };
+
+  reader.readAsDataURL(file);
+}
+</script>
+
+</body>
+</html>
