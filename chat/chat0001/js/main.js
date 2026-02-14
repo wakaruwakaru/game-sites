@@ -495,7 +495,7 @@ window.addEventListener("scroll", () => {  //スクロールボタンの表示/�
 
     
 let timer1 = null;
-let update_rate = 1000;
+let update_rate = 5000;
 function event1() {
   page_update();
 }
