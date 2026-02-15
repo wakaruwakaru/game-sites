@@ -52,7 +52,7 @@ button:hover{
 </div>
 
 <script>
-const GAS_URL = "https://script.google.com/macros/s/AKfycbxqO7BrtCRvCbDxP-2R4osBbfnI2_xGtyEMBznz2V6J0SsAVfYe2rm4iO5vo3AY6pzF/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbzol7486bRP97j9z_qRvPmiVZZvncFe38-afaBo7brMf0bp5eWg3ITx5ZjbOUgik-6j/exec";
 
 async function uploadImage(){
 
@@ -70,17 +70,22 @@ async function uploadImage(){
   const reader = new FileReader();
 
   reader.onload = async function(){
+
     const base64 = reader.result.split(",")[1];
 
     document.getElementById("status").textContent = "送信中...";
 
+    // 🔥 ここが変更点
+    const formData = new FormData();
+    formData.append("name", file.name);
+    formData.append("mime", file.type);
+    formData.append("image", base64);
+    formData.append("secret", "testKey"); // 使ってるなら
+
     const res = await fetch(GAS_URL, {
       method: "POST",
-      body: JSON.stringify({
-        name: file.name,
-        mime: file.type,
-        data: base64
-      })
+      body: formData
+      // ⚠️ headersは書かない！！
     });
 
     const result = await res.json();
