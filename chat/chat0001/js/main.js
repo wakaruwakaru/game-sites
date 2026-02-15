@@ -164,13 +164,8 @@ async function uploadPictureToGAS(file){
       return;
     }
     const imageID = result.fileId;  //DriveID取得後
-
-
-
-
-
-
-
+  }
+  reader.readAsDataURL(file);
 }
 
 
