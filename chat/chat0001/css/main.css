@@ -451,6 +451,8 @@
   cursor: pointer;
   box-shadow: 0 0 8px #4da6ff88, 0 0 18px #4da6ff55;
   transition: 0.2s;
+  align-self: center;   /* 中央寄せ */
+  width: auto;          /* 横いっぱいを解除 */
 }
 
 .neon-btn:hover {
