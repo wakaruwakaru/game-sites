@@ -106,7 +106,8 @@ if (!result || result.status !== "ok") {
   return;
 }
 
-// 🔥 DriveIDを使う
+// 🔥 DriveID取得後
+
 const imageID = result.fileId;
 
 console.log("DriveID:", imageID);
@@ -115,17 +116,47 @@ document.getElementById("status").textContent =
   "保存完了！ ID: " + imageID;
 
 
-// 🔥 DriveIDで画像表示
-const imgUrl = GAS_URL + "?id=" + imageID + "&secret=testKey";
+// 🔥 ここから画像取得（Base64復元）
 
-const imgTag = `
-  <div style="margin-top:10px;">
-    <p>DriveID: ${imageID}</p>
-    <img src="${imgUrl}" style="max-width:200px; border:1px solid #ccc;">
-  </div>
-`;
+const getRes = await fetch(
+  GAS_URL + "?id=" + imageID + "&secret=testKey&t=" + Date.now()
+);
 
-document.getElementById("previewArea").innerHTML += imgTag;
+if (!getRes.ok) {
+  document.getElementById("status").textContent =
+    "画像取得失敗 (HTTP " + getRes.status + ")";
+  return;
+}
+
+const imageResult = await getRes.json();
+
+if (!imageResult || imageResult.status !== "ok") {
+  document.getElementById("status").textContent = "画像取得エラー";
+  return;
+}
+
+// 🔥 Base64 → dataURL化
+const dataUrl =
+  "data:" + imageResult.mime + ";base64," + imageResult.data;
+
+
+// 🔥 画像表示
+const img = document.createElement("img");
+img.src = dataUrl;
+img.style.maxWidth = "200px";
+img.style.border = "1px solid #ccc";
+
+const wrapper = document.createElement("div");
+wrapper.style.marginTop = "10px";
+
+const p = document.createElement("p");
+p.textContent = "DriveID: " + imageID;
+
+wrapper.appendChild(p);
+wrapper.appendChild(img);
+
+document.getElementById("previewArea").appendChild(wrapper);
+
 
   };
 
