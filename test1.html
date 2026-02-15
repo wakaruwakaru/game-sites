@@ -50,6 +50,7 @@ button:hover{
   <button onclick="uploadImage()">アップロード</button>
   <div id="status"></div>
 </div>
+<div id="previewArea"></div>
 
 <script>
 const GAS_URL = "https://script.google.com/macros/s/AKfycbxNS-t_ncradj7_qdlZO5cWVVfM7CmcUVffd02LBDvtnVfiLcWs6dm1rBj77P9lhJFo/exec";
@@ -75,27 +76,46 @@ async function uploadImage(){
 
     document.getElementById("status").textContent = "送信中...";
 
-    // 🔥 ここが変更点
     const formData = new FormData();
+
+    // 🔥 生成ID
     const id = Date.now() + "_" + Math.floor(Math.random()*10000);
+
     formData.append("name", id);
     formData.append("mime", file.type);
     formData.append("image", base64);
-    formData.append("secret", "testKey"); // 使ってるなら
+    formData.append("secret", "testKey");
 
     try {
+
       await fetch(GAS_URL, {
         method: "POST",
         body: formData,
         mode: "no-cors"
       });
+
       document.getElementById("status").textContent = "送信完了！";
+
+      // 🔥 デバッグ用：アップロードした画像を表示
+      const imgUrl = GAS_URL + "?id=" + id + "&secret=testKey";
+
+      const imgTag = `
+        <div style="margin-top:10px;">
+          <p>生成ID: ${id}</p>
+          <img src="${imgUrl}" style="max-width:200px; border:1px solid #ccc;">
+        </div>
+      `;
+
+      document.getElementById("previewArea").innerHTML += imgTag;
+
     } catch(e) {
       document.getElementById("status").textContent = "送信失敗";
-    }    
+    }
   };
+
   reader.readAsDataURL(file);
 }
+
 </script>
 
 </body>
