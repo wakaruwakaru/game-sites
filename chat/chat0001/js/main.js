@@ -164,7 +164,7 @@ async function uploadPictureToGAS(file){
       return;
     }
     const imageID = result.fileId;  //DriveID取得後
-    const text2 = text_trim(imageID, picture);
+    const text2 = text_trim(imageID, "picture");
     sendToGAS(token3, text2, "chat");
     panel.classList.remove("show");
   }
