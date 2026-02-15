@@ -541,6 +541,15 @@
   margin: 0 auto;
 }
 
+.upload-status{
+  margin-top: 10px;
+  font-size: 13px;
+  color: #8bbcff;
+  text-align: center;
+  min-height: 18px;
+  text-shadow: 0 0 6px #4da6ff88;
+}
+
 
 /* ===== 右上フローティング ===== */
 .presence-panel{
