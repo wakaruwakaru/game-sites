@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>画像アップロード</title>
+<style>
+body{
+  background:#111;
+  color:white;
+  font-family:sans-serif;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
+
+.upload-box{
+  background:#1e1e1e;
+  padding:30px;
+  border-radius:12px;
+  text-align:center;
+  box-shadow:0 0 20px #000;
+}
+
+button{
+  margin-top:15px;
+  padding:8px 16px;
+  background:#4da6ff;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+button:hover{
+  background:#3399ff;
+}
+
+#status{
+  margin-top:15px;
+  font-size:14px;
+  color:#aaa;
+}
+
+</style>
+</head>
+<body>
+
+<div class="upload-box">
+  <input type="file" id="imageInput" accept="image/*">
+  <button onclick="uploadImage()">アップロード</button>
+  <div id="status"></div>
+</div>
+<div id="previewArea"></div>
+
+<script>
+const GAS_URL = "https://script.google.com/macros/s/AKfycbyfwTfFa_XOnfeFvt6ilN8PITZoeh5pY3JvQsO0NKn_z8AE3x4sHTGsnCN1rVQJnF_A/exec";
+
+async function uploadImage(){
+
+  const file = document.getElementById("imageInput").files[0];
+  if(!file){
+    alert("画像を選択してください");
+    return;
+  }
+
+  if(file.size > 3 * 1024 * 1024){
+    alert("3MB以下にしてください");
+    return;
+  }
+
+  const reader = new FileReader();
+
+  reader.onload = async function(){
+
+    const base64 = reader.result.split(",")[1];
+
+    document.getElementById("status").textContent = "送信中...";
+
+    const formData = new FormData();
+
+    // 🔥 生成ID
+    const id = Date.now() + "_" + Math.floor(Math.random()*10000);
+
+    formData.append("name", id);
+    formData.append("mime", file.type);
+    formData.append("image", base64);
+    formData.append("secret", "testKey");
+
+const res = await fetch(GAS_URL + "?t=" + Date.now(), {
+  method: "POST",
+  body: formData
+});
+
+// 🔥 通信成功チェック
+if (!res.ok) {
+  document.getElementById("status").textContent =
+    "送信失敗 (HTTP " + res.status + ")";
+  return;
+}
+
+// 🔥 JSON取得
+const result = await res.json();
+
+if (!result || result.status !== "ok") {
+  document.getElementById("status").textContent = "保存エラー";
+  return;
+}
+
+// 🔥 DriveID取得後
+
+const imageID = result.fileId;
+
+console.log("DriveID:", imageID);
+
+document.getElementById("status").textContent =
+  "保存完了！ ID: " + imageID;
+
+
+// 🔥 ここから画像取得（Base64復元）
+
+const getRes = await fetch(
+  GAS_URL + "?id=" + imageID + "&secret=testKey&t=" + Date.now()
+);
+
+if (!getRes.ok) {
+  document.getElementById("status").textContent =
+    "画像取得失敗 (HTTP " + getRes.status + ")";
+  return;
+}
+
+const imageResult = await getRes.json();
+
+if (!imageResult || imageResult.status !== "ok") {
+  document.getElementById("status").textContent = "画像取得エラー";
+  return;
+}
+
+// 🔥 Base64 → dataURL化
+const dataUrl =
+  "data:" + imageResult.mime + ";base64," + imageResult.data;
+
+
+// 🔥 画像表示
+const img = document.createElement("img");
+img.src = dataUrl;
+img.style.maxWidth = "200px";
+img.style.border = "1px solid #ccc";
+
+const wrapper = document.createElement("div");
+wrapper.style.marginTop = "10px";
+
+const p = document.createElement("p");
+p.textContent = "DriveID: " + imageID;
+
+wrapper.appendChild(p);
+wrapper.appendChild(img);
+
+document.getElementById("previewArea").appendChild(wrapper);
+
+
+  };
+
+  reader.readAsDataURL(file);
+}
+
+</script>
+
+</body>
+</html>
