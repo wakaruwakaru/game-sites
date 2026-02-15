@@ -401,6 +401,85 @@
   border-radius: 3px;
 }
 
+/* picture タブフォームラッパー */
+.picture-upload-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 10px;
+  background: #0a0f18; /* media-panel と同じ背景 */
+  border-radius: 12px;
+  border: 2px solid #4da6ff;
+  box-shadow: 0 0 12px #4da6ff55, 0 0 30px #4da6ff22;
+}
+
+/* ファイル選択ボタン（ラベルで作る） */
+.neon-file-label {
+  display: inline-block;
+  padding: 8px 16px;
+  background: #000;
+  border: 2px solid #4da6ff;
+  border-radius: 8px;
+  color: #8bbcff;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  box-shadow: 0 0 8px #4da6ff88, 0 0 16px #4da6ff44;
+  transition: 0.2s;
+}
+
+.neon-file-label:hover {
+  box-shadow: 0 0 12px #4da6ffcc, 0 0 24px #4da6ff88;
+}
+
+/* 実際の input[type=file] は隠す */
+.neon-file-label input[type="file"] {
+  display: none;
+}
+
+/* アップロードボタン */
+.neon-btn {
+  padding: 8px 16px;
+  background: #000;
+  border: 2px solid #4da6ff;
+  border-radius: 8px;
+  color: #8bbcff;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 0 8px #4da6ff88, 0 0 18px #4da6ff55;
+  transition: 0.2s;
+}
+
+.neon-btn:hover {
+  box-shadow: 0 0 12px #4da6ffcc, 0 0 24px #4da6ff99;
+}
+
+/* プレビューエリア */
+.picture-preview {
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed #4da6ff;
+  border-radius: 12px;
+  background: #00000022;
+  color: #8bbcff;
+  font-size: 14px;
+  text-align: center;
+  box-shadow: inset 0 0 8px #4da6ff33, 0 0 12px #4da6ff22;
+  overflow: hidden;
+}
+
+/* プレビュー画像 */
+.picture-preview img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border: 1px solid #4da6ff;
+  border-radius: 6px;
+  box-shadow: 0 0 12px #4da6ffaa;
+}
+
 /* ===== 右上フローティング ===== */
 .presence-panel{
   position: fixed;
