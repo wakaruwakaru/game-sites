@@ -109,18 +109,21 @@ function renderImgList(type, genre, start, end, file){
   }
 }
 
+const wrapper = document.createElement("div");
+const statusDiv = document.createElement("div");
 function renderPictureForm(){
-  // mediaContent 初期化
   //mediaContent.innerHTML = "";
   // ラッパー作成
-  const wrapper = document.createElement("div");
   wrapper.className = "picture-form-wrapper"; // フォーム専用クラス
-  // フォームHTML
   wrapper.innerHTML = `
     <label for="pictureInput" class="picture-label">画像を選択</label>
     <input type="file" id="pictureInput" accept="image/*" />
     <button id="uploadBtn">アップロード</button>
   `;
+  statusDiv.id = "uploadStatus";
+  statusDiv.className = "upload-status";
+  statusDiv.textContent = "";
+  wrapper.appendChild(statusDiv);
   mediaContent.appendChild(wrapper);
   // イベントリスナー
   const input = document.getElementById("pictureInput");
@@ -129,6 +132,7 @@ function renderPictureForm(){
   btn.addEventListener("click", () => {
     const file = input.files[0];
     if(!file){
+      statusDiv.textContent = "ファイル未選択";
       alert("ファイルを選択してください");
       return;
     }
@@ -138,9 +142,11 @@ function renderPictureForm(){
 
 async function uploadPictureToGAS(file){
   if(file.size > 3 * 1024 * 1024){
+    statusDiv.textContent = "ファイルサイズが大きすぎます";
     alert("3MB以下にしてください");
     return;
   }
+  statusDiv.textContent = "アップロード準備中";
   const reader = new FileReader();
   reader.onload = async function(){
     const base64 = reader.result.split(",")[1];
@@ -155,18 +161,22 @@ async function uploadPictureToGAS(file){
       body: formData
     });
     if(!res.ok){  //通信成功チェック
+      statusDiv.textContent = "アップロードが開始できませんでした";
       alert("送信に失敗しました");
       return;
     }
     const result = await res.json();  //JSON取得
     if(!result || result.status !== "ok"){
+      statusDiv.textContent = "保存ができませんでした";
       alert("保存に失敗しました");
       return;
     }
+    statusDiv.textContent = "更新中";
     const imageID = result.fileId;  //DriveID取得後
     const text2 = text_trim(imageID, "picture");
     sendToGAS(token3, text2, "chat");
     panel.classList.remove("show");
+    statusDiv.textContent = "";
   }
   reader.readAsDataURL(file);
 }
