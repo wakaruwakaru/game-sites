@@ -86,37 +86,47 @@ async function uploadImage(){
     formData.append("image", base64);
     formData.append("secret", "testKey");
 
-    try {
-
 const res = await fetch(GAS_URL + "?t=" + Date.now(), {
   method: "POST",
   body: formData
 });
 
+// 🔥 通信成功チェック
+if (!res.ok) {
+  document.getElementById("status").textContent =
+    "送信失敗 (HTTP " + res.status + ")";
+  return;
+}
 
+// 🔥 JSON取得
 const result = await res.json();
 
-console.log(result.fileId);
+if (!result || result.status !== "ok") {
+  document.getElementById("status").textContent = "保存エラー";
+  return;
+}
+
+// 🔥 DriveIDを使う
+const imageID = result.fileId;
+
+console.log("DriveID:", imageID);
 
 document.getElementById("status").textContent =
-  "保存完了！ ID: " + result.fileId;
+  "保存完了！ ID: " + imageID;
 
 
-      // 🔥 デバッグ用：アップロードした画像を表示
-      const imgUrl = GAS_URL + "?id=" + id + "&secret=testKey";
+// 🔥 DriveIDで画像表示
+const imgUrl = GAS_URL + "?id=" + imageID + "&secret=testKey";
 
-      const imgTag = `
-        <div style="margin-top:10px;">
-          <p>生成ID: ${id}</p>
-          <img src="${imgUrl}" style="max-width:200px; border:1px solid #ccc;">
-        </div>
-      `;
+const imgTag = `
+  <div style="margin-top:10px;">
+    <p>DriveID: ${imageID}</p>
+    <img src="${imgUrl}" style="max-width:200px; border:1px solid #ccc;">
+  </div>
+`;
 
-      document.getElementById("previewArea").innerHTML += imgTag;
+document.getElementById("previewArea").innerHTML += imgTag;
 
-    } catch(e) {
-      document.getElementById("status").textContent = "送信失敗";
-    }
   };
 
   reader.readAsDataURL(file);
