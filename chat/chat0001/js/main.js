@@ -132,10 +132,46 @@ function renderPictureForm(){
       alert("ファイルを選択してください");
       return;
     }
-    //uploadPictureToGAS(file); // アップロード処理
+    uploadPictureToGAS(file); // アップロード処理
   });
 }
 
+async function uploadPictureToGAS(file){
+  if(file.size > 3 * 1024 * 1024){
+    alert("3MB以下にしてください");
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = async function(){
+    const base64 = reader.result.split(",")[1];
+    const formData = new FormData();
+    const id = Date.now() + "_" + Math.floor(Math.random()*10000);
+    formData.append("name", id);
+    formData.append("mime", file.type);
+    formData.append("image", base64);
+    formData.append("secret", "testKey");
+    const res = await fetch(WEB_APP_URL2 + "?t=" + Date.now(), {
+      method: "POST",
+      body: formData
+    });
+    if(!res.ok){  //通信成功チェック
+      alert("送信に失敗しました");
+      return;
+    }
+    const result = await res.json();  //JSON取得
+    if(!result || result.status !== "ok"){
+      alert("保存に失敗しました");
+      return;
+    }
+    const imageID = result.fileId;  //DriveID取得後
+
+
+
+
+
+
+
+}
 
 
     /* ======== Google Apps Script Web App URL ======== */
