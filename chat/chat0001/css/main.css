@@ -479,6 +479,58 @@
   border-radius: 6px;
   box-shadow: 0 0 12px #4da6ffaa;
 }
+.picture-form-wrapper{
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+  border: 2px solid #4da6ff;
+  border-radius: 12px;
+  background-color: #0a0f18;
+  box-shadow:
+    0 0 12px #4da6ff88,
+    0 0 24px #4da6ff44;
+}
+
+.picture-form-wrapper input[type="file"]{
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: 2px solid #4da6ff;
+  background-color: #000;
+  color: #4da6ff;
+  cursor: pointer;
+  box-shadow:
+    0 0 6px #4da6ff88,
+    0 0 12px #4da6ff44;
+}
+
+.picture-form-wrapper button{
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 2px solid #4da6ff;
+  background-color: #000;
+  color: #4da6ff;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow:
+    0 0 8px #4da6ff88,
+    0 0 16px #4da6ff44;
+  transition: 0.2s;
+}
+
+.picture-form-wrapper button:hover{
+  box-shadow:
+    0 0 12px #4da6ffcc,
+    0 0 24px #4da6ff88;
+  transform: scale(1.05);
+}
+
+.picture-label{
+  color: #8bbcff;
+  font-weight: 600;
+  text-align: center;
+}
+
 
 /* ===== 右上フローティング ===== */
 .presence-panel{
