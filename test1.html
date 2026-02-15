@@ -52,7 +52,7 @@ button:hover{
 </div>
 
 <script>
-const GAS_URL = "https://script.google.com/macros/s/AKfycbyhLN-9gUMZ2Sytgw66WiL4-c5vaB0o2uWy1-3XHhTnGm5D9mb1Ibus52ReHrB4T-sb/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbz7sxwiipBEH9T1pxm5B4C7PPoGdTwZjhmAsBcAc1wYKEnb9eTt_pD721evOVFHXkNj/exec";
 
 async function uploadImage(){
 
@@ -62,8 +62,8 @@ async function uploadImage(){
     return;
   }
 
-  if(file.size > 2 * 1024 * 1024){
-    alert("2MB以下にしてください");
+  if(file.size > 3 * 1024 * 1024){
+    alert("3MB以下にしてください");
     return;
   }
 
