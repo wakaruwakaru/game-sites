@@ -365,6 +365,10 @@
   gap: 10px;
   overflow-y: auto;
 }
+/* pictureモードのときはgridを解除 */
+.media-content[data-mode="picture"]{
+  display: block;   /* ← grid をやめる */
+}
 
 .media-item:hover{
   transform: scale(1.1);
