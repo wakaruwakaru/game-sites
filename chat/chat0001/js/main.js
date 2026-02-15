@@ -109,8 +109,8 @@ function renderImgList(type, genre, start, end, file){
 
 
     /* ======== Google Apps Script Web App URL ======== */
-    const WEB_APP_URL =
-      "https://script.google.com/macros/s/AKfycbxzPIpMXRgQ5QuKM_hwIQ815at4Ml6Vvqhx_zabeDNGupPwsTvWWP3jpOXLnxbeGSIMDQ/exec";
+    const WEB_APP_URL  = "https://script.google.com/macros/s/AKfycbxzPIpMXRgQ5QuKM_hwIQ815at4Ml6Vvqhx_zabeDNGupPwsTvWWP3jpOXLnxbeGSIMDQ/exec";
+    const WEB_APP_URL2 = "https://script.google.com/macros/s/AKfycbyzmNLyXoF4YFQCw0jZ6TJwoLaKTklfI7BKnZZLeUBGqJ3nTS9zC41Vpsl__dY9flRu/exec";
 
     // アカウントID → アイコンURL
     const userIcons = {
@@ -251,6 +251,31 @@ function createMessageBody(type, value){  //メッセージのコンテンツ作
       img.src = "/game-sites/chat/gif/" + value + ".gif";
       img.loading = "lazy";
     //img.className = "media-img";
+      return img;
+    }
+    case "picture": {
+      const img = document.createElement("img");
+      img.loading = "lazy";
+      img.alt = "uploaded image";
+      img.style.maxWidth = "200px";
+      img.style.border = "1px solid #ccc";
+      (async () => {   // JSONから画像を復元
+        try {
+          const res = await fetch(`${WEB_APP_URL2}?id=${value}&secret=testKey`);
+          const json = await res.json();
+
+          if(json.status === "ok" && json.data && json.mime){
+            // Base64 → data URL に変換
+            img.src = `data:${json.mime};base64,${json.data}`;
+          } else {
+            console.error("画像取得失敗:", json);
+            img.alt = "画像取得失敗";
+          }
+        } catch(err) {
+          console.error("fetch error:", err);
+          img.alt = "画像取得エラー";
+        }
+      })();
       return img;
     }
 
@@ -430,7 +455,7 @@ async function page_update(){
     if(old_content != new_content){
       const auto_scroll = autoScrollValue();
       for(let i = old_content; i < message2.length; i++){
-        if((message2[i][0] == "message") || (message2[i][0] == "emoji") || (message2[i][0] == "stamp") || (message2[i][0] == "gif")){
+        if((message2[i][0] == "message") || (message2[i][0] == "emoji") || (message2[i][0] == "stamp") || (message2[i][0] == "gif") || (message2[i][0] == "picture")){
           old_mess_date = new_mess_date;
           new_mess_date = toYYYYMMDD(message2[i][2]);
           if(old_mess_date != new_mess_date){
