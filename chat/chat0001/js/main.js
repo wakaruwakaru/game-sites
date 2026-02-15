@@ -26,7 +26,7 @@ tabs.forEach(tab => {
     tab.classList.add("active");
     // ② mediaContent のモード切り替え
     mediaContent.dataset.mode = target;
-    // ③ 表示内容切り替え（仮）
+    // ③ 表示内容切り替え
     updateMediaContent(target);
   });
 });
@@ -56,6 +56,8 @@ function updateMediaContent(type){  //メディアコンテンツ描画処理
     renderImgList("gif", "starrail", 1, 5, "gif");
     renderImgList("gif", "jojo", 1, 4, "gif");
     renderImgList("gif", "other", 1, 6, "gif");
+  }else if(type == "picture"){
+    renderPictureForm();
   }
 }
 
@@ -107,6 +109,9 @@ function renderImgList(type, genre, start, end, file){
   }
 }
 
+function renderPictureForm(){
+  
+}
 
     /* ======== Google Apps Script Web App URL ======== */
     const WEB_APP_URL  = "https://script.google.com/macros/s/AKfycbxzPIpMXRgQ5QuKM_hwIQ815at4Ml6Vvqhx_zabeDNGupPwsTvWWP3jpOXLnxbeGSIMDQ/exec";
