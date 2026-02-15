@@ -110,66 +110,32 @@ function renderImgList(type, genre, start, end, file){
 }
 
 function renderPictureForm(){
-  // 1. media-item を作成
-  const item = document.createElement("div");
-  item.className = "media-item"; // 他のアイテムと同じクラス
-  item.style.gridColumn = "span 2"; // 2列分くらい使う（好みで調整）
-  item.style.height = "120px";      // 少し高さを大きめに
-  // 2. 内部ラッパー
+  // mediaContent 初期化
+  //mediaContent.innerHTML = "";
+  // ラッパー作成
   const wrapper = document.createElement("div");
-  wrapper.className = "picture-upload-wrapper"; // CSSで作ったフォーム用クラス
-  // ファイル選択ラベル
-  const label = document.createElement("label");
-  label.className = "neon-file-label";
-  label.textContent = "📁 ファイル選択";
+  wrapper.className = "picture-form-wrapper"; // フォーム専用クラス
+  // フォームHTML
+  wrapper.innerHTML = `
+    <label for="pictureInput" class="picture-label">画像を選択</label>
+    <input type="file" id="pictureInput" accept="image/*" />
+    <button id="uploadBtn">アップロード</button>
+  `;
+  mediaContent.appendChild(wrapper);
+  // イベントリスナー
+  const input = document.getElementById("pictureInput");
+  const btn = document.getElementById("uploadBtn");
 
-  const input = document.createElement("input");
-  input.type = "file";
-  input.id = "pictureFileInput";
-  input.accept = "image/*";
-  input.style.display = "none";
-  label.appendChild(input);
-  // アップロードボタン
-  const btn = document.createElement("button");
-  btn.className = "neon-btn";
-  btn.id = "uploadPictureBtn";
-  btn.textContent = "アップロード";
-  // プレビュー領域
-  const preview = document.createElement("div");
-  preview.id = "picturePreview";
-  preview.className = "picture-preview";
-  preview.innerHTML = "<p>選択した画像はここに表示されます</p>";
-  // 3. wrapper にまとめる
-  wrapper.append(label, btn, preview);
-  // 4. media-item に追加
-  item.appendChild(wrapper);
-  // 5. mediaContent に追加
-  mediaContent.appendChild(item);
-  // --- ここで JS イベントも追加可能 ---
-  // ファイル選択時プレビュー表示
-  input.addEventListener("change", (e) => {
-    const file = e.target.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      preview.innerHTML = ""; // 初期メッセージ消す
-      const img = document.createElement("img");
-      img.src = ev.target.result;
-      preview.appendChild(img);
-    };
-    reader.readAsDataURL(file);
-  });
-
-  // アップロードボタン押下時
   btn.addEventListener("click", () => {
     const file = input.files[0];
     if(!file){
       alert("ファイルを選択してください");
       return;
     }
-    //uploadPictureToGAS(file);
+    //uploadPictureToGAS(file); // アップロード処理
   });
 }
+
 
 
     /* ======== Google Apps Script Web App URL ======== */
