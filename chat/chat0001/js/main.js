@@ -276,7 +276,6 @@ function addMessage_sent(type, time, value, rawTime){
   content.className = "message-content";
   // --- 中身 ---
   const body = createMessageBody(type, value);
-  if(body) content.appendChild(body);
   // --- 時間 ---
   const ts = document.createElement("span");
   ts.className = "timestamp";
