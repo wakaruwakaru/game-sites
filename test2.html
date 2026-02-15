@@ -88,10 +88,11 @@ async function uploadImage(){
 
     try {
 
-      const res = await fetch(GAS_URL, {
+const res = await fetch(GAS_URL + "?t=" + Date.now(), {
   method: "POST",
   body: formData
 });
+
 
 const result = await res.json();
 
