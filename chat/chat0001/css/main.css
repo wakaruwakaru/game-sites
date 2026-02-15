@@ -535,8 +535,9 @@
   text-align: center;
 }
 
-.picture-form-wrapper {
-  text-align: center;
+#pictureInput {
+  display: block;
+  margin: 0 auto;
 }
 
 
