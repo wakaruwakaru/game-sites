@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>GAS Save Test</title>
+</head>
+<body>
+  <h2>GAS 保存テスト実行中...</h2>
+
+  <script>
+    // ★★★★★★★★★★★★★★★★★★★★★★★★★
+    // ここに自分のGASのWebアプリURLを書く
+    // 例:
+    // https://script.google.com/macros/s/AKfycbxxxxxxxxxxxxxxxx/exec
+    // ★★★★★★★★★★★★★★★★★★★★★★★★★
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbxl3L06jazU7Ymd1yajAhDFIJg-FaQglqjizz-JDxZePRBrIBGw-5Yciy3E3RQ1bpGxdA/exec";
+
+    async function sendTestPacket() {
+      const testPacket =
+        "<type[picture]" +
+        "acco[TestUser]" +
+        "time[" + new Date().toString() + "]" +
+        "val1[TestFileID_12345]>";
+
+      const payload = {
+        message: testPacket
+      };
+
+      try {
+        const res = await fetch(WEB_APP_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await res.json();
+        console.log("GAS Response:", data);
+        document.body.innerHTML += "<pre>" + JSON.stringify(data, null, 2) + "</pre>";
+
+      } catch (err) {
+        console.error("送信エラー:", err);
+        document.body.innerHTML += "<p style='color:red;'>エラー: " + err.message + "</p>";
+      }
+    }
+
+    // ページロード時に1回だけ実行
+    window.addEventListener("load", sendTestPacket);
+  </script>
+</body>
+</html>
