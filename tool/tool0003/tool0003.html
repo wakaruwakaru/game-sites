@@ -1,4 +1,110 @@
-<html>
-  <style></style>
-  <body></body>
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>ページプレビューツール</title>
+
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+        }
+
+        input {
+            width: 500px;
+            padding: 8px;
+        }
+
+        button {
+            padding: 8px 14px;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        #content {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            min-height: 100px;
+            white-space: pre-wrap;
+            overflow: auto;
+        }
+
+        iframe {
+            width: 100%;
+            height: 600px;
+            margin-top: 20px;
+            border: 1px solid #333;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>HTML取得 + ページプレビュー</h2>
+
+    <!-- URL入力 -->
+    <input type="text" id="urlInput" placeholder="https://example.com">
+
+    <!-- 実行 -->
+    <button onclick="fetchHtml()">取得開始</button>
+
+    <!-- HTML表示 -->
+    <div id="content">
+ここに取得したHTMLソースが表示されます...
+    </div>
+
+    <!-- プレビュー表示 -->
+    <iframe id="previewFrame"></iframe>
+
+    <script>
+
+        function fetchHtml() {
+
+            const url = document.getElementById("urlInput").value;
+
+            if (!url) {
+                alert("URLを入力してください");
+                return;
+            }
+
+            fetch(url)
+                .then(response => {
+
+                    if (!response.ok) {
+                        throw new Error('HTTPエラー: ' + response.status);
+                    }
+
+                    return response.text();
+                })
+
+                .then(htmlContent => {
+
+                    console.log("HTML取得成功");
+
+                    // HTMLソース表示
+                    document.getElementById("content").innerText = htmlContent;
+
+                    // iframeにHTMLを書き込んでプレビュー
+                    const iframe =
+                        document.getElementById("previewFrame");
+
+                    iframe.srcdoc = htmlContent;
+
+                })
+
+                .catch(error => {
+
+                    console.error("取得失敗:", error);
+
+                    document.getElementById("content").innerText =
+                        "取得失敗: " + error;
+
+                });
+        }
+
+    </script>
+
+</body>
 </html>
+
