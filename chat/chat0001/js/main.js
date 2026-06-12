@@ -192,6 +192,7 @@ async function uploadPictureToGAS(file){
       wakaruwakaru: "/game-sites/chat/chatIcons/wakaruwakaru-0001.png",
       dabada:       "/game-sites/chat/chatIcons/dabada-0001.png",
       173:          "/game-sites/chat/chatIcons/173-0001.png",
+      kuroneko:     "/game-sites/chat/chatIcons/kuroneko.png",
       RTX5090rairai:"/game-sites/chat/chatIcons/rairai-0001.png"
     };
 
