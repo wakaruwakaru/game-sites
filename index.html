@@ -244,15 +244,15 @@ updateWidget('ww_e81726654fd56',0);
       //時刻の最後を見やすくするための処理と描画
       if(millisecond1 < 10){
         if(second1 < 10){
-          document.getElementById("time1").innerHTML = year1 + "/" + month1 + "/" + day1 + "/" + week_1[week1] + "/" + hour1 + ":" + minute1 + ":0" + second1 + "." + millisecond1 + "00";
+          document.getElementById("time1").innerHTML = year1 + "/" + month1 + "/" + day1 + "/" + week_1[week1] + "/" + hour1 + ":" + minute1 + ":0" + second1 + ".00" + millisecond1;
         }else{
-          document.getElementById("time1").innerHTML = year1 + "/" + month1 + "/" + day1 + "/" + week_1[week1] + "/" + hour1 + ":" + minute1 + ":" + second1 + "." + millisecond1 + "00";
+          document.getElementById("time1").innerHTML = year1 + "/" + month1 + "/" + day1 + "/" + week_1[week1] + "/" + hour1 + ":" + minute1 + ":" + second1 + ".00" + millisecond1;
         }
       }else if(millisecond1 < 100){
         if(second1 < 10){
-          document.getElementById("time1").innerHTML = year1 + "/" + month1 + "/" + day1 + "/" + week_1[week1] + "/" + hour1 + ":" + minute1 + ":0" + second1 + "." + millisecond1 + "0";
+          document.getElementById("time1").innerHTML = year1 + "/" + month1 + "/" + day1 + "/" + week_1[week1] + "/" + hour1 + ":" + minute1 + ":0" + second1 + ".0" + millisecond1;
         }else{
-          document.getElementById("time1").innerHTML = year1 + "/" + month1 + "/" + day1 + "/" + week_1[week1] + "/" + hour1 + ":" + minute1 + ":" + second1 + "." + millisecond1 + "0";
+          document.getElementById("time1").innerHTML = year1 + "/" + month1 + "/" + day1 + "/" + week_1[week1] + "/" + hour1 + ":" + minute1 + ":" + second1 + ".0" + millisecond1;
         }
       }else{
         if(second1 < 10){
