@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="shortcut icon" href="/game-sites/index/icon/icon1.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Interactive Glowing Rubik's Cube</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #0f172a; /* Dark slate background */
+            touch-action: none; /* Prevent scroll on mobile swipe */
+            font-family: 'Inter', sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        #canvas-container {
+            width: 100vw;
+            height: 100vh;
+            display: block;
+        }
+        /* Custom UI Styling */
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+        }
+
+
+
+/* フローティングボタンの共通デザイン */
+.floating-btn{
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: #111;
+  border: 2px solid #4da6ff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 26px;
+  color: #bcdfff;
+  cursor: pointer;
+  transition: 0.25s;
+  box-shadow: 0 0 10px #3d8cff88;
+  font-family:'Segoe UI',sans-serif;
+}
+/* ホバー時に光る */
+.floating-btn:hover{
+  background: #4da6ff33;
+  box-shadow: 0 0 16px #4da6ffcc;
+}
+/* クリック時に縮む */
+.floating-btn:active{
+  transform: scale(0.9);
+}
+/* ボタン位置調整 */
+#reloadBtn{
+  bottom: 90px; /* logout の上に配置 */
+}
+#logoutBtn{
+  bottom: 20px;
+}
+    </style>
+    
+    <!-- Three.js Import Map -->
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+</head>
+<body>
+
+    <!-- Floating UI Panel -->
+    <div class="absolute top-6 left-1/2 transform -translate-x-1/2 z-10 glass-panel px-6 py-4 rounded-2xl text-center pointer-events-none w-11/12 max-w-md">
+        <h1 class="text-2xl font-extrabold mb-2 bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent tracking-wide">Rubik's Cube</h1>
+        <p class="text-sm text-gray-300 font-medium">Double-tap (or double-click) a piece to select it. Swipe to rotate the glowing slice.</p>
+    </div>
+
+    <!-- Three.js Container -->
+    <div id="canvas-container"></div>
+    <div id="reloadBtn" class="floating-btn" onclick="reload()">↻</div>
+    <div id="logoutBtn" class="floating-btn" onclick="backPage()">⇦</div>
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+        import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+        import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+        import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+
+        // --- Core Variables ---
+        let scene, camera, renderer, controls, composer;
+        let cubeGroup, pivot;
+        
+        // --- Interaction State ---
+        let selectedCubie = null;
+        let intersectNormal = new THREE.Vector3();
+        let intersectPoint = new THREE.Vector3();
+        let isAnimating = false;
+        
+        // --- Drag & Swipe Variables ---
+        let isDragging = false;
+        let dragPlane = new THREE.Plane();
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+        let lastTapTime = 0;
+
+        // --- Glow Effect Variables ---
+        let glowMesh = null;
+        let glowMaterial = null;
+
+        init();
+        animate();
+
+        function init() {
+            // 1. Scene & Camera Setup
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x0f172a); // Match Tailwind bg
+            
+            camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 100);
+            camera.position.set(6, 5, 8);
+            
+            // 2. Renderer Setup
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            renderer.toneMapping = THREE.ReinhardToneMapping; // Important for Bloom
+            document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+            // 3. Post-Processing (Bloom) Setup
+            const renderScene = new RenderPass(scene, camera);
+            // Resolution, strength, radius, threshold
+            const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
+            bloomPass.threshold = 1.0; // Only elements with color values > 1.0 will glow
+            bloomPass.strength = 1.8;  // Intensity of the glow
+            bloomPass.radius = 0.5;    // Spread of the glow
+
+            composer = new EffectComposer(renderer);
+            composer.addPass(renderScene);
+            composer.addPass(bloomPass);
+
+            // 4. Controls Setup
+            controls = new OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.05;
+            controls.enablePan = false;
+            controls.minDistance = 4;
+            controls.maxDistance = 20;
+
+            // 5. Lighting
+            scene.add(new THREE.AmbientLight(0xffffff, 0.8));
+            const dirLight = new THREE.DirectionalLight(0xffffff, 1.5);
+            dirLight.position.set(10, 20, 30);
+            scene.add(dirLight);
+
+            // 6. Group Setup
+            cubeGroup = new THREE.Group();
+            scene.add(cubeGroup);
+            
+            pivot = new THREE.Group();
+            scene.add(pivot);
+
+            // 7. Build the Cube
+            buildCube();
+            setupGlowMesh();
+
+            // 8. Event Listeners
+            window.addEventListener('resize', onWindowResize);
+            setupInteractions();
+        }
+
+        function buildCube() {
+            // slightly smaller than 1 to create gaps
+            const cubieSize = 0.96; 
+            const boxGeo = new THREE.BoxGeometry(cubieSize, cubieSize, cubieSize);
+            
+            // Black edges for the plastic look
+            const edgeGeo = new THREE.EdgesGeometry(new THREE.BoxGeometry(cubieSize, cubieSize, cubieSize));
+            const edgeMat = new THREE.LineBasicMaterial({ color: 0x000000, linewidth: 2 });
+            const matBlack = new THREE.MeshStandardMaterial({ color: 0x111111, roughness: 0.8 });
+
+            // Classic Rubik's Cube Colors (Using Standard Material for better lighting)
+            const colorMats = {
+                right:  new THREE.MeshStandardMaterial({ color: 0xb71234, roughness: 0.4 }), // Red (+x)
+                left:   new THREE.MeshStandardMaterial({ color: 0xff5800, roughness: 0.4 }), // Orange (-x)
+                top:    new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.4 }), // White (+y)
+                bottom: new THREE.MeshStandardMaterial({ color: 0xffd500, roughness: 0.4 }), // Yellow (-y)
+                front:  new THREE.MeshStandardMaterial({ color: 0x009b48, roughness: 0.4 }), // Green (+z)
+                back:   new THREE.MeshStandardMaterial({ color: 0x0046ad, roughness: 0.4 }), // Blue (-z)
+            };
+
+            for (let x = -1; x <= 1; x++) {
+                for (let y = -1; y <= 1; y++) {
+                    for (let z = -1; z <= 1; z++) {
+                        const mats = [
+                            x === 1  ? colorMats.right  : matBlack,
+                            x === -1 ? colorMats.left   : matBlack,
+                            y === 1  ? colorMats.top    : matBlack,
+                            y === -1 ? colorMats.bottom : matBlack,
+                            z === 1  ? colorMats.front  : matBlack,
+                            z === -1 ? colorMats.back   : matBlack,
+                        ];
+
+                        const mesh = new THREE.Mesh(boxGeo, mats);
+                        mesh.position.set(x, y, z);
+                        
+                        // Add black physical edges
+                        const edges = new THREE.LineSegments(edgeGeo, edgeMat);
+                        mesh.add(edges);
+                        
+                        cubeGroup.add(mesh);
+                    }
+                }
+            }
+        }
+
+        function setupGlowMesh() {
+            // Create a slightly larger wireframe box for the glowing gap effect
+            const glowSize = 0.98; // Fits neatly in the gaps
+            const glowGeo = new THREE.EdgesGeometry(new THREE.BoxGeometry(glowSize, glowSize, glowSize));
+            
+            // Set color values > 1.0 to trigger the UnrealBloomPass threshold
+            glowMaterial = new THREE.LineBasicMaterial({
+                color: new THREE.Color(2.0, 5.0, 10.0), // Neon Cyan Glow
+                toneMapped: false, // Prevents the bright color from being clamped
+                transparent: true,
+                opacity: 0.9
+            });
+
+            glowMesh = new THREE.LineSegments(glowGeo, glowMaterial);
+            glowMesh.visible = false; // Hidden initially
+            scene.add(glowMesh);
+        }
+
+        function setupInteractions() {
+            // Use pointer events to unify Mouse and Touch handling
+            window.addEventListener('pointerdown', (e) => {
+                if (isAnimating) return;
+                
+                const currentTime = performance.now();
+                const timeSinceLastTap = currentTime - lastTapTime;
+                lastTapTime = currentTime;
+
+                updateMousePos(e);
+                raycaster.setFromCamera(mouse, camera);
+                // We pass true to recursive to ensure we can hit nested meshes if needed, 
+                // but we specifically filter out line segments that don't have faces.
+                const intersects = raycaster.intersectObjects(cubeGroup.children, true);
+                
+                // Find the first intersected object that actually has a 3D face
+                const validIntersect = intersects.find(hit => hit.face != null);
+
+                if (timeSinceLastTap < 300) {
+                    // --- DOUBLE TAP DETECTED ---
+                    if (validIntersect) {
+                        selectPiece(validIntersect);
+                    } else {
+                        clearSelection();
+                    }
+                } else {
+                    // --- SINGLE TAP / START DRAG ---
+                    if (!validIntersect) {
+                        clearSelection();
+                    } else if (selectedCubie) {
+                        // Only allow dragging if a piece is already selected
+                        isDragging = true;
+                    }
+                }
+            });
+
+            window.addEventListener('pointerup', () => { 
+                isDragging = false; 
+            });
+
+            window.addEventListener('pointermove', (e) => {
+                if (!selectedCubie || isAnimating || !isDragging) return;
+                
+                updateMousePos(e);
+                raycaster.setFromCamera(mouse, camera);
+                
+                const currentPoint = new THREE.Vector3();
+                raycaster.ray.intersectPlane(dragPlane, currentPoint);
+                
+                if (currentPoint) {
+                    // Calculate swipe vector across the plane
+                    const swipeVector = currentPoint.clone().sub(intersectPoint);
+                    
+                    // Threshold to trigger rotation (prevents accidental tiny swipes)
+                    if (swipeVector.length() > 0.4) {
+                        isDragging = false;
+                        executeSwipe(swipeVector);
+                    }
+                }
+            });
+        }
+
+        function selectPiece(intersectResult) {
+            selectedCubie = intersectResult.object;
+            intersectPoint.copy(intersectResult.point);
+            
+            // Get the normal of the face clicked, transformed to world space
+            intersectNormal.copy(intersectResult.face.normal)
+                .transformDirection(selectedCubie.matrixWorld)
+                .round();
+            
+            // Setup the invisible mathematical plane for swipe detection
+            dragPlane.setFromNormalAndCoplanarPoint(intersectNormal, intersectPoint);
+            
+            // Position the glow mesh over the selected cubie
+            selectedCubie.getWorldPosition(glowMesh.position);
+            selectedCubie.getWorldQuaternion(glowMesh.quaternion);
+            glowMesh.visible = true;
+            
+            // Disable camera rotation while preparing to swipe
+            controls.enabled = false;
+        }
+
+        function updateMousePos(e) {
+            mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+        }
+
+        function executeSwipe(swipeVector) {
+            isAnimating = true;
+            
+            // Determine Rotation Axis using Cross Product
+            // Cross product of Face Normal and Swipe Vector gives the perpendicular axis of rotation
+            const axis = intersectNormal.clone().cross(swipeVector);
+            
+            // Snap to the dominant axis (X, Y, or Z)
+            let maxVal = 0;
+            let dominantAxis = 'x';
+            ['x', 'y', 'z'].forEach(ax => {
+                if (Math.abs(axis[ax]) > maxVal) {
+                    maxVal = Math.abs(axis[ax]);
+                    dominantAxis = ax;
+                }
+            });
+            
+            const sign = Math.sign(axis[dominantAxis]);
+            
+            // Find all cubies that belong to this slice (same coordinate on the dominant axis)
+            // Use Math.round to handle minor floating point inaccuracies
+            const targetCoordinate = Math.round(selectedCubie.position[dominantAxis]);
+            const sliceCubies = [];
+            
+            // Iterate backward when moving objects between groups to avoid indexing issues
+            for (let i = cubeGroup.children.length - 1; i >= 0; i--) {
+                const cubie = cubeGroup.children[i];
+                if (Math.round(cubie.position[dominantAxis]) === targetCoordinate) {
+                    sliceCubies.push(cubie);
+                }
+            }
+            
+            // Attach slice to the pivot group for rotation
+            pivot.rotation.set(0, 0, 0);
+            sliceCubies.forEach(cubie => pivot.attach(cubie));
+            
+            // Hide glow effect during rotation
+            glowMesh.visible = false;
+
+            const targetAngle = (Math.PI / 2) * sign; // 90 degrees
+            animateRotation(dominantAxis, targetAngle, sliceCubies);
+        }
+
+        function animateRotation(axisName, targetAngle, sliceCubies) {
+            const duration = 350; // ms
+            const startTime = performance.now();
+            
+            function update(currentTime) {
+                const elapsed = currentTime - startTime;
+                let progress = elapsed / duration;
+                
+                if (progress >= 1) {
+                    pivot.rotation[axisName] = targetAngle;
+                    finalizeRotation(sliceCubies);
+                } else {
+                    // Smooth Ease-Out Cubic interpolation
+                    const ease = 1 - Math.pow(1 - progress, 3);
+                    pivot.rotation[axisName] = targetAngle * ease;
+                    requestAnimationFrame(update);
+                }
+            }
+            requestAnimationFrame(update);
+        }
+
+        function finalizeRotation(sliceCubies) {
+            pivot.updateMatrixWorld();
+            
+            sliceCubies.forEach(cubie => {
+                // Re-attach cubie to the main group
+                cubeGroup.attach(cubie);
+                
+                // Snap positions to integers to prevent floating-point drift over time
+                cubie.position.x = Math.round(cubie.position.x);
+                cubie.position.y = Math.round(cubie.position.y);
+                cubie.position.z = Math.round(cubie.position.z);
+                
+                // Snap rotations to nearest 90 degrees
+                const euler = new THREE.Euler().setFromQuaternion(cubie.quaternion);
+                const halfPi = Math.PI / 2;
+                euler.x = Math.round(euler.x / halfPi) * halfPi;
+                euler.y = Math.round(euler.y / halfPi) * halfPi;
+                euler.z = Math.round(euler.z / halfPi) * halfPi;
+                cubie.quaternion.setFromEuler(euler);
+            });
+
+            clearSelection();
+            isAnimating = false;
+        }
+
+        function clearSelection() {
+            selectedCubie = null;
+            controls.enabled = true; // Re-enable camera rotation
+            glowMesh.visible = false;
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            composer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            
+            if (controls.enabled) controls.update();
+            
+            // Dynamic Pulsing Glow Effect
+            if (glowMesh.visible && selectedCubie) {
+                const time = performance.now() * 0.005;
+                // Pulse intensity between roughly 1.5 and 3.5 (needs to be > 1.0 to bloom)
+                const intensity = 2.5 + Math.sin(time) * 1.0; 
+                // Base colors: R=0.2, G=0.8, B=1.0 (Cyan) multiplied by intensity
+                glowMaterial.color.setRGB(0.2 * intensity, 0.8 * intensity, 1.0 * intensity);
+                
+                // Ensure glow position tracks exactly if object subtly shifted
+                selectedCubie.getWorldPosition(glowMesh.position);
+                selectedCubie.getWorldQuaternion(glowMesh.quaternion);
+            }
+            
+            // Render via composer for Bloom effect instead of standard renderer
+            composer.render();
+        }
+    </script>
+</body>
+</html>
